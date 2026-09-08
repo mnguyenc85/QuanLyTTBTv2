@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:QuanLyTTBTv2.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="QuanLyTTBTv2.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Quản lý trạm trộn bê tông"
+        Background="WhiteSmoke"
+        Loaded="Window_OnLoaded" Closed="Window_OnClosed">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Hệ thống">
+                <MenuItem x:Name="MniSysExit" Header="Thoát"/>
+            </MenuItem>
+        </Menu>
+        
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Đơn hàng" FontSize="14"></TextBlock>
+                </TabItem.Header>
+                <Grid ColumnDefinitions="180,3,*">
+                    <GridSplitter Grid.Column="1"/>
+                    
+                    <ListBox Grid.Column="2"></ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Phiếu cân" FontSize="14"></TextBlock>
+                </TabItem.Header>
+                <Grid ColumnDefinitions="180,3,*">
+                    <GridSplitter Grid.Column="1"/>
+                    
+                    <ListBox Grid.Column="2"></ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Mẻ cân" FontSize="14"></TextBlock>
+                </TabItem.Header>
+                <StackPanel>
+                    
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
