@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageVersion>12.0.0.0</PackageVersion>
+        <Title>MessageBox.Avalonia</Title>
+        <Authors>Lary</Authors>
+        <Description>Messagebox for AvaloniaUI</Description>
+        <PackageProjectUrl>https://github.com/CreateLab/MessageBox.Avalonia</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>messagebox.avalonia</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageTags>Avalonia MessageBox</PackageTags>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyOriginatorKeyFile>strong-key.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>false</PublicSign>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <PackageId>MessageBox.Avalonia</PackageId>
+        <PackageIcon>icon.jpg</PackageIcon>
+    </PropertyGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="**\*.xaml">
+            <SubType>Designer</SubType>
+        </AvaloniaResource>
+        <AvaloniaResource Include="Assets\*" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="12.0.1" />
+        <PackageReference Include="DialogHost.Avalonia" Version="0.12.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="icon.jpg" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>

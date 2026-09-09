@@ -1,0 +1,34 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="320"
+        Width="600" Height="320"
+        x:Class="QuanLyTTBTv2.Views.WndConfig"
+        Title="Cài đặt cấu hình" Background="WhiteSmoke" WindowStartupLocation="CenterOwner"
+        Loaded="Window_OnLoaded" Closing="Window_OnClosing">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="6" HorizontalAlignment="Right">
+            <Button x:Name="BtAccep" Content="Lưu" Width="72" HorizontalContentAlignment="Center" Click="BtAccep_OnClick"/>
+        </StackPanel>
+        
+        <TabControl>
+            <TabItem Header="Server">
+                <StackPanel Background="#fafafa">
+                    <StackPanel Orientation="Horizontal" Margin="6 6 0 6">
+                        <TextBlock Text="Server: " VerticalAlignment="Center" Width="72"/>
+                        <TextBox x:Name="TxtServer" Width="240"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="6 0 0 6">
+                        <TextBlock Text="Tài khoản: " VerticalAlignment="Center" Width="72"/>
+                        <TextBox x:Name="TxtAccount" Width="240"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="6 0 0 6">
+                        <TextBlock Text="Mật mã: " VerticalAlignment="Center" Width="72"/>
+                        <TextBox x:Name="TxtPassword" PasswordChar="*" Width="240"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

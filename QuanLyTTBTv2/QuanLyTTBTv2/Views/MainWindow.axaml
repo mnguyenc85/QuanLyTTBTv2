@@ -20,7 +20,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Hệ thống">
-                <MenuItem x:Name="MniSysExit" Header="Thoát"/>
+                <MenuItem x:Name="MniSysConfig" Header="Cấu hình..." Click="MniSysConfig_OnClick"/>
+                <Separator/>
+                <MenuItem x:Name="MniSysExit" Header="Thoát" Click="MniSysExit_OnClick"/>
             </MenuItem>
         </Menu>
         
@@ -45,10 +47,7 @@
                     <ListBox Grid.Column="2"></ListBox>
                 </Grid>
             </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <TextBlock Text="Mẻ cân" FontSize="14"></TextBlock>
-                </TabItem.Header>
+            <TabItem Header="Mẻ cân">
                 <StackPanel>
                     
                 </StackPanel>

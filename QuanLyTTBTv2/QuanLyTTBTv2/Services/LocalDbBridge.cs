@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using FreeSql;
 using QuanLyTTBTv2.Models.Local;
 
@@ -13,10 +15,6 @@ public class LocalDbBridge
     #endregion
     
     private readonly IFreeSql _db;
-    /// <summary>
-    /// FreeSql instance.
-    /// </summary>
-    public IFreeSql Db => _db;
 
     /// <summary>
     /// Đường dẫn tới file SQLite.
@@ -33,12 +31,63 @@ public class LocalDbBridge
                 DataType.Sqlite,
                 $"Data Source={dbPath};Pooling=true")
             .Build();
+
+        //CreateDatabase();
     }
     
-    public void SyscSchema()
+    public void SyncSchema()
     {
         _db?.CodeFirst.SyncStructure(
-            typeof(LocalSetting)
+            typeof(DbSettingDto)
         );
     }
+
+    /// <summary>
+    /// Sử dụng thay cho SyncSchema
+    /// </summary>
+    public void CreateDatabase()
+    {
+        _db.Ado.ExecuteNonQuery("""
+            CREATE TABLE IF NOT EXISTS pm_settings (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                updated_at DATETIME NOT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                ten TEXT NOT NULL,
+                giatri TEXT,
+                kieu INTEGER NOT NULL
+            );
+        """);
+    }
+
+    #region pm_settings
+    public async Task<List<DbSettingDto>?> Settings_SelectAllAsync()
+    {
+        return await _db.Select<DbSettingDto>()
+            .ToListAsync();
+    }
+
+    public async Task<(int, int)> Settings_SaveAsync(DbSettings settings)
+    {
+        int noins = 0, noupdate = 0;
+
+        foreach (DbSettingDto s in settings.Data.Values)
+        {
+            if (s.Id <= 0)
+            {
+                var id = await _db.Insert(s).ExecuteIdentityAsync();
+                s.Id = id;
+                noins++;
+            }
+            else if (s.Changed)
+            {
+                await _db.Update<DbSettingDto>()
+                    .SetSource(s)
+                    .ExecuteAffrowsAsync();
+                noupdate++;
+            }
+        }
+
+        return (noins, noupdate);
+    }
+    #endregion
 }
