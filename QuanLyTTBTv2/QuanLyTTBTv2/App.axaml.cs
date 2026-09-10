@@ -22,7 +22,6 @@ namespace QuanLyTTBTv2
             {
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainViewModel(),
                 };
             }
 

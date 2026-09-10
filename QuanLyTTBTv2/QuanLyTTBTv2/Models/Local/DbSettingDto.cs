@@ -20,8 +20,19 @@ public class DbSettingDto
     [Column(Name = "ten")]
     public string Name { get; set; }
 
+    private string? _val;
     [Column(Name = "giatri")]
-    public string? Value { get; set; }
+    public string? Value
+    {
+        get => _val;
+        set { 
+            if (_val != value)
+            {
+                _val = value;
+                Changed = true;
+            } 
+        }
+    }
 
     [Column(Name = "kieu", DbType = "INTEGER")]
     public SettingValueTypes Kieu { get; set; }

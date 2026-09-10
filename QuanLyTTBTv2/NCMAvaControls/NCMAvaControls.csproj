@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="12.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaXaml Remove="Styles\Buttons.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Themes\" />
+    </ItemGroup>
+
+</Project>

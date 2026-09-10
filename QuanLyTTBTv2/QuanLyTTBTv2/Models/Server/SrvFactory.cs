@@ -4,7 +4,7 @@ using FreeSql.DataAnnotations;
 namespace QuanLyTTBTv2.Models.Server;
 
 [Table(Name = "sources")]
-public class SrvSource
+public class SrvFactory
 {
     [Column(Name = "id", IsIdentity = true, IsPrimary = true)]
     public long Id { get; set; } = -1;

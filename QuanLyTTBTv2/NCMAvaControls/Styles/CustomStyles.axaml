@@ -1,0 +1,44 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- TextBox luôn không có viền -->
+    <Style Selector="TextBox.no-border">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- Hover -->
+    <Style Selector="TextBox.no-border:pointerover">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <!-- Focus / đang edit -->
+    <Style Selector="TextBox.no-border:focus">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <!-- Focus visible -->
+    <Style Selector="TextBox.no-border:focus-visible">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <!-- Disabled -->
+    <Style Selector="TextBox.no-border:disabled">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+    
+    <Style Selector="TextBox.no-border:focus /template/ Border#PART_BorderElement">
+        <!-- <Setter Property="BorderBrush" Value="Transparent"/> -->
+        <!-- hoặc giữ màu viền bình thường của bạn -->
+        <!-- <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}"/> -->
+    
+        <Setter Property="BorderThickness" Value="1"/> 
+        <!-- hoặc Value="0" nếu muốn bỏ hoàn toàn -->
+    </Style>
+</Styles>

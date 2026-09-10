@@ -3,12 +3,13 @@
         xmlns:vm="using:QuanLyTTBTv2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Quản lý trạm trộn bê tông"
-        Background="WhiteSmoke"
+        Title="Quản lý trạm trộn bê tông" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+        Background="WhiteSmoke" FontFamily="Times New Roman"
         Loaded="Window_OnLoaded" Closed="Window_OnClosed">
 
     <Design.DataContext>
@@ -26,15 +27,66 @@
             </MenuItem>
         </Menu>
         
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="#FFFAF5">
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="Server: " Foreground="DimGray"/>
+                <TextBlock Text="{Binding SrvStatus}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="3">
+                <TextBlock Text="Exec time: " Foreground="DimGray"/>
+                <TextBlock Text="{Binding LastExecTime}"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <DockPanel DockPanel.Dock="Top" Margin="9 3 3 3">
+            <TextBlock Text="Trạm: " VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" VerticalAlignment="Stretch" 
+                    Classes="cbo-right-btn" Height="32" ToolTip.Tip="Làm mới">
+                <Image Source="../Assets/refresh.png" Width="20" Margin="0 1 0 0"/>
+            </Button>
+            <ComboBox HorizontalAlignment="Stretch" CornerRadius="3 0 0 3" Height="32"
+                      ItemsSource="{Binding Workspace.SrvFactories}"
+                      DisplayMemberBinding="{Binding Ten}" SelectedItem="{Binding Workspace.SelFactory}"/>
+        </DockPanel>
         <TabControl>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="Đơn hàng" FontSize="14"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/congtrinh_2.png" Width="20" Margin="0 0 6 0"/>
+                        <TextBlock Text="Đơn hàng" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </TabItem.Header>
-                <Grid ColumnDefinitions="180,3,*">
-                    <GridSplitter Grid.Column="1"/>
-                    
-                    <ListBox Grid.Column="2"></ListBox>
+                <Grid ColumnDefinitions="240,6,*">
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Thời gian" FontWeight="Bold"/>
+                        <StackPanel Margin="6 0 0 0">
+                            <CheckBox Content="Từ"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CalendarDatePicker Margin="0 0 6 0" Width="120"/>
+                                <c:NMTimeEdit Margin="0"/>
+                            </StackPanel>
+                            <CheckBox Content="Đến"/>
+                            <StackPanel Orientation="Horizontal">
+                                <CalendarDatePicker Margin="0 0 6 0" Width="120"/>
+                                <c:NMTimeEdit Margin="0"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <TextBlock Text="Khách hàng" FontWeight="Bold"/>
+                        <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 0 0">
+                            <TextBox.InnerRightContent>
+                                <Button Content="1"></Button>
+                            </TextBox.InnerRightContent>
+                        </TextBox>
+                        <TextBlock Text="Công trình" FontWeight="Bold"/>
+                        <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 0 0"/>
+                        
+                        <Button Content="Tìm kiếm" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 12 0 0"/>
+                    </StackPanel>
+
+                    <ListBox Grid.Column="2" Background="White">
+                        
+                    </ListBox>
                 </Grid>
             </TabItem>
             <TabItem>
@@ -42,7 +94,7 @@
                     <TextBlock Text="Phiếu cân" FontSize="14"></TextBlock>
                 </TabItem.Header>
                 <Grid ColumnDefinitions="180,3,*">
-                    <GridSplitter Grid.Column="1"/>
+                    <GridSplitter Grid.Column="1" Background="WhiteSmoke"/>
                     
                     <ListBox Grid.Column="2"></ListBox>
                 </Grid>

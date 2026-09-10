@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using MsBox.Avalonia;
 using QuanLyTTBTv2.Services;
 
 namespace QuanLyTTBTv2.Views;
@@ -42,9 +42,16 @@ public partial class WndConfig : Window
     private async void SaveSettings()
     {
         var s = _c.Settings;
+        
+        s.Update("srv.address", TxtServer.Text);
+        s.Update("srv.username", TxtAccount.Text);
+        s.Update("srv.password", TxtPassword.Text);
 
         (int noins, int noupdate) = await _db.Settings_SaveAsync(s);
-        // MessageBox.Show($"Lưu cài đặt: {noins} mới, {noupdate} cập nhật!");
+        var box = MessageBoxManager
+            .GetMessageBoxStandard("Lưu cấu hình", $"Lưu: {noins} mới, {noupdate} cập nhật!");
+        var _ = await box.ShowAsync();
+        Close();
     }
 
     private void BtAccep_OnClick(object? sender, RoutedEventArgs e)

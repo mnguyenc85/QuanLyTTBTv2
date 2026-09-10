@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuanLyTTBTv2", "QuanLyTTBTv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsBox.Avalonia", "MsBox.Avalonia\MsBox.Avalonia.csproj", "{81DB80D2-35EB-479F-9DD3-577C110B7EA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCMAvaControls", "NCMAvaControls\NCMAvaControls.csproj", "{2E5D8F9A-2102-4710-9EB5-D14AEDBBA718}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{81DB80D2-35EB-479F-9DD3-577C110B7EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DB80D2-35EB-479F-9DD3-577C110B7EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DB80D2-35EB-479F-9DD3-577C110B7EA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5D8F9A-2102-4710-9EB5-D14AEDBBA718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5D8F9A-2102-4710-9EB5-D14AEDBBA718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5D8F9A-2102-4710-9EB5-D14AEDBBA718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5D8F9A-2102-4710-9EB5-D14AEDBBA718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

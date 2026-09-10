@@ -71,7 +71,7 @@ public class DbSettings
         s.Changed = false;
     }
 
-    public void Update(string name, string val, SettingValueTypes t = SettingValueTypes.String)
+    public void Update(string name, string? val, SettingValueTypes t = SettingValueTypes.String)
     {
         if (!Data.ContainsKey(name))
         {
