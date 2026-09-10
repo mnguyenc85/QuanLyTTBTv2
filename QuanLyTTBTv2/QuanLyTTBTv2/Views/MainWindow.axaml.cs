@@ -1,6 +1,8 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
@@ -61,6 +63,18 @@ namespace QuanLyTTBTv2.Views
         {
             WndConfig wnd = new WndConfig();
             await wnd.ShowDialog(this);
+        }
+        
+        private void OnSwitchThemeClick(object? sender, RoutedEventArgs e)
+        {
+            var app = Application.Current;
+            if (app is null) return;
+
+            // Đang Dark → chuyển Light, ngược lại
+            app.RequestedThemeVariant =
+                app.ActualThemeVariant == ThemeVariant.Dark
+                    ? ThemeVariant.Light
+                    : ThemeVariant.Dark;
         }
         #endregion
     }

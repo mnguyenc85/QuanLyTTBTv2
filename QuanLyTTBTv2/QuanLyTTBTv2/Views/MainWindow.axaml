@@ -3,13 +3,14 @@
         xmlns:vm="using:QuanLyTTBTv2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
         xmlns:c="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Background="{DynamicResource NMBackgroundBrush}"
+        Icon="/Assets/avalonia-logo.ico" FontFamily="Times New Roman"
         Title="Quản lý trạm trộn bê tông" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
-        Background="WhiteSmoke" FontFamily="Times New Roman"
         Loaded="Window_OnLoaded" Closed="Window_OnClosed">
 
     <Design.DataContext>
@@ -19,15 +20,26 @@
     </Design.DataContext>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Hệ thống">
-                <MenuItem x:Name="MniSysConfig" Header="Cấu hình..." Click="MniSysConfig_OnClick"/>
-                <Separator/>
-                <MenuItem x:Name="MniSysExit" Header="Thoát" Click="MniSysExit_OnClick"/>
-            </MenuItem>
-        </Menu>
+        <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" DockPanel.Dock="Top">
+            <Grid ColumnDefinitions="*,Auto">
+                <Menu>
+                    <MenuItem Header="Hệ thống">
+                        <MenuItem x:Name="MniSysConfig" Header="Cấu hình..." Click="MniSysConfig_OnClick"/>
+                        <Separator/>
+                        <MenuItem x:Name="MniSysExit" Header="Thoát" Click="MniSysExit_OnClick"/>
+                    </MenuItem>
+                </Menu>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <ToggleSwitch Margin="0 0 12 0"
+                                  OnContent="Dark" OffContent="Light"
+                                  Click="OnSwitchThemeClick"
+                                  ToolTip.Tip="Toggle Light / Dark" />
+                </StackPanel>
+            </Grid>
+        </Border>
         
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="#FFFAF5">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"  Background="{DynamicResource NMStatusbarBrush}">
             <StackPanel Orientation="Horizontal" Margin="3">
                 <TextBlock Text="Server: " Foreground="DimGray"/>
                 <TextBlock Text="{Binding SrvStatus}"/>
@@ -38,11 +50,11 @@
             </StackPanel>
         </StackPanel>
         
-        <DockPanel DockPanel.Dock="Top" Margin="9 3 3 3">
+        <DockPanel DockPanel.Dock="Top" Margin="9 6 3 3">
             <TextBlock Text="Trạm: " VerticalAlignment="Center"/>
-            <Button DockPanel.Dock="Right" VerticalAlignment="Stretch" 
+            <Button DockPanel.Dock="Right" VerticalAlignment="Stretch"
                     Classes="cbo-right-btn" Height="32" ToolTip.Tip="Làm mới">
-                <Image Source="../Assets/refresh.png" Width="20" Margin="0 1 0 0"/>
+                <Image Source="../Assets/refresh.png" Width="16" Height="16" Opacity="0.5"/>
             </Button>
             <ComboBox HorizontalAlignment="Stretch" CornerRadius="3 0 0 3" Height="32"
                       ItemsSource="{Binding Workspace.SrvFactories}"
@@ -52,54 +64,71 @@
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../Assets/congtrinh_2.png" Width="20" Margin="0 0 6 0"/>
-                        <TextBlock Text="Đơn hàng" FontSize="14" VerticalAlignment="Center"/>
+                        <Image Source="../Assets/congtrinh_1_64.png" Width="24" Margin="0 0 6 0"/>
+                        <TextBlock Text="Đơn hàng" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid ColumnDefinitions="240,6,*">
+                <Grid ColumnDefinitions="252,6,*">
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="Thời gian" FontWeight="Bold"/>
                         <StackPanel Margin="6 0 0 0">
-                            <CheckBox Content="Từ"/>
+                            <CheckBox Content="Từ" Margin="0 3"/>
                             <StackPanel Orientation="Horizontal">
-                                <CalendarDatePicker Margin="0 0 6 0" Width="120"/>
-                                <c:NMTimeEdit Margin="0"/>
+                                <CalendarDatePicker Margin="0 0 3 0" MinWidth="120" Width="120"
+                                                    SelectedDateFormat="Custom" CustomDateFormatString="dd/MM/yyyy"
+                                                    PlaceholderText="dd/MM/yyyy"/>
+                                <TimePicker MinWidth="120" VerticalAlignment="Stretch"/>
                             </StackPanel>
-                            <CheckBox Content="Đến"/>
+                            <CheckBox Content="Đến" Margin="0 3"/>
                             <StackPanel Orientation="Horizontal">
-                                <CalendarDatePicker Margin="0 0 6 0" Width="120"/>
-                                <c:NMTimeEdit Margin="0"/>
+                                <CalendarDatePicker Margin="0 0 3 0" MinWidth="120" Width="120"
+                                                    SelectedDateFormat="Custom" CustomDateFormatString="dd/MM/yyyy"
+                                                    PlaceholderText="dd/MM/yyyy"/>
+                                <TimePicker MinWidth="120" VerticalAlignment="Stretch"/>
                             </StackPanel>
                         </StackPanel>
                         
-                        <TextBlock Text="Khách hàng" FontWeight="Bold"/>
-                        <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 0 0">
+                        <TextBlock Text="Khách hàng" FontWeight="Bold" Margin="0 6 0 0"/>
+                        <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 2 0">
                             <TextBox.InnerRightContent>
-                                <Button Content="1"></Button>
+                                <Button Padding="0" VerticalAlignment="Stretch" Width="24">
+                                    <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/>
+                                </Button>
                             </TextBox.InnerRightContent>
                         </TextBox>
-                        <TextBlock Text="Công trình" FontWeight="Bold"/>
-                        <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 0 0"/>
                         
-                        <Button Content="Tìm kiếm" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 12 0 0"/>
+                        <TextBlock Text="Công trình" FontWeight="Bold" Margin="0 6 0 0"/>
+                        <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 2 0">
+                            <TextBox.InnerRightContent>
+                                <Button Padding="0" VerticalAlignment="Stretch" Width="24">
+                                    <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/>
+                                </Button>
+                            </TextBox.InnerRightContent>
+                        </TextBox>
+                        
+                        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 12 0 0" Classes="Primary"
+                                Content="Tìm kiếm" />
                     </StackPanel>
 
-                    <ListBox Grid.Column="2" Background="White">
+                    <ListBox Grid.Column="2">
                         
                     </ListBox>
                 </Grid>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Text="Phiếu cân" FontSize="14"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/docket_1_64.png" Width="24" Margin="0 0 6 0"/>
+                        <TextBlock Text="Phiếu trộn" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </TabItem.Header>
                 <Grid ColumnDefinitions="180,3,*">
-                    <GridSplitter Grid.Column="1" Background="WhiteSmoke"/>
+                    <GridSplitter Grid.Column="1"/>
                     
                     <ListBox Grid.Column="2"></ListBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Mẻ cân">
+            <TabItem Header="Mẻ cân" FontSize="16">
                 <StackPanel>
                     
                 </StackPanel>

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="QuanLyTTBTv2.App"
              xmlns:local="using:QuanLyTTBTv2"
+             xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -10,7 +11,27 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme/>
+        <husk:HuskuiTheme Accent="Orange" />
+        
         <StyleInclude Source="/Assets/Styles/FluentThemeMods.axaml" />
     </Application.Styles>
+             
+     <Application.Resources>
+         <ResourceDictionary>
+             <ResourceDictionary.ThemeDictionaries>
+                 <!-- Light -->
+                 <ResourceDictionary x:Key="Default">
+                     <SolidColorBrush x:Key="NMBackgroundBrush" Color="#F5F5F5" />   <!-- WhiteSmoke -->
+                     <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#E8E8E8" />
+                 </ResourceDictionary>
+
+                 <!-- Dark -->
+                 <ResourceDictionary x:Key="Dark">
+                     <SolidColorBrush x:Key="NMBackgroundBrush" Color="#1A1A1A" />
+                     <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#111111" />
+                 </ResourceDictionary>
+             </ResourceDictionary.ThemeDictionaries>
+         </ResourceDictionary>
+     </Application.Resources>             
 </Application>

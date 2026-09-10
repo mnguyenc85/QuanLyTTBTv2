@@ -24,46 +24,20 @@
     <!-- cbo-right-btn -->
     <Style Selector="Button.cbo-right-btn">
         <!-- 1. Cấu hình Border cơ bản -->
-        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderBrush" Value="LightGray" />
         <Setter Property="BorderThickness" Value="0 1 1 1" />
         <Setter Property="CornerRadius" Value="0 3 3 0" />
-        
-        <!-- 3. Hiệu ứng mượt mà khi đổi trạng thái (Transitions) -->
-        <Setter Property="Transitions">
-            <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.2"/>
-                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
-                <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
-            </Transitions>
-        </Setter>
     </Style>
 
     <!-- TRẠNG THÁI: Di chuột qua (PointerOver) -->
     <Style Selector="Button.cbo-right-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderBrush" Value="LightGray" />
         <Setter Property="BorderThickness" Value="0 1 1 1" />
     </Style>
 
     <!-- TRẠNG THÁI: Nhấn giữ (Pressed) -->
     <Style Selector="Button.cbo-right-btn:pressed /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderBrush" Value="LightGray" />
         <Setter Property="BorderThickness" Value="0 1 1 1" />
     </Style>
-    
-    <!-- Ghi đè style của TimePickerPresenter để chỉnh kích thước các cột -->
-    <Style Selector="TimePickerPresenter.small">
-        <Style Selector="^ /template/ ListBox#PART_HourListBox">
-            <Setter Property="Width" Value="30" />
-        </Style>
-        
-        <Style Selector="^ /template/ ListBox#PART_MinuteListBox">
-            <Setter Property="Width" Value="30" />
-        </Style>
-
-        <!-- Nếu bạn sử dụng định dạng 12 giờ (AM/PM), có thể chỉnh cả cột này -->
-        <Style Selector="^ /template/ ListBox#PART_MeridiemListBox">
-            <Setter Property="Width" Value="30" />
-        </Style>
-    </Style>
-
 </Styles>
