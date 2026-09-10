@@ -2,6 +2,8 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
@@ -21,6 +23,8 @@ namespace QuanLyTTBTv2.Views
         {
             InitializeComponent();
             DataContext = _vm;
+            
+            LoadIcons();
         }
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
@@ -75,6 +79,35 @@ namespace QuanLyTTBTv2.Views
                 app.ActualThemeVariant == ThemeVariant.Dark
                     ? ThemeVariant.Light
                     : ThemeVariant.Dark;
+            
+            UpdateIcon();
+        }
+        #endregion
+
+        #region Icons
+        private Bitmap? _bmpCTLight, _bmpCTDark;
+        private Bitmap? _bmpPhieuLight, _bmpPhieuDark;
+
+        private void LoadIcons()
+        {
+            LoadIcon("avares://QuanLyTTBTv2/Assets/congtrinh_1_64.png", out _bmpCTLight, out _bmpCTDark);
+            LoadIcon("avares://QuanLyTTBTv2/Assets/docket_1_64.png", out _bmpPhieuLight, out _bmpPhieuDark);
+        }
+        
+        private void UpdateIcon()
+        {
+            var isDark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
+
+            IconTabCongTrinh.Source = isDark ? _bmpCTLight : _bmpCTDark;
+            IconTabPhieu.Source = isDark ? _bmpPhieuLight : _bmpPhieuDark;
+        }
+
+        private void LoadIcon(string path, out Bitmap? light, out Bitmap? dark)
+        {
+            var uri = new Uri(path);
+            using var stream = AssetLoader.Open(uri);
+            dark = new Bitmap(stream);
+            light = ImageHelper.Invert(dark);
         }
         #endregion
     }

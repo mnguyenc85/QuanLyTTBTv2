@@ -45,7 +45,7 @@
                 <TextBlock Text="{Binding SrvStatus}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="3">
-                <TextBlock Text="Exec time: " Foreground="DimGray"/>
+                <TextBlock Text="TG thực hiện thời: " Foreground="DimGray"/>
                 <TextBlock Text="{Binding LastExecTime}"/>
             </StackPanel>
         </StackPanel>
@@ -61,10 +61,11 @@
                       DisplayMemberBinding="{Binding Ten}" SelectedItem="{Binding Workspace.SelFactory}"/>
         </DockPanel>
         <TabControl>
+            <!-- Công trình -->
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../Assets/congtrinh_1_64.png" Width="24" Margin="0 0 6 0"/>
+                        <Image x:Name="IconTabCongTrinh" Source="../Assets/congtrinh_1_64.png" Width="24" Margin="0 0 6 0"/>
                         <TextBlock Text="Đơn hàng" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </TabItem.Header>
@@ -92,7 +93,8 @@
                         <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 2 0">
                             <TextBox.InnerRightContent>
                                 <Button Padding="0" VerticalAlignment="Stretch" Width="24">
-                                    <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/>
+                                    <!-- <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/> -->
+                                    <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5"/>
                                 </Button>
                             </TextBox.InnerRightContent>
                         </TextBox>
@@ -101,7 +103,7 @@
                         <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 2 0">
                             <TextBox.InnerRightContent>
                                 <Button Padding="0" VerticalAlignment="Stretch" Width="24">
-                                    <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/>
+                                    <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5"/>
                                 </Button>
                             </TextBox.InnerRightContent>
                         </TextBox>
@@ -115,10 +117,12 @@
                     </ListBox>
                 </Grid>
             </TabItem>
+            
+            <!-- Phiếu -->
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="../Assets/docket_1_64.png" Width="24" Margin="0 0 6 0"/>
+                        <Image x:Name="IconTabPhieu" Source="../Assets/docket_1_64.png" Width="24" Margin="0 0 6 0"/>
                         <TextBlock Text="Phiếu trộn" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </TabItem.Header>
@@ -128,6 +132,8 @@
                     <ListBox Grid.Column="2"></ListBox>
                 </Grid>
             </TabItem>
+            
+            <!-- Mẻ -->
             <TabItem Header="Mẻ cân" FontSize="16">
                 <StackPanel>
                     
