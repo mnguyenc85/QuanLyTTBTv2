@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
-        xmlns:c="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -24,7 +23,7 @@
             <Grid ColumnDefinitions="*,Auto">
                 <Menu>
                     <MenuItem Header="Hệ thống">
-                        <MenuItem x:Name="MniSysConfig" Header="Cấu hình..." Click="MniSysConfig_OnClick"/>
+                        <MenuItem x:Name="MniSysConfig" Header="Cài đặt..." Click="MniSysConfig_OnClick"/>
                         <Separator/>
                         <MenuItem x:Name="MniSysExit" Header="Thoát" Click="MniSysExit_OnClick"/>
                     </MenuItem>
@@ -92,7 +91,8 @@
                         <TextBlock Text="Khách hàng" FontWeight="Bold" Margin="0 6 0 0"/>
                         <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 2 0">
                             <TextBox.InnerRightContent>
-                                <Button Padding="0" VerticalAlignment="Stretch" Width="24">
+                                <Button Padding="0" VerticalAlignment="Stretch" Width="24"
+                                        Click="ClearParentTextBox_Click">
                                     <!-- <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/> -->
                                     <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5"/>
                                 </Button>
@@ -102,7 +102,8 @@
                         <TextBlock Text="Công trình" FontWeight="Bold" Margin="0 6 0 0"/>
                         <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 2 0">
                             <TextBox.InnerRightContent>
-                                <Button Padding="0" VerticalAlignment="Stretch" Width="24">
+                                <Button Padding="0" VerticalAlignment="Stretch" Width="24"
+                                        Click="ClearParentTextBox_Click">
                                     <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5"/>
                                 </Button>
                             </TextBox.InnerRightContent>

@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
@@ -84,7 +85,9 @@ namespace QuanLyTTBTv2.Views
         }
         #endregion
 
+        #region Advanced UI
         #region Icons
+        // Chuyển màu icon theo theme Light/Dark
         private Bitmap? _bmpCTLight, _bmpCTDark;
         private Bitmap? _bmpPhieuLight, _bmpPhieuDark;
 
@@ -110,5 +113,23 @@ namespace QuanLyTTBTv2.Views
             light = ImageHelper.Invert(dark);
         }
         #endregion
+        
+        private void ClearParentTextBox_Click(object? sender, RoutedEventArgs e)
+        {
+            // Xác định nút vừa được bấm
+            if (sender is Button button)
+            {
+                // Tìm phần tử cha ngược lên Visual Tree có kiểu là TextBox
+                var textBox = button.FindAncestorOfType<TextBox>();
+        
+                if (textBox != null)
+                {
+                    textBox.Text = string.Empty; // Xóa nội dung
+                    textBox.Focus();            // (Tùy chọn) Focus lại vào TextBox sau khi xóa
+                }
+            }
+        }
+        #endregion
+
     }
 }
