@@ -27,6 +27,15 @@ namespace QuanLyTTBTv2.ViewModels
         {
             SelectDonHangCommand = new RelayCommand(SelectDonHang);
         }
+
+        public void SetTableIPP(int tableId, int ipp)
+        {
+            if (ipp > 0)
+                switch (tableId)
+                {
+                    case 1: _dhCond.Limit = ipp; break;
+                }
+        }
         
         public async Task CreateServerComm()
         {
@@ -67,6 +76,8 @@ namespace QuanLyTTBTv2.ViewModels
         [ObservableProperty] private int _dhTotal = 1;
         [ObservableProperty] private int _dhPage = 1;
         
+        
+        
         public ICommand SelectDonHangCommand { get; }
         #endregion
         
@@ -89,9 +100,12 @@ namespace QuanLyTTBTv2.ViewModels
         
         private async void SelectDonHang()
         {
+            if (Workspace.SelFactory == null) return;
+            
             _stopwatch.Restart();
             
             // Điều kiện:
+            _dhCond.SourceId = Workspace.SelFactory.Id;
             // - Thời gian
             _dhCond.UseFrom = LocDHTu;
             _dhCond.FromTime = LocDHTuTg;

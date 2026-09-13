@@ -6,6 +6,19 @@ public class HTDonHangCond
 {
     public bool Changed { get; set; } = true;
 
+    private long _srcId;
+
+    public long SourceId
+    {
+        get => _srcId;
+        set
+        {
+            if (_srcId == value) return;
+            _srcId = value;
+            Changed = true;
+        }
+    }
+    
     #region Thời gian
     private bool _useFrom, _useTo;
     public bool UseFrom {

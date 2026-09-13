@@ -31,6 +31,9 @@ namespace QuanLyTTBTv2.Views
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
         {
+            CboDHTblIPP.Items.Add(10);
+            CboDHTblIPP.Items.Add(15);
+            CboDHTblIPP.Items.Add(20);
             Init();
         }
 
@@ -142,6 +145,12 @@ namespace QuanLyTTBTv2.Views
         private void NMPaginator_OnPageClicked(object? sender, int e)
         {
             _vm?.ChangeDonHangPage(e);
+        }
+
+        private void CboDHTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (CboDHTblIPP.SelectedValue is int v)
+                _vm.SetTableIPP(1, v);
         }
     }
 }

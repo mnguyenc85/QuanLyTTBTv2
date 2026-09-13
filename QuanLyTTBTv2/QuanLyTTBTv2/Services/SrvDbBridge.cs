@@ -14,6 +14,7 @@ public class SrvDbBridge
     public static SrvDbBridge Instance => _instance.Value;
     #endregion
 
+    public string? LastError { get; private set; }
     private IFreeSql? _db;
 
     #region Initialization
@@ -34,14 +35,15 @@ public class SrvDbBridge
             _db = new FreeSqlBuilder()
                 .UseConnectionString(DataType.MySql, connStr)
                 //.UseAutoSyncStructure(true)
-                .UseMonitorCommand(cmd =>
-                {
-                    System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
-                })
+                // .UseMonitorCommand(cmd =>
+                // {
+                //     System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
+                // })
                 .Build();
         }
-        catch
+        catch (Exception ex)
         {
+            LastError = ex.Message;
             return false;
         }
         return true;
@@ -55,6 +57,13 @@ public class SrvDbBridge
             _db = null;
         }
     }
+
+    public void SyncSchema()
+    {
+        _db?.CodeFirst.SyncStructure(
+            typeof(HTDonHangTK)
+        );
+    }
     #endregion
 
     #region Load data
@@ -66,6 +75,7 @@ public class SrvDbBridge
             .ToListAsync();
     }
 
+    #region Đơn hàng
     private ISelect<HTDonHang, KDKhachHang, PMStringLookUp, PMStringLookUp, PMStringLookUp, PMStringLookUp>
         CreateDonHangQuery(HTDonHangCond cond)
     {
@@ -158,5 +168,90 @@ public class SrvDbBridge
 
         return await query.CountAsync();
     }
+    #endregion
+
+    #region Phiếu
+
+    public async Task<long> Phieu_CountAsync(HTPhieuCond cond)
+    {
+        if (_db == null) return 0;
+        return await _db.Select<HtPhieu>()
+            .Where(p => p.SourceId == cond.SourceId && p.DonhangId == cond.DonHangId)
+            .CountAsync();
+    }
+    
+
+    #endregion
+    
+    #region Công thức
+    public async Task<List<HTCongThuc>> CongThuc_SelectAsync( int source_id, List<int> congthuc_ids)
+    {
+        if (congthuc_ids.Count == 0)
+            return [];
+
+        // 1. Lấy danh sách công thức
+        var congthucs = await _db
+            .Select<HTCongThuc>()
+            .Where(x =>
+                x.SourceId == source_id &&
+                congthuc_ids.Contains(x.LocalId))
+            .ToListAsync();
+
+        if (congthucs.Count == 0)  return [];
+        // Các local_id công thức thực tế lấy được
+        var ctIds = congthucs
+            .Select(x => x.LocalId)
+            .ToList();
+
+        // 2. Lấy thành phần
+        var rows = await _db
+            .Select<HTCongThucThanhPhan, HTThanhPhan>()
+            .InnerJoin<HTThanhPhan>(
+                (cttp, tp) =>
+                    cttp.SourceId == tp.SourceId &&
+                    cttp.TpId == tp.LocalId)
+            .Where((cttp, tp) =>
+                cttp.SourceId == source_id &&
+                congthuc_ids.Contains(cttp.CtId))
+            .ToListAsync<CongThucThanhPhanDto>();
+
+        var tpByCt = rows
+            .GroupBy(x => x.CtId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(x => x.ThanhPhan).ToList());
+        
+        foreach (var ct in congthucs)
+        {
+            if (tpByCt.TryGetValue(ct.LocalId, out var ds))
+                ct.DsThanhPhan = ds;
+        }
+        
+        return congthucs;
+    }
+    
+    public async Task<List<HTThanhPhan>> ThanhPhan_SelectDistinctAsync(
+        int source_id,
+        List<int> congthuc_ids)
+    {
+        if (congthuc_ids.Count == 0) return [];
+
+        var data = await _db
+            .Select<HTCongThucThanhPhan, HTThanhPhan>()
+            .InnerJoin<HTThanhPhan>((cttp, tp) =>
+                cttp.SourceId == tp.SourceId &&
+                cttp.TpId == tp.LocalId)
+            .Where((cttp, tp) =>
+                cttp.SourceId == source_id &&
+                congthuc_ids.Contains(cttp.CtId))
+            .ToListAsync<HTThanhPhan>();
+
+        return data
+            .GroupBy(x => x.LocalId)
+            .Select(g => g.First())
+            .ToList();
+    }
+    #endregion
+    
     #endregion
 }

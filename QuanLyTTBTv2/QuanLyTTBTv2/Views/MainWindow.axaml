@@ -117,10 +117,12 @@
                         </Border>
 
                         <DockPanel Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
-                            <StackPanel DockPanel.Dock="Bottom" Margin="3 0 3 3">
+                            <DockPanel DockPanel.Dock="Bottom" Margin="3 0 3 3" LastChildFill="False">
                                 <nmc:NMPaginator Total="{Binding DhTotal}" CurIndex="{Binding DhPage}"
                                                  PageClicked="NMPaginator_OnPageClicked"/>
-                            </StackPanel>
+                                <ComboBox x:Name="CboDHTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
+                                          SelectionChanged="CboDHTblIPP_OnSelectionChanged"/>
+                            </DockPanel>
                             <TableView Margin="6"
                                       ItemsSource="{Binding Workspace.DsDonHang}">
                                 <TableView.Columns>
@@ -136,6 +138,14 @@
                     </Grid>
                 </TabItem>
 
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Cấp phối" FontSize="16" VerticalAlignment="Center" />
+                    </TabItem.Header>
+                    
+                    
+                </TabItem>
+                
                 <!-- Phiếu -->
                 <TabItem>
                     <TabItem.Header>
@@ -155,6 +165,10 @@
                                     <c:DateTimeFilter Title="Từ"/>
                                     <c:DateTimeFilter Title="Đến"/>
                                 </StackPanel>
+                            
+                                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
+                                        Classes="Primary"
+                                        Content="Tìm kiếm"/>
                             </StackPanel>
                         </Border>
 
