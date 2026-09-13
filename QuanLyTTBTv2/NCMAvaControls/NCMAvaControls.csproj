@@ -11,11 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaXaml Remove="Styles\Buttons.axaml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Themes\" />
     </ItemGroup>
-
 </Project>

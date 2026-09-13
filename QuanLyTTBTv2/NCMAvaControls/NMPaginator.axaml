@@ -1,0 +1,34 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NCMAvaControls.NMPaginator">
+    <UserControl.Styles>
+        <Style Selector="Button.nm-paginator-btn:disabled">
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="{StaticResource AccentButtonBackground}" />
+            <Setter Property="Foreground" Value="{StaticResource AccentButtonForeground}" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="BtFirst" Content="1" Margin="2" Classes="nm-paginator-btn"
+                Click="BtPage_OnClick" />
+        <TextBlock x:Name="LblDotsPrev" Text="..." VerticalAlignment="Center" Margin="2" />
+        <Button x:Name="BtPrev2" Content="1" Margin="2"
+                Click="BtPage_OnClick" />
+        <Button x:Name="BtPrev1" Content="1" Margin="2"
+                Click="BtPage_OnClick" />
+        <Button x:Name="BtCur" Content="1" Margin="2" IsEnabled="False" BorderThickness="1"
+                Background="{StaticResource AccentButtonBackground}"
+                Foreground="{StaticResource AccentButtonForeground}" />
+        <Button x:Name="BtNext1" Content="1" Margin="2"
+                Click="BtPage_OnClick" />
+        <Button x:Name="BtNext2" Content="1" Margin="2"
+                Click="BtPage_OnClick" />
+        <TextBlock x:Name="LblDotsNext" Text="..." VerticalAlignment="Center" Margin="2" />
+        <Button x:Name="BtLast" Content="1" Margin="2" Classes="nm-paginator-btn"
+                Click="BtPage_OnClick" />
+    </StackPanel>
+</UserControl>

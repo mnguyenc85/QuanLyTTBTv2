@@ -1,7 +1,11 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using QuanLyTTBTv2.Models.Server;
 using QuanLyTTBTv2.Services;
 
 namespace QuanLyTTBTv2.ViewModels
@@ -11,13 +15,18 @@ namespace QuanLyTTBTv2.ViewModels
         private readonly DbCache _dbCache = DbCache.Instance;
         private readonly SrvComm _srvComm = new();
 
-        private Stopwatch _stopwatch = new();
+        private readonly Stopwatch _stopwatch = new();
         
         [ObservableProperty]
         private string? _srvStatus = "None";
 
         [ObservableProperty]
         private string? _lastExecTime;
+        
+        public MainViewModel()
+        {
+            SelectDonHangCommand = new RelayCommand(SelectDonHang);
+        }
         
         public async Task CreateServerComm()
         {
@@ -42,6 +51,25 @@ namespace QuanLyTTBTv2.ViewModels
                 SrvStatus = _srvComm.IsServerOk ? "OK" : "Error";
         }
 
+        #region Đơn hàng
+
+        private readonly HTDonHangCond _dhCond = new();
+
+        [ObservableProperty] private bool _locDHTu;
+        [ObservableProperty] private bool _locDHDen;
+        [ObservableProperty] private DateTime _locDHTuTg;
+        [ObservableProperty] private DateTime _locDHDenTg;
+        
+        [ObservableProperty] private string? _locDHKH;
+
+        [ObservableProperty] private string? _locDHDuAn;
+
+        [ObservableProperty] private int _dhTotal = 1;
+        [ObservableProperty] private int _dhPage = 1;
+        
+        public ICommand SelectDonHangCommand { get; }
+        #endregion
+        
         #region Workspace
         public WorkspaceVM Workspace { get; private set; } = new();
 
@@ -51,7 +79,50 @@ namespace QuanLyTTBTv2.ViewModels
         public async void InitData()
         {
             _stopwatch.Restart();
+            
             await Workspace.LoadSrvFactories();
+            
+            _stopwatch.Stop();
+            LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+        }
+
+        
+        private async void SelectDonHang()
+        {
+            _stopwatch.Restart();
+            
+            // Điều kiện:
+            // - Thời gian
+            _dhCond.UseFrom = LocDHTu;
+            _dhCond.FromTime = LocDHTuTg;
+            _dhCond.UseTo = LocDHDen;
+            _dhCond.ToTime = LocDHDenTg;
+            // - Khách hàng & dự án
+            _dhCond.KhachHang = LocDHKH;
+            _dhCond.DuAn = LocDHDuAn;
+            
+            _dhCond.Offset = DhPage * _dhCond.Limit;
+
+            await Workspace.LoadDonHang(_dhCond);
+            if (_dhCond.Changed)
+            {
+                DhTotal = (_dhCond.Total - 1) / _dhCond.Limit + 1;
+                DhPage = 1;
+                _dhCond.Changed = false;
+            }
+            
+            _stopwatch.Stop();
+            LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+        }
+
+        public async void ChangeDonHangPage(int p)
+        {
+            _stopwatch.Restart();
+            
+            _dhCond.Offset = (p - 1) * _dhCond.Limit; 
+            await Workspace.LoadDonHang(_dhCond);
+            DhPage = p;
+
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }

@@ -12,7 +12,7 @@
 
     <Application.Styles>
         <FluentTheme/>
-        <husk:HuskuiTheme Accent="Orange" />
+        <husk:HuskuiTheme Accent="Blue" />
         
         <StyleInclude Source="/Assets/Styles/FluentThemeMods.axaml" />
     </Application.Styles>

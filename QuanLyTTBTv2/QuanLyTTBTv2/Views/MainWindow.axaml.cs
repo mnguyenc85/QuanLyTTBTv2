@@ -17,14 +17,15 @@ namespace QuanLyTTBTv2.Views
         private readonly LocalDbBridge _ldb = LocalDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
 
-        private MainViewModel _vm = new();
-        
-        #region Initialization & Startup & Closed 
+        private readonly MainViewModel _vm = new();
+
+        #region Initialization & Startup & Closed
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm;
-            
+
             LoadIcons();
         }
 
@@ -37,6 +38,7 @@ namespace QuanLyTTBTv2.Views
         {
             CrashLogger.Shutdown();
         }
+
         #endregion
 
         /// <summary>
@@ -59,6 +61,7 @@ namespace QuanLyTTBTv2.Views
         }
 
         #region Menu
+
         private void MniSysExit_OnClick(object? sender, RoutedEventArgs e)
         {
             Close();
@@ -69,7 +72,7 @@ namespace QuanLyTTBTv2.Views
             WndConfig wnd = new WndConfig();
             await wnd.ShowDialog(this);
         }
-        
+
         private void OnSwitchThemeClick(object? sender, RoutedEventArgs e)
         {
             var app = Application.Current;
@@ -80,13 +83,16 @@ namespace QuanLyTTBTv2.Views
                 app.ActualThemeVariant == ThemeVariant.Dark
                     ? ThemeVariant.Light
                     : ThemeVariant.Dark;
-            
+
             UpdateIcon();
         }
+
         #endregion
 
         #region Advanced UI
+
         #region Icons
+
         // Chuyển màu icon theo theme Light/Dark
         private Bitmap? _bmpCTLight, _bmpCTDark;
         private Bitmap? _bmpPhieuLight, _bmpPhieuDark;
@@ -94,9 +100,9 @@ namespace QuanLyTTBTv2.Views
         private void LoadIcons()
         {
             LoadIcon("avares://QuanLyTTBTv2/Assets/congtrinh_1_64.png", out _bmpCTLight, out _bmpCTDark);
-            LoadIcon("avares://QuanLyTTBTv2/Assets/docket_1_64.png", out _bmpPhieuLight, out _bmpPhieuDark);
+            LoadIcon("avares://QuanLyTTBTv2/Assets/concrete_truck_2_64.png", out _bmpPhieuLight, out _bmpPhieuDark);
         }
-        
+
         private void UpdateIcon()
         {
             var isDark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
@@ -112,8 +118,9 @@ namespace QuanLyTTBTv2.Views
             dark = new Bitmap(stream);
             light = ImageHelper.Invert(dark);
         }
+
         #endregion
-        
+
         private void ClearParentTextBox_Click(object? sender, RoutedEventArgs e)
         {
             // Xác định nút vừa được bấm
@@ -121,15 +128,20 @@ namespace QuanLyTTBTv2.Views
             {
                 // Tìm phần tử cha ngược lên Visual Tree có kiểu là TextBox
                 var textBox = button.FindAncestorOfType<TextBox>();
-        
+
                 if (textBox != null)
                 {
                     textBox.Text = string.Empty; // Xóa nội dung
-                    textBox.Focus();            // (Tùy chọn) Focus lại vào TextBox sau khi xóa
+                    textBox.Focus(); // (Tùy chọn) Focus lại vào TextBox sau khi xóa
                 }
             }
         }
+
         #endregion
 
+        private void NMPaginator_OnPageClicked(object? sender, int e)
+        {
+            _vm?.ChangeDonHangPage(e);
+        }
     }
 }
