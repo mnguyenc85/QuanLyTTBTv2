@@ -9,7 +9,7 @@ namespace QuanLyTTBTv2.ViewModels;
 
 public partial class WorkspaceVM: ViewModelBase
 {
-    private readonly SrvDbBridge _srvDb = SrvDbBridge.Instance;
+    private readonly SrvDbBridge _srvDb;
     
     public ObservableCollection<SrvFactory> SrvFactories { get; set; } = [];
     [ObservableProperty]
@@ -17,7 +17,9 @@ public partial class WorkspaceVM: ViewModelBase
 
     public ObservableCollection<HTDonHangVM> DsDonHang { get; set; } = [];
     
-    public WorkspaceVM() {
+    public WorkspaceVM(SrvDbBridge srv)
+    {
+        _srvDb = srv;
     }
     
     public async Task LoadSrvFactories(bool reset = true)

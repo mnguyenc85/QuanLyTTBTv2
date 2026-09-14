@@ -27,6 +27,8 @@
                         <TextBlock Text="Mật mã: " VerticalAlignment="Center" Width="72"/>
                         <TextBox x:Name="TxtPassword" PasswordChar="*" Width="240"/>
                     </StackPanel>
+                    <Button x:Name="BtTestSrv" Content="Test connection" Margin="78 0 0 0" HorizontalAlignment="Left" Classes="Success"
+                            Click="BtTestSrv_OnClick"/>
                 </StackPanel>
             </TabItem>
         </TabControl>

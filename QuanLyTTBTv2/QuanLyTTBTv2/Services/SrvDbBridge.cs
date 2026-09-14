@@ -9,17 +9,12 @@ namespace QuanLyTTBTv2.Services;
 
 public class SrvDbBridge
 {
-    #region Singleton
-    private static readonly Lazy<SrvDbBridge> _instance = new(() => new SrvDbBridge());
-    public static SrvDbBridge Instance => _instance.Value;
-    #endregion
-
     public string? LastError { get; private set; }
     private IFreeSql? _db;
 
     #region Initialization
 
-    private SrvDbBridge()
+    public SrvDbBridge()
     {
         
     }

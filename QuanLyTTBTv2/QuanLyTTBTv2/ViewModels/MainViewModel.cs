@@ -25,6 +25,7 @@ namespace QuanLyTTBTv2.ViewModels
         
         public MainViewModel()
         {
+            Workspace = new(_srvComm.SrvDb);
             SelectDonHangCommand = new RelayCommand(SelectDonHang);
         }
 
@@ -82,7 +83,7 @@ namespace QuanLyTTBTv2.ViewModels
         #endregion
         
         #region Workspace
-        public WorkspaceVM Workspace { get; private set; } = new();
+        public WorkspaceVM Workspace { get; private set; }
 
         /// <summary>
         /// Khởi tạo (load) dữ liệu ban đầu

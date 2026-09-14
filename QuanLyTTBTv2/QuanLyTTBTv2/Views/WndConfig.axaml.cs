@@ -50,12 +50,31 @@ public partial class WndConfig : Window
         (int noins, int noupdate) = await _db.Settings_SaveAsync(s);
         var box = MessageBoxManager
             .GetMessageBoxStandard("Lưu cấu hình", $"Lưu: {noins} mới, {noupdate} cập nhật!");
-        var _ = await box.ShowAsync();
+        await box.ShowAsync();
         Close();
     }
 
     private void BtAccep_OnClick(object? sender, RoutedEventArgs e)
     {
         SaveSettings();
+    }
+
+    private async void BtTestSrv_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SrvComm comm = new();
+        string? srv = TxtServer.Text;
+        string? user = TxtAccount.Text;
+        string? pass = TxtPassword.Text;
+
+        if (srv == null || user == null || pass == null)
+        {
+            var box = MessageBoxManager
+                .GetMessageBoxStandard("Kết nối server", $"Lỗi: thông tin kết nối!");
+            await box.ShowAsync();
+            return;
+        }
+            
+        await comm.Connect(srv, user, pass);
+        comm.SyncDb();
     }
 }

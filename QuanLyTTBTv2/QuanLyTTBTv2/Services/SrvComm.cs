@@ -12,7 +12,7 @@ public class SrvComm
     
     // Auth Server Address
     private string? _addr;
-    private readonly SrvDbBridge _srvDb = SrvDbBridge.Instance;
+    public SrvDbBridge SrvDb { get; private set; } = new();
 
     public bool IsServerOk { get; private set; }
     public bool IsServerDbOk { get; private set; }
@@ -69,15 +69,23 @@ public class SrvComm
         {
             if (ss.Length > 3)
             {
-                IsServerDbOk = _srvDb.Initialize(ss[3], ss[0], ss[1], ss[2]);
+                IsServerDbOk = SrvDb.Initialize(ss[3], ss[0], ss[1], ss[2]);
             }
         }
         else
         {
             if (ss.Length > 2)
             {
-                IsServerDbOk = _srvDb.Initialize(host, ss[0], ss[1], ss[2]);
+                IsServerDbOk = SrvDb.Initialize(host, ss[0], ss[1], ss[2]);
             }
+        }
+    }
+    
+    public void SyncDb()
+    {
+        if (IsServerOk)
+        {
+            SrvDb.SyncSchema();
         }
     }
 }
