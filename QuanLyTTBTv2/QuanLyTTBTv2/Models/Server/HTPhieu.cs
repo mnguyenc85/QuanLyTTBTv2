@@ -4,7 +4,7 @@ using FreeSql.DataAnnotations;
 namespace QuanLyTTBTv2.Models.Server;
 
 [Table(Name = "ht_phieu")]
-public class HtPhieu
+public class HTPhieu
 {
     [Column(Name = "id", IsPrimary = true, IsIdentity = true)]
     public int Id { get; set; }
@@ -89,4 +89,29 @@ public class HtPhieu
     //
     // [Column(Name = "created_at")]
     // public DateTime CreatedAt { get; set; }
+}
+
+[Table(Name = "ht_phieu")]
+public class HTPhieuFkey
+{
+    [Column(Name = "id", IsPrimary = true, IsIdentity = true)]
+    public int Id { get; set; }
+
+    [Column(Name = "local_id")]
+    public int LocalId { get; set; }
+
+    [Column(Name = "source_id")]
+    public int SourceId { get; set; }
+
+    [Column(Name = "donhang_id")]
+    public int DonhangId { get; set; }
+
+    [Column(Name = "xe_id")]
+    public int XeId { get; set; }
+
+    [Column(Name = "lx_id")]
+    public int LxId { get; set; }
+
+    [Column(Name = "congthuc_id")]
+    public int CongthucId { get; set; }
 }

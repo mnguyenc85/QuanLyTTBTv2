@@ -6,6 +6,8 @@ namespace QuanLyTTBTv2.ViewModels.Server;
 
 public partial class HTDonHangVM: ViewModelBase
 {
+    public long Id { get; set; }
+    
     [ObservableProperty]
     private int _stt;
 
@@ -31,6 +33,7 @@ public partial class HTDonHangVM: ViewModelBase
 
     public HTDonHangVM(HTDonHang dh)
     {
+        Id = dh.Id;
         KhachHang = dh.KhachHang?.Ten;
         // DuAn = $"{dh.DaId} - {dh.CtId} - {dh.HmId}";
         DuAn = $"{dh.DuAn} - {dh.CongTrinh} - {dh.HangMuc}";

@@ -15,6 +15,15 @@
         <husk:HuskuiTheme Accent="Blue" />
         
         <StyleInclude Source="/Assets/Styles/FluentThemeMods.axaml" />
+        
+        <!-- Style cho dòng LẺ (Odd) của TableView có class "striped" -->
+        <Style Selector="TableView.striped TableViewRow:nth-child(odd)">
+            <Setter Property="Background" Value="{DynamicResource MyStripeOddBrush}"/>
+        </Style>
+        <!-- Style cho dòng CHẴN (Even) của TableView có class "striped" -->
+        <Style Selector="TableView.striped TableViewRow:nth-child(even)">
+            <Setter Property="Background" Value="{DynamicResource MyStripeEvenBrush}"/>
+        </Style>
     </Application.Styles>
              
      <Application.Resources>
@@ -26,6 +35,9 @@
                      <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#E8E8E8" />
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64.png</Bitmap>
+                     
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#F9F9F9" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="White" />
                  </ResourceDictionary>
 
                  <!-- Dark -->
@@ -34,8 +46,12 @@
                      <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#111111" />
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64_i.png</Bitmap>
+
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#202226" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#1A1B1E" />
                  </ResourceDictionary>
              </ResourceDictionary.ThemeDictionaries>
+             
          </ResourceDictionary>
      </Application.Resources>             
 </Application>

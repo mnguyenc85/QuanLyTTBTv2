@@ -170,7 +170,7 @@ public class SrvDbBridge
     public async Task<long> Phieu_CountAsync(HTPhieuCond cond)
     {
         if (_db == null) return 0;
-        return await _db.Select<HtPhieu>()
+        return await _db.Select<HTPhieu>()
             .Where(p => p.SourceId == cond.SourceId && p.DonhangId == cond.DonHangId)
             .CountAsync();
     }
@@ -225,9 +225,7 @@ public class SrvDbBridge
         return congthucs;
     }
     
-    public async Task<List<HTThanhPhan>> ThanhPhan_SelectDistinctAsync(
-        int source_id,
-        List<int> congthuc_ids)
+    public async Task<List<HTThanhPhan>> ThanhPhan_SelectDistinctAsync(long source_id, List<int> congthuc_ids)
     {
         if (congthuc_ids.Count == 0) return [];
 
@@ -245,6 +243,19 @@ public class SrvDbBridge
             .GroupBy(x => x.LocalId)
             .Select(g => g.First())
             .ToList();
+    }
+    
+    public async Task<List<HTPhieuFkey>?> PhieuFkey_SelectByDonHangAsync(long source_id, long donhang_id)
+    {
+        if (_db == null) return null;
+        
+        var stmt = _db
+            .Select<HTPhieuFkey>()
+            .Where((ph) =>
+                ph.SourceId == source_id &&
+                ph.DonhangId == donhang_id);
+        
+        return await stmt.ToListAsync<HTPhieuFkey>();
     }
     #endregion
     

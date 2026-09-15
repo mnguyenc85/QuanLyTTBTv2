@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using QuanLyTTBTv2.Models.Server;
@@ -12,10 +14,15 @@ public partial class WorkspaceVM: ViewModelBase
     private readonly SrvDbBridge _srvDb;
     
     public ObservableCollection<SrvFactory> SrvFactories { get; set; } = [];
-    [ObservableProperty]
-    private SrvFactory? _selFactory;
+    [ObservableProperty] private SrvFactory? _selFactory;
 
     public ObservableCollection<HTDonHangVM> DsDonHang { get; set; } = [];
+    [ObservableProperty] private HTDonHangVM? _selectedDonHang;
+    
+    /// <summary>
+    /// Danh sách thành phần được dùng trong đơn
+    /// </summary>
+    public ObservableCollection<HTThanhPhan> DsThanhPhan { get; set; } = [];
     
     public WorkspaceVM(SrvDbBridge srv)
     {
@@ -38,7 +45,7 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
     
-    public async Task LoadDonHang(HTDonHangCond cond) {
+    public async Task LoadDsDonHang(HTDonHangCond cond) {
         DsDonHang.Clear();
 
         if (cond.Changed)
@@ -55,6 +62,34 @@ public partial class WorkspaceVM: ViewModelBase
         {
             stt++;
             DsDonHang.Add(new HTDonHangVM(dh) { Stt = stt });
+        }
+    }
+
+    public async Task LoadCurDonHang()
+    {
+        // Load danh sách thành phần sử dụng
+        if (SelectedDonHang == null || SelFactory == null) return;
+
+        var lstPh = await _srvDb.PhieuFkey_SelectByDonHangAsync(SelFactory.Id, SelectedDonHang.Id);
+        if (lstPh == null) return;
+
+        
+        DsThanhPhan.Clear();
+        var ctids = lstPh.GroupBy(x => x.CongthucId).Select(x => x.Key).Distinct().ToList();
+        var lsttp = await _srvDb.ThanhPhan_SelectDistinctAsync(SelFactory.Id, ctids);
+        
+        lsttp.Sort((x, y) =>
+        {
+            int comparePhanLoai = Nullable.Compare(x.PhanLoai, y.PhanLoai);
+            if (comparePhanLoai != 0) return comparePhanLoai;
+            return Nullable.Compare(x.Silo, y.Silo);
+        });
+        
+        int stt = 0;
+        foreach (var tp in lsttp)
+        {
+            tp.Stt = ++stt;
+            DsThanhPhan.Add(tp);
         }
     }
 }

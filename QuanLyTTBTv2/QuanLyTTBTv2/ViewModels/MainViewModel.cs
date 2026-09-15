@@ -23,10 +23,18 @@ namespace QuanLyTTBTv2.ViewModels
         [ObservableProperty]
         private string? _lastExecTime;
         
+        public ICommand FilterDonHangCommand { get; }
+        /// <summary>
+        /// Ấn nút hoặc chọn từ bảng
+        /// </summary>
+        public ICommand ChangeCurDHCommand { get; }
+
         public MainViewModel()
         {
             Workspace = new(_srvComm.SrvDb);
-            SelectDonHangCommand = new RelayCommand(SelectDonHang);
+            
+            FilterDonHangCommand = new RelayCommand(FilterDonHang);
+            ChangeCurDHCommand = new RelayCommand(ChangeCurDH);
         }
 
         public void SetTableIPP(int tableId, int ipp)
@@ -76,10 +84,6 @@ namespace QuanLyTTBTv2.ViewModels
 
         [ObservableProperty] private int _dhTotal = 1;
         [ObservableProperty] private int _dhPage = 1;
-        
-        
-        
-        public ICommand SelectDonHangCommand { get; }
         #endregion
         
         #region Workspace
@@ -99,7 +103,7 @@ namespace QuanLyTTBTv2.ViewModels
         }
 
         
-        private async void SelectDonHang()
+        private async void FilterDonHang()
         {
             if (Workspace.SelFactory == null) return;
             
@@ -118,7 +122,7 @@ namespace QuanLyTTBTv2.ViewModels
             
             _dhCond.Offset = DhPage * _dhCond.Limit;
 
-            await Workspace.LoadDonHang(_dhCond);
+            await Workspace.LoadDsDonHang(_dhCond);
             if (_dhCond.Changed)
             {
                 DhTotal = (_dhCond.Total - 1) / _dhCond.Limit + 1;
@@ -135,11 +139,16 @@ namespace QuanLyTTBTv2.ViewModels
             _stopwatch.Restart();
             
             _dhCond.Offset = (p - 1) * _dhCond.Limit; 
-            await Workspace.LoadDonHang(_dhCond);
+            await Workspace.LoadDsDonHang(_dhCond);
             DhPage = p;
 
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+        }
+
+        private async void ChangeCurDH()
+        {
+            await Workspace.LoadCurDonHang();
         }
         #endregion
     }

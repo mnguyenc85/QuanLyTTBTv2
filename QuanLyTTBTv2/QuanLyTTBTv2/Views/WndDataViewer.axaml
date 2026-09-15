@@ -1,0 +1,23 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:QuanLyTTBTv2.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="QuanLyTTBTv2.Views.WndDataViewer"
+        x:DataType="vm:WndDataViewerVM"
+        Title="Dữ liệu đơn hàng"
+        Background="{DynamicResource NMBackgroundBrush}" WindowStartupLocation="CenterOwner">
+  
+    <DockPanel>
+        <TableView Margin="6"
+                   ItemsSource="{Binding Workspace.DsThanhPhan}">
+            <TableView.Columns>
+                <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
+                <TableViewColumn Header="Tên" Binding="{Binding Ten}"/>
+                <TableViewColumn Header="Phân loại" Binding="{Binding PhanLoai}"/>
+                <TableViewColumn Header="Silo" Binding="{Binding Silo}"/>
+            </TableView.Columns>
+        </TableView>
+    </DockPanel>
+</Window>

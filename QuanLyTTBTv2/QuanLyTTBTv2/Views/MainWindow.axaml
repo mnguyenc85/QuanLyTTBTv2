@@ -1,4 +1,4 @@
-<Window xmlns="https://github.com/avaloniaui"
+<husk:AppWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:QuanLyTTBTv2.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         xmlns:c="clr-namespace:QuanLyTTBTv2.Controls"
         xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="480"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="540"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Background="{DynamicResource NMBackgroundBrush}"
@@ -87,44 +87,40 @@
                                     <c:DateTimeFilter Title="Đến" Used="{Binding LocDHDen}" DateTime="{Binding LocDHDenTg}"/>
                                 </StackPanel>
 
-                                <TextBlock Text="Khách hàng" FontWeight="Bold" Margin="0 6 0 0" />
-                                <TextBox PlaceholderText="Khách hàng / sđt" Margin="6 0 2 0"
-                                         Text="{Binding LocDHKH}">
-                                    <TextBox.InnerRightContent>
-                                        <Button Padding="0" VerticalAlignment="Stretch" Width="24"
-                                                Click="ClearParentTextBox_Click">
-                                            <!-- <Image Source="../Assets/clear_64.png" Width="16" Opacity="0.5"/> -->
-                                            <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5" />
-                                        </Button>
-                                    </TextBox.InnerRightContent>
-                                </TextBox>
+                                <c:TextBoxTitle Title="Khách hàng" PlaceholderText="Khách hàng / sđt" Text="{Binding LocDHKH}"/>
+                                <c:TextBoxTitle Title="Công trình" PlaceholderText="Dự án / công trình / hạng mục" Text="{Binding LocDHDuAn}"/>
 
-                                <TextBlock Text="Công trình" FontWeight="Bold" Margin="0 6 0 0" />
-                                <TextBox PlaceholderText="Dự án / công trình / hạng mục" Margin="6 0 2 0"
-                                         Text="{Binding LocDHDuAn}">
-                                    <TextBox.InnerRightContent>
-                                        <Button Padding="0" VerticalAlignment="Stretch" Width="24"
-                                                Click="ClearParentTextBox_Click">
-                                            <Image Source="{DynamicResource IconClean}" Width="16" Opacity="0.5" />
-                                        </Button>
-                                    </TextBox.InnerRightContent>
-                                </TextBox>
-
+                                <Separator Margin="3 6 3 0"/>
                                 <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
-                                        Classes="Primary"
-                                        Content="Tìm kiếm" Command="{Binding SelectDonHangCommand}"/>
+                                        Classes="Success" Content="Tìm kiếm"
+                                        Command="{Binding FilterDonHangCommand}"/>
+                                
+                                <Button Content="Chọn" Margin="0 0 0 6"
+                                        Command="{Binding ChangeCurDHCommand}"/>
+
+                                <DropDownButton x:Name="BtShowDHData" Content="Dữ liệu">
+                                    <DropDownButton.Flyout>
+                                        <MenuFlyout>
+                                            <MenuItem x:Name="MniDHNL" Header="Nguyên liệu" Click="MniDHNL_OnClick"/>
+                                            <MenuItem Header="Xe / lái xe" IsEnabled="False"/>
+                                            <MenuItem Header="Khách hàng" IsEnabled="False"/>
+                                            <MenuItem Header="Dự án" IsEnabled="False"/>
+                                        </MenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
                             </StackPanel>
                         </Border>
 
                         <DockPanel Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
-                            <DockPanel DockPanel.Dock="Bottom" Margin="3 0 3 3" LastChildFill="False">
+                            <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
                                 <nmc:NMPaginator Total="{Binding DhTotal}" CurIndex="{Binding DhPage}"
                                                  PageClicked="NMPaginator_OnPageClicked"/>
                                 <ComboBox x:Name="CboDHTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
                                           SelectionChanged="CboDHTblIPP_OnSelectionChanged"/>
                             </DockPanel>
-                            <TableView Margin="6"
-                                      ItemsSource="{Binding Workspace.DsDonHang}">
+                            <TableView Margin="6 6 6 3" Classes="striped"
+                                      ItemsSource="{Binding Workspace.DsDonHang}"
+                                      SelectedItem="{Binding Workspace.SelectedDonHang}">
                                 <TableView.Columns>
                                     <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
                                     <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
@@ -138,14 +134,6 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem>
-                    <TabItem.Header>
-                        <TextBlock Text="Cấp phối" FontSize="16" VerticalAlignment="Center" />
-                    </TabItem.Header>
-                    
-                    
-                </TabItem>
-                
                 <!-- Phiếu -->
                 <TabItem>
                     <TabItem.Header>
@@ -185,4 +173,4 @@
             </TabControl>
         </DockPanel>
     </LayoutTransformControl>
-</Window>
+</husk:AppWindow>

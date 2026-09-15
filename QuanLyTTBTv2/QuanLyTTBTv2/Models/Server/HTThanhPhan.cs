@@ -13,5 +13,7 @@ public class HTThanhPhan {
     [Column(Name = "silo")] public int? Silo { get; set; } 
     [Column(Name = "klcongthuc")] public double? KlCongThuc { get; set; } 
     [Column(Name = "kltong")] public double? KlTong { get; set; } 
-    [Column(Name = "klme")] public double? KlMe { get; set; } 
+    [Column(Name = "klme")] public double? KlMe { get; set; }
+    
+    [Column(IsIgnore =  true)] public int Stt { get; set; }
 }

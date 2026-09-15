@@ -6,13 +6,15 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Huskui.Avalonia.Controls;
+using Huskui.Avalonia.Models;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
 
 namespace QuanLyTTBTv2.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : AppWindow
     {
         private readonly LocalDbBridge _ldb = LocalDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
@@ -34,6 +36,7 @@ namespace QuanLyTTBTv2.Views
             CboDHTblIPP.Items.Add(10);
             CboDHTblIPP.Items.Add(15);
             CboDHTblIPP.Items.Add(20);
+            CboDHTblIPP.SelectedIndex = 2;
             Init();
         }
 
@@ -63,7 +66,7 @@ namespace QuanLyTTBTv2.Views
             }
         }
 
-        #region Menu
+        #region Menu & Buttons
 
         private void MniSysExit_OnClick(object? sender, RoutedEventArgs e)
         {
@@ -75,31 +78,54 @@ namespace QuanLyTTBTv2.Views
             WndConfig wnd = new WndConfig();
             await wnd.ShowDialog(this);
         }
-
-        private void OnSwitchThemeClick(object? sender, RoutedEventArgs e)
+        
+        private async void MniDHNL_OnClick(object? sender, RoutedEventArgs e)
         {
-            var app = Application.Current;
-            if (app is null) return;
-
-            // Đang Dark → chuyển Light, ngược lại
-            app.RequestedThemeVariant =
-                app.ActualThemeVariant == ThemeVariant.Dark
-                    ? ThemeVariant.Light
-                    : ThemeVariant.Dark;
-
-            UpdateIcon();
+            WndDataViewer wnd = new WndDataViewer();
+            wnd.SetWorkspace(_vm.Workspace);
+            await wnd.ShowDialog(this);
         }
-
         #endregion
 
         #region Advanced UI
-
+        private AppSurface? GetAppSurface() => AppSurface.GetAppSurface(this);
+        
         #region Icons
 
         // Chuyển màu icon theo theme Light/Dark
         private Bitmap? _bmpCTLight, _bmpCTDark;
         private Bitmap? _bmpPhieuLight, _bmpPhieuDark;
 
+        private void OnSwitchThemeClick(object? sender, RoutedEventArgs e)
+        {
+            var app = Application.Current;
+            if (app is null) return;
+
+            bool isDark = app.ActualThemeVariant == ThemeVariant.Dark; 
+            
+            // Đang Dark → chuyển Light, ngược lại
+            app.RequestedThemeVariant = isDark ? ThemeVariant.Light : ThemeVariant.Dark;
+
+            UpdateIcon();
+
+            if (!isDark)
+            {
+                var appSurface = GetAppSurface();
+                if (appSurface == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("No app surface");
+                    return;
+                }
+                var notification = new GrowlItem()
+                {
+                    Level = GrowlLevel.Warning,
+                    Title = "Thông báo",
+                    Content = "Tính năng này đang ở chế độ thử nghiệm."
+                };
+                appSurface.PopGrowl(notification);
+            }
+        }
+        
         private void LoadIcons()
         {
             LoadIcon("avares://QuanLyTTBTv2/Assets/congtrinh_1_64.png", out _bmpCTLight, out _bmpCTDark);
@@ -123,22 +149,6 @@ namespace QuanLyTTBTv2.Views
         }
 
         #endregion
-
-        private void ClearParentTextBox_Click(object? sender, RoutedEventArgs e)
-        {
-            // Xác định nút vừa được bấm
-            if (sender is Button button)
-            {
-                // Tìm phần tử cha ngược lên Visual Tree có kiểu là TextBox
-                var textBox = button.FindAncestorOfType<TextBox>();
-
-                if (textBox != null)
-                {
-                    textBox.Text = string.Empty; // Xóa nội dung
-                    textBox.Focus(); // (Tùy chọn) Focus lại vào TextBox sau khi xóa
-                }
-            }
-        }
 
         #endregion
 
