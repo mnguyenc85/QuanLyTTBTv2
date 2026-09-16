@@ -84,11 +84,15 @@ public class HTPhieu
     [Column(Name = "kepchi")]
     public string? Kepchi { get; set; }
 
-    // [Column(Name = "updated_at")]
-    // public DateTime UpdatedAt { get; set; }
-    //
-    // [Column(Name = "created_at")]
-    // public DateTime CreatedAt { get; set; }
+    [Column(Name = "updated_at")]
+    public DateTime UpdatedAt { get; set; }
+    
+    [Column(Name = "created_at")]
+    public DateTime CreatedAt { get; set; }
+    
+    [Column(IsIgnore = true)] public string? Bsx { get; set; }
+    [Column(IsIgnore = true)] public string? LaiXe { get; set; }
+    [Column(IsIgnore = true)] public HTCongThuc? CongThuc { get; set; }
 }
 
 [Table(Name = "ht_phieu")]

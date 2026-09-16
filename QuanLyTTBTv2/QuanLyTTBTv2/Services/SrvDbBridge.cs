@@ -30,10 +30,10 @@ public class SrvDbBridge
             _db = new FreeSqlBuilder()
                 .UseConnectionString(DataType.MySql, connStr)
                 //.UseAutoSyncStructure(true)
-                // .UseMonitorCommand(cmd =>
-                // {
-                //     System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
-                // })
+                .UseMonitorCommand(cmd =>
+                {
+                    System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
+                })
                 .Build();
         }
         catch (Exception ex)
@@ -92,6 +92,10 @@ public class SrvDbBridge
                 dh.SourceId == dc.SourceId &&
                 dh.DiachiId == dc.LocalId);
 
+        query.Where((dh, kh, da, ct, hm, dc) =>
+            dh.SourceId == cond.SourceId
+            );
+        
         if (cond.UseFrom)
             query.Where((dh, kh, da, ct, hm, dc) => 
                 dh.CreatedAt >= cond.FromTime);
@@ -170,18 +174,94 @@ public class SrvDbBridge
     public async Task<long> Phieu_CountAsync(HTPhieuCond cond)
     {
         if (_db == null) return 0;
+        // TODO: use CreatePhieuQuery, hoặc dùng riêng
         return await _db.Select<HTPhieu>()
             .Where(p => p.SourceId == cond.SourceId && p.DonhangId == cond.DonHangId)
             .CountAsync();
     }
     
+    private ISelect<HTPhieu, KDXe, KDLaiXe, HTCongThuc> CreatePhieuQuery(HTPhieuCond cond)
+    {
+        var query = _db
+            .Select<HTPhieu, KDXe, KDLaiXe, HTCongThuc>()
+            .LeftJoin((ph, xe, lx, ct) =>
+                ph.SourceId == xe.SourceId &&
+                ph.XeId == xe.LocalId)
+            .LeftJoin((ph, xe, lx, ct) =>
+                ph.SourceId == lx.SourceId &&
+                ph.XeId == lx.LocalId)
+            .LeftJoin((ph, xe, lx, ct) =>
+                ph.SourceId == ct.SourceId &&
+                ph.CongthucId == ct.LocalId);
 
+        query.Where((ph, xe, lx, ct) => ph.DonhangId == cond.DonHangId && ph.SourceId == cond.SourceId);
+        
+        if (cond.UseFrom)
+            query.Where((ph, xe, lx, ct) => 
+                ph.CreatedAt >= cond.FromTime);
+        if (cond.UseTo)
+            query.Where((ph, xe, lx, ct) => 
+                ph.CreatedAt < cond.ToTime);
+
+        if (!string.IsNullOrWhiteSpace(cond.CongThuc))
+        {
+            query = query.Where((ph, xe, lx, ct) =>
+                (ct.Ma ?? "").Contains(cond.CongThuc) ||
+                (ct.Mac ?? "").Contains(cond.CongThuc)
+            );
+        }
+        if (!string.IsNullOrWhiteSpace(cond.Xe))
+        {
+            query = query.Where((ph, xe, lx, ct) =>
+                (xe.Bsx ?? "").Contains(cond.Xe)
+            );
+        }
+        if (!string.IsNullOrWhiteSpace(cond.LaiXe))
+        {
+            query = query.Where((ph, xe, lx, ct) =>
+                (lx.Ten ?? "").Contains(cond.LaiXe) ||
+                (lx.Sdt ?? "").Contains(cond.LaiXe)
+            );
+        }
+
+        return query;
+    } 
+    
+    public async Task<List<HTPhieu>?> Phieu_SelectAllAsync(HTPhieuCond cond)
+    {
+        if (_db == null) return null;
+
+        var query = CreatePhieuQuery(cond);
+
+        query
+            .OrderByDescending((ph, xe, lx, ct) => ph.CreatedAt)
+            .Offset(cond.Offset)
+            .Limit(cond.Limit);
+
+        var rows = await query.ToListAsync((ph, xe, lx, ct) => new
+        {
+            Phieu = ph,
+            Xe = xe,
+            Lx = lx,
+            Ct = ct
+        });
+
+        var result = rows.Select(x =>
+        {
+            x.Phieu.Bsx = x.Xe.Bsx;
+            x.Phieu.LaiXe = x.Lx.Ten;
+            x.Phieu.CongThuc = x.Ct;
+            return x.Phieu;
+        }).ToList();
+
+        return result;
+    }
     #endregion
     
     #region Công thức
     public async Task<List<HTCongThuc>> CongThuc_SelectAsync( int source_id, List<int> congthuc_ids)
     {
-        if (congthuc_ids.Count == 0)
+        if (_db == null || congthuc_ids.Count == 0)
             return [];
 
         // 1. Lấy danh sách công thức

@@ -24,6 +24,9 @@ public partial class WorkspaceVM: ViewModelBase
     /// </summary>
     public ObservableCollection<HTThanhPhan> DsThanhPhan { get; set; } = [];
     
+    public ObservableCollection<HTPhieuVM> DsPhieu { get; set; } = [];
+    [ObservableProperty] private HTPhieuVM? _selectedPhieu;
+    
     public WorkspaceVM(SrvDbBridge srv)
     {
         _srvDb = srv;
@@ -65,12 +68,15 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Lấy dữ liệu liên quan đến đơn hàng: thành phần, khách hàng, dự án
+    /// </summary>
     public async Task LoadCurDonHang()
     {
         // Load danh sách thành phần sử dụng
         if (SelectedDonHang == null || SelFactory == null) return;
 
-        var lstPh = await _srvDb.PhieuFkey_SelectByDonHangAsync(SelFactory.Id, SelectedDonHang.Id);
+        var lstPh = await _srvDb.PhieuFkey_SelectByDonHangAsync(SelFactory.Id, SelectedDonHang.LocalId);
         if (lstPh == null) return;
 
         
@@ -90,6 +96,27 @@ public partial class WorkspaceVM: ViewModelBase
         {
             tp.Stt = ++stt;
             DsThanhPhan.Add(tp);
+        }
+    }
+
+    public async Task LoadDsPhieu(HTPhieuCond cond)
+    {
+        DsPhieu.Clear();
+
+        if (cond.Changed)
+        {
+            cond.Offset = 0;
+            long total = await _srvDb.Phieu_CountAsync(cond);
+            cond.Total = (int)total;
+        }
+
+        var lst = await _srvDb.Phieu_SelectAllAsync(cond);
+        if (lst == null) return;
+        int stt = cond.Offset;
+        foreach (var ph in lst)
+        {
+            stt++;
+            DsPhieu.Add(new HTPhieuVM(ph) { Stt = stt });
         }
     }
 }

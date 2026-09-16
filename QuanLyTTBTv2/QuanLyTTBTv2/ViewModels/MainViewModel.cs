@@ -17,9 +17,20 @@ namespace QuanLyTTBTv2.ViewModels
 
         private readonly Stopwatch _stopwatch = new();
         
-        [ObservableProperty]
+        /// <summary>
+        /// Trạng thái kết nối Server
+        /// </summary>
+        [ObservableProperty] 
         private string? _srvStatus = "None";
 
+        /// <summary>
+        /// Hành động gần nhất
+        /// </summary>
+        [ObservableProperty] private string? _lastAction;
+        
+        /// <summary>
+        /// Thời gian thực hiện hành động gần nhất
+        /// </summary>
         [ObservableProperty]
         private string? _lastExecTime;
         
@@ -28,6 +39,11 @@ namespace QuanLyTTBTv2.ViewModels
         /// Ấn nút hoặc chọn từ bảng
         /// </summary>
         public ICommand ChangeCurDHCommand { get; }
+        public ICommand FilterPhieuCommand { get; }
+        /// <summary>
+        /// Ấn nút hoặc chọn từ bảng
+        /// </summary>
+        public ICommand ChangeCurPhieuCommand { get; }
 
         public MainViewModel()
         {
@@ -35,6 +51,8 @@ namespace QuanLyTTBTv2.ViewModels
             
             FilterDonHangCommand = new RelayCommand(FilterDonHang);
             ChangeCurDHCommand = new RelayCommand(ChangeCurDH);
+            FilterPhieuCommand = new RelayCommand(FilterPhieu);
+            // ChangeCurPhieuCommand = new RelayCommand(ChangeCurPhieu);
         }
 
         public void SetTableIPP(int tableId, int ipp)
@@ -43,6 +61,7 @@ namespace QuanLyTTBTv2.ViewModels
                 switch (tableId)
                 {
                     case 1: _dhCond.Limit = ipp; break;
+                    case 2: _phCond.Limit = ipp; break;
                 }
         }
         
@@ -70,7 +89,6 @@ namespace QuanLyTTBTv2.ViewModels
         }
 
         #region Đơn hàng
-
         private readonly HTDonHangCond _dhCond = new();
 
         [ObservableProperty] private bool _locDHTu;
@@ -85,6 +103,21 @@ namespace QuanLyTTBTv2.ViewModels
         [ObservableProperty] private int _dhTotal = 1;
         [ObservableProperty] private int _dhPage = 1;
         #endregion
+
+        #region Phiếu
+        private readonly HTPhieuCond _phCond = new();
+        
+        [ObservableProperty] private bool _locPhieuTu;
+        [ObservableProperty] private bool _locPhieuDen;
+        [ObservableProperty] private DateTime _locPhieuTuTg;
+        [ObservableProperty] private DateTime _locPhieuDenTg;
+        
+        [ObservableProperty] private string? _locPhieuXe;
+        [ObservableProperty] private string? _locPhieuLaiXe;
+
+        [ObservableProperty] private int _phieuTotal = 1;
+        [ObservableProperty] private int _phieuPage = 1;
+        #endregion
         
         #region Workspace
         public WorkspaceVM Workspace { get; private set; }
@@ -94,6 +127,7 @@ namespace QuanLyTTBTv2.ViewModels
         /// </summary>
         public async void InitData()
         {
+            LastAction = "Khởi động";
             _stopwatch.Restart();
             
             await Workspace.LoadSrvFactories();
@@ -101,12 +135,13 @@ namespace QuanLyTTBTv2.ViewModels
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }
-
         
         private async void FilterDonHang()
         {
             if (Workspace.SelFactory == null) return;
-            
+
+            LastAction = "Lấy đơn hàng";
+            LastExecTime = "...";
             _stopwatch.Restart();
             
             // Điều kiện:
@@ -121,7 +156,9 @@ namespace QuanLyTTBTv2.ViewModels
             _dhCond.DuAn = LocDHDuAn;
             
             _dhCond.Offset = DhPage * _dhCond.Limit;
-
+            // Điều kiện không đổi
+            if (!_dhCond.Changed) return;       
+            
             await Workspace.LoadDsDonHang(_dhCond);
             if (_dhCond.Changed)
             {
@@ -149,6 +186,53 @@ namespace QuanLyTTBTv2.ViewModels
         private async void ChangeCurDH()
         {
             await Workspace.LoadCurDonHang();
+        }
+        
+        private async void FilterPhieu()
+        {
+            if (Workspace.SelFactory == null || Workspace.SelectedDonHang == null) return;
+            
+            LastAction = "Lấy phiếu";
+            LastExecTime = "...";
+            _stopwatch.Restart();
+            
+            // Điều kiện:
+            _phCond.SourceId = Workspace.SelFactory.Id;
+            _phCond.DonHangId = Workspace.SelectedDonHang.LocalId;
+            // - Thời gian
+            _phCond.UseFrom = LocPhieuTu;
+            _phCond.FromTime = LocPhieuTuTg;
+            _phCond.UseTo = LocPhieuDen;
+            _phCond.ToTime = LocPhieuDenTg;
+            // - Khách hàng & dự án
+            _phCond.Xe = LocPhieuXe;
+            _phCond.LaiXe = LocPhieuLaiXe;
+            
+            _phCond.Offset = PhieuPage * _phCond.Limit;
+            if (!_phCond.Changed) return;
+
+            await Workspace.LoadDsPhieu(_phCond);
+            if (_phCond.Changed)
+            {
+                PhieuTotal = (_phCond.Total - 1) / _phCond.Limit + 1;
+                PhieuPage = 1;
+                _phCond.Changed = false;
+            }
+            
+            _stopwatch.Stop();
+            LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+        }
+        
+        public async void ChangePhieuPage(int p)
+        {
+            _stopwatch.Restart();
+            
+            _phCond.Offset = (p - 1) * _phCond.Limit; 
+            await Workspace.LoadDsPhieu(_phCond);
+            PhieuPage = p;
+
+            _stopwatch.Stop();
+            LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }
         #endregion
     }

@@ -36,7 +36,16 @@ namespace QuanLyTTBTv2.Views
             CboDHTblIPP.Items.Add(10);
             CboDHTblIPP.Items.Add(15);
             CboDHTblIPP.Items.Add(20);
+            CboDHTblIPP.Items.Add(23);
+            CboDHTblIPP.Items.Add(25);
             CboDHTblIPP.SelectedIndex = 2;
+
+            CboPhieuTblIPP.Items.Add(10);
+            CboPhieuTblIPP.Items.Add(15);
+            CboPhieuTblIPP.Items.Add(20);
+            CboPhieuTblIPP.Items.Add(25);
+            CboPhieuTblIPP.SelectedIndex = 1;
+
             Init();
         }
 
@@ -120,7 +129,7 @@ namespace QuanLyTTBTv2.Views
                 {
                     Level = GrowlLevel.Warning,
                     Title = "Thông báo",
-                    Content = "Tính năng này đang ở chế độ thử nghiệm."
+                    Content = "Tính năng này đang được thử nghiệm."
                 };
                 appSurface.PopGrowl(notification);
             }
@@ -154,13 +163,37 @@ namespace QuanLyTTBTv2.Views
 
         private void NMPaginator_OnPageClicked(object? sender, int e)
         {
-            _vm?.ChangeDonHangPage(e);
+            if (sender == PgDonHang)
+            {
+                _vm?.ChangeDonHangPage(e);
+            }
+            else if (sender == PgPhieu)
+            {
+                _vm.ChangePhieuPage(e);
+            }
         }
 
         private void CboDHTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
+            // Đặt items per page cho bảng đơn hàng
             if (CboDHTblIPP.SelectedValue is int v)
                 _vm.SetTableIPP(1, v);
+        }
+
+        private void CboPhieuTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            // Đặt items per page cho bảng phiếu
+            if (CboPhieuTblIPP.SelectedValue is int v)
+                _vm.SetTableIPP(2, v);
+        }
+
+        private void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            if (TabMain.SelectedIndex == 1)
+            {
+                
+            }
         }
     }
 }
