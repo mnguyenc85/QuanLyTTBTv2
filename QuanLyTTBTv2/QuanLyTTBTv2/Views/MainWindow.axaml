@@ -97,9 +97,6 @@
                                 <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
                                         Classes="Success" Content="Tìm kiếm"
                                         Command="{Binding FilterDonHangCommand}"/>
-                                
-                                <Button Content="Chọn" Margin="0 0 0 6"
-                                        Command="{Binding ChangeCurDHCommand}"/>
 
                                 <DropDownButton x:Name="BtShowDHData" Content="Dữ liệu">
                                     <DropDownButton.Flyout>
@@ -204,13 +201,37 @@
                                 
                             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
                             <DockPanel Grid.Row="2">
-                                <TableView Margin="6">
+                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="6 0">
+                                    <Button x:Name="BtTsetMe" Content="Test: Chi tiết phiếu"
+                                            Click="BtTestMe_OnClick"/>
+                                </StackPanel>
+                                
+                                <TableView x:Name="TvwMe" Margin="6"
+                                           ItemsSource="{Binding Workspace.TkMe}"
+                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
                                     <TableView.Columns>
-                                        <TableViewColumn Header="STT" Width="60"/>
-                                        <TableViewColumn Header="M³ trộn" Width="72"/>
-                                        <TableViewColumn Header="KL (kg)" Width="72"/>
+
+                                        <!-- STT -->
+                                        <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
+                                        <!-- M3 trộn -->
+                                        <TableViewColumn Header="M³ trộn" Binding="{Binding M3Tron}" Width="100"/>
+                                        <!-- Tổng khối lượng -->
+                                        <TableViewColumn Header="Tổng KL" Binding="{Binding TongKL}" Width="100"/>
+
+                                        <!-- Thành phần 1 -> 15 -->
+                                        <TableViewColumn Header="TP1" Binding="{Binding TPs[0]}" Width="72"/>
+                                        <TableViewColumn Header="TP2" Binding="{Binding TPs[1]}" Width="72"/>
+                                        <TableViewColumn Header="TP3" Binding="{Binding TPs[2]}" Width="72"/>
+                                        
+		                                <!-- Thời gian hoàn thành -->
+                                        <TableViewColumn Header="TGHT" Binding="{Binding Tght}" Width="100"/>
+                                        <!-- Trạng thái -->
+                                        <TableViewColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
+
                                     </TableView.Columns>
                                 </TableView>
+                                
                             </DockPanel>
                         </Grid>
                     </Grid>

@@ -34,25 +34,20 @@ namespace QuanLyTTBTv2.ViewModels
         [ObservableProperty]
         private string? _lastExecTime;
         
+        /// <summary>
+        /// Id của đơn hàng đang xem (ở tab phiếu)
+        /// </summary>
+        public long CurDonHangId { get; private set; } = -1;
+        
         public ICommand FilterDonHangCommand { get; }
-        /// <summary>
-        /// Ấn nút hoặc chọn từ bảng
-        /// </summary>
-        public ICommand ChangeCurDHCommand { get; }
         public ICommand FilterPhieuCommand { get; }
-        /// <summary>
-        /// Ấn nút hoặc chọn từ bảng
-        /// </summary>
-        public ICommand ChangeCurPhieuCommand { get; }
 
         public MainViewModel()
         {
             Workspace = new(_srvComm.SrvDb);
             
             FilterDonHangCommand = new RelayCommand(FilterDonHang);
-            ChangeCurDHCommand = new RelayCommand(ChangeCurDH);
             FilterPhieuCommand = new RelayCommand(FilterPhieu);
-            // ChangeCurPhieuCommand = new RelayCommand(ChangeCurPhieu);
         }
 
         public void SetTableIPP(int tableId, int ipp)
@@ -183,11 +178,6 @@ namespace QuanLyTTBTv2.ViewModels
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }
 
-        private async void ChangeCurDH()
-        {
-            await Workspace.LoadCurDonHang();
-        }
-        
         private async void FilterPhieu()
         {
             if (Workspace.SelFactory == null || Workspace.SelectedDonHang == null) return;
@@ -233,6 +223,45 @@ namespace QuanLyTTBTv2.ViewModels
 
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+        }
+
+        
+        public async Task AutoLoadChiTietDonHang(bool setCurDhId)
+        {
+            if (Workspace.SelectedDonHang == null)
+            {
+                Workspace.ClearCurDonHangData();
+                return;
+            }
+
+            if (Workspace.SelectedDonHang.Id != CurDonHangId)
+            {
+                await Workspace.LoadCurDonHangData();
+
+                if (setCurDhId) CurDonHangId = Workspace.SelectedDonHang.Id;
+            }
+        }
+
+        public void AutoLoadDsPhieu(bool setCurDhId)
+        {
+            if (Workspace.SelectedDonHang == null)
+            {
+                Workspace.ClearDsPhieu();
+                return;
+            }
+
+            if (Workspace.SelectedDonHang.Id != CurDonHangId)
+            {
+                // Reset điều kiện
+                LocPhieuTu = false;
+                LocPhieuDen = false;
+                LocPhieuXe = null;
+                LocPhieuLaiXe = null;
+                _phCond.Offset = 0;
+                FilterPhieu();
+                
+                if (setCurDhId) CurDonHangId = Workspace.SelectedDonHang.Id;
+            }            
         }
         #endregion
     }

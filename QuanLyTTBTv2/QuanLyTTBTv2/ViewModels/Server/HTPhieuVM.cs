@@ -8,6 +8,7 @@ public partial class HTPhieuVM: ViewModelBase
 {
     public long Id { get; set; }
     public long LocalId { get; set; }
+    public long CtId { get; set; }
     
     [ObservableProperty] private int _stt;
     [ObservableProperty] private string? _sophieu;
@@ -43,6 +44,8 @@ public partial class HTPhieuVM: ViewModelBase
     {
         Id = ph.Id;
         LocalId = ph.LocalId;
+        CtId = ph.CongthucId;
+        
         Sophieu = ph.Sophieu;
         SttDon = ph.DonStt;
 

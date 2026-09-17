@@ -325,6 +325,25 @@ public class SrvDbBridge
             .ToList();
     }
     
+        
+    public async Task<List<HTThanhPhan>> ThanhPhan_SelectByCtAsync(long source_id, long ct_id)
+    {
+        var data = await _db
+            .Select<HTCongThucThanhPhan, HTThanhPhan>()
+            .InnerJoin<HTThanhPhan>((cttp, tp) =>
+                cttp.SourceId == tp.SourceId &&
+                cttp.TpId == tp.LocalId)
+            .Where((cttp, tp) =>
+                cttp.SourceId == source_id &&
+                cttp.CtId == ct_id)
+            .ToListAsync<HTThanhPhan>();
+
+        return data
+            .GroupBy(x => x.LocalId)
+            .Select(g => g.First())
+            .ToList();
+    }
+    
     public async Task<List<HTPhieuFkey>?> PhieuFkey_SelectByDonHangAsync(long source_id, long donhang_id)
     {
         if (_db == null) return null;

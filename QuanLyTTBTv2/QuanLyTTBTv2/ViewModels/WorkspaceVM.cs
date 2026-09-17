@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +24,19 @@ public partial class WorkspaceVM: ViewModelBase
     /// Danh sách thành phần được dùng trong đơn
     /// </summary>
     public ObservableCollection<HTThanhPhan> DsThanhPhan { get; set; } = [];
+    private Dictionary<string, HTThanhPhan> _dsUniqueThanhPhan { get; } = [];
+    /// <summary>
+    /// Danh sách mã thành phần trong bảng thống kê (unique, ordered)
+    /// </summary>
+    public List<string> DsMaThanhPhan { get; } = [];
     
     public ObservableCollection<HTPhieuVM> DsPhieu { get; set; } = [];
     [ObservableProperty] private HTPhieuVM? _selectedPhieu;
+    
+    /// <summary>
+    /// Hiển thị mẻ
+    /// </summary>
+    public ObservableCollection<HTMeVM> TkMe { get; set; } = [];
     
     public WorkspaceVM(SrvDbBridge srv)
     {
@@ -71,7 +82,7 @@ public partial class WorkspaceVM: ViewModelBase
     /// <summary>
     /// Lấy dữ liệu liên quan đến đơn hàng: thành phần, khách hàng, dự án
     /// </summary>
-    public async Task LoadCurDonHang()
+    public async Task LoadCurDonHangData()
     {
         // Load danh sách thành phần sử dụng
         if (SelectedDonHang == null || SelFactory == null) return;
@@ -91,14 +102,32 @@ public partial class WorkspaceVM: ViewModelBase
             return Nullable.Compare(x.Silo, y.Silo);
         });
         
+        _dsUniqueThanhPhan.Clear();
+        DsMaThanhPhan.Clear();
         int stt = 0;
         foreach (var tp in lsttp)
         {
             tp.Stt = ++stt;
             DsThanhPhan.Add(tp);
+            if (tp.Ma != null)
+            {
+                if (_dsUniqueThanhPhan.TryAdd(tp.Ma, tp))
+                    DsMaThanhPhan.Add(tp.Ma);
+            }
         }
     }
 
+    public void ClearCurDonHangData()
+    {
+        DsThanhPhan.Clear();
+    }
+
+    public void ClearDsPhieu()
+    {
+        SelectedPhieu = null;
+        DsPhieu.Clear();
+    }
+    
     public async Task LoadDsPhieu(HTPhieuCond cond)
     {
         DsPhieu.Clear();
@@ -118,5 +147,23 @@ public partial class WorkspaceVM: ViewModelBase
             stt++;
             DsPhieu.Add(new HTPhieuVM(ph) { Stt = stt });
         }
+    }
+
+    public async void LoadChiTietPhieu()
+    {
+        if (SelectedPhieu == null || SelFactory == null)
+        {
+            // Xóa nếu lấy thành phần theo phiếu
+            // Hiện đang lấy theo đơn
+            // DsThanhPhan.Clear();
+            return;
+        }
+
+        var cttps = await _srvDb.ThanhPhan_SelectByCtAsync(SelFactory.Id, SelectedPhieu.CtId);
+        
+        var dcttps = new Dictionary<string, HTThanhPhan>();
+        foreach (var tp in cttps) if (tp.Ma != null) dcttps.Add(tp.Ma, tp);
+        
+        TkMe.Add(HTMeVM.FromCapPhoi(DsMaThanhPhan, dcttps));
     }
 }

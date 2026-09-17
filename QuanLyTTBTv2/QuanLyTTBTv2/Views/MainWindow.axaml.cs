@@ -1,16 +1,21 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
 using Huskui.Avalonia.Controls;
 using Huskui.Avalonia.Models;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
+using QuanLyTTBTv2.ViewModels.Server;
 
 namespace QuanLyTTBTv2.Views
 {
@@ -40,11 +45,12 @@ namespace QuanLyTTBTv2.Views
             CboDHTblIPP.Items.Add(25);
             CboDHTblIPP.SelectedIndex = 2;
 
+            CboPhieuTblIPP.Items.Add(5);
             CboPhieuTblIPP.Items.Add(10);
             CboPhieuTblIPP.Items.Add(15);
             CboPhieuTblIPP.Items.Add(20);
             CboPhieuTblIPP.Items.Add(25);
-            CboPhieuTblIPP.SelectedIndex = 1;
+            CboPhieuTblIPP.SelectedIndex = 2;
 
             Init();
         }
@@ -187,13 +193,71 @@ namespace QuanLyTTBTv2.Views
                 _vm.SetTableIPP(2, v);
         }
 
-        private void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        private async void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded) return;
             if (TabMain.SelectedIndex == 1)
             {
-                
+                await _vm.AutoLoadChiTietDonHang(false);
+                RemoveTPColumns();
+                CreateTPColumns([.. _vm.Workspace.DsMaThanhPhan]);
+                _vm.AutoLoadDsPhieu(true);
             }
         }
+
+        #region Table mẻ
+        
+        private void RemoveTPColumns()
+        {
+            int totalColumns = TvwMe.Columns.Count;
+
+            // Luôn giữ 3 cột đầu và 2 cột cuối
+            int tpStartIndex = 3;
+            int tpEndIndex = totalColumns - 2;
+
+            // Xóa từ cuối về đầu để không bị thay đổi index
+            for (int i = tpEndIndex - 1; i >= tpStartIndex; i--)
+            {
+                TvwMe.Columns.RemoveAt(i);
+            }
+        }
+
+        private void CreateTPColumns(List<string> headers)
+        {
+            for (int i = 0; i < headers.Count; i++)
+            {
+                int tpIndex = i;
+                var column = new TableViewColumn
+                {
+                    Header = headers[i],
+                    Width = new GridLength(108),
+                    CellTemplate = new FuncDataTemplate<HTMeVM>((item, scope) =>
+                    {
+                        var textBlock = new TextBlock
+                        {
+                            Text = item.TPs[tpIndex],
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                        };
+
+                        // textBlock.Bind(
+                        //     TextBlock.TextProperty,
+                        //     new Binding($"TPs[{i}]")
+                        // );
+
+                        return textBlock;
+                    })                    
+                };
+                TvwMe.Columns.Insert(3 + i, column);
+            }
+        }
+        #endregion
+        
+        #region Test
+        private void BtTestMe_OnClick(object? sender, RoutedEventArgs e)
+        {
+            _vm.Workspace.LoadChiTietPhieu();
+        }
+        #endregion
     }
 }
