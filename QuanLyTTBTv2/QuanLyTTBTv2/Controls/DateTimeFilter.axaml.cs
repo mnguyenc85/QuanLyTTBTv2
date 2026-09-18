@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 
 namespace QuanLyTTBTv2.Controls;
 
@@ -12,11 +13,11 @@ public partial class DateTimeFilter : UserControl
 
     public static readonly StyledProperty<bool> UsedProperty =
         AvaloniaProperty.Register<DateTimeFilter, bool>(
-            nameof(Used));
+            nameof(Used), defaultBindingMode: BindingMode.TwoWay);
 
     public static readonly StyledProperty<DateTime?> DateTimeProperty =
         AvaloniaProperty.Register<DateTimeFilter, DateTime?>(
-            nameof(DateTime));
+            nameof(DateTime), defaultBindingMode: BindingMode.TwoWay);
 
     public string? Title
     {

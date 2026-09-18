@@ -48,6 +48,14 @@ namespace QuanLyTTBTv2.ViewModels
             
             FilterDonHangCommand = new RelayCommand(FilterDonHang);
             FilterPhieuCommand = new RelayCommand(FilterPhieu);
+            
+            DateTime fdm = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            DateTime ldm = new DateTime(fdm.Year, fdm.Month, 1).AddMonths(1).AddDays(-1);
+            LocDHTuTg = fdm;
+            LocDHDenTg = ldm;
+            
+            LocPhieuTuTg = fdm;
+            LocPhieuDenTg = ldm;
         }
 
         public void SetTableIPP(int tableId, int ipp)
@@ -109,6 +117,8 @@ namespace QuanLyTTBTv2.ViewModels
         
         [ObservableProperty] private string? _locPhieuXe;
         [ObservableProperty] private string? _locPhieuLaiXe;
+        
+        [ObservableProperty] private string? _locPhieuCapPhoi;
 
         [ObservableProperty] private int _phieuTotal = 1;
         [ObservableProperty] private int _phieuPage = 1;
@@ -178,10 +188,12 @@ namespace QuanLyTTBTv2.ViewModels
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }
 
+        private bool _isLoadingDockets = false;
         private async void FilterPhieu()
         {
-            if (Workspace.SelFactory == null || Workspace.SelectedDonHang == null) return;
-            
+            if (Workspace.SelFactory == null || Workspace.SelectedDonHang == null || _isLoadingDockets) return;
+
+            _isLoadingDockets = true;
             LastAction = "Lấy phiếu";
             LastExecTime = "...";
             _stopwatch.Restart();
@@ -211,6 +223,7 @@ namespace QuanLyTTBTv2.ViewModels
             
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
+            _isLoadingDockets = false;
         }
         
         public async void ChangePhieuPage(int p)

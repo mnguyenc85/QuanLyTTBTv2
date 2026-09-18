@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media.Imaging;
@@ -12,6 +13,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Huskui.Avalonia.Controls;
 using Huskui.Avalonia.Models;
+using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
@@ -38,18 +40,18 @@ namespace QuanLyTTBTv2.Views
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
         {
-            CboDHTblIPP.Items.Add(10);
-            CboDHTblIPP.Items.Add(15);
-            CboDHTblIPP.Items.Add(20);
-            CboDHTblIPP.Items.Add(23);
-            CboDHTblIPP.Items.Add(25);
+            CboDHTblIPP.Items.Add("10");
+            CboDHTblIPP.Items.Add("15");
+            CboDHTblIPP.Items.Add("20");
+            CboDHTblIPP.Items.Add("23");
+            CboDHTblIPP.Items.Add("25");
             CboDHTblIPP.SelectedIndex = 2;
 
-            CboPhieuTblIPP.Items.Add(5);
-            CboPhieuTblIPP.Items.Add(10);
-            CboPhieuTblIPP.Items.Add(15);
-            CboPhieuTblIPP.Items.Add(20);
-            CboPhieuTblIPP.Items.Add(25);
+            CboPhieuTblIPP.Items.Add("5");
+            CboPhieuTblIPP.Items.Add("10");
+            CboPhieuTblIPP.Items.Add("15");
+            CboPhieuTblIPP.Items.Add("20");
+            CboPhieuTblIPP.Items.Add("25");
             CboPhieuTblIPP.SelectedIndex = 2;
 
             Init();
@@ -60,8 +62,6 @@ namespace QuanLyTTBTv2.Views
             CrashLogger.Shutdown();
         }
 
-        #endregion
-
         /// <summary>
         /// Khởi tạo db (local & server) -> khởi tạo khác (async)
         /// </summary>
@@ -69,8 +69,11 @@ namespace QuanLyTTBTv2.Views
         {
             try
             {
-                await _dbCache.InitAsync();
+                if (!File.Exists(_ldb.DbPath))
+                    _ldb.CreateDatabase();
                 _ldb.SyncSchema();
+                
+                await _dbCache.InitAsync();
 
                 await _vm.CreateServerComm();
                 _vm.InitData();
@@ -80,7 +83,8 @@ namespace QuanLyTTBTv2.Views
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
         }
-
+        #endregion
+        
         #region Menu & Buttons
 
         private void MniSysExit_OnClick(object? sender, RoutedEventArgs e)
@@ -164,33 +168,43 @@ namespace QuanLyTTBTv2.Views
         }
 
         #endregion
-
-        #endregion
-
-        private void NMPaginator_OnPageClicked(object? sender, int e)
-        {
-            if (sender == PgDonHang)
-            {
-                _vm?.ChangeDonHangPage(e);
-            }
-            else if (sender == PgPhieu)
-            {
-                _vm.ChangePhieuPage(e);
-            }
-        }
-
+        
         private void CboDHTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             // Đặt items per page cho bảng đơn hàng
-            if (CboDHTblIPP.SelectedValue is int v)
-                _vm.SetTableIPP(1, v);
+            if (int.TryParse(CboDHTblIPP.Text, out int v))
+                if (v >= 5 && v < 50)
+                    _vm.SetTableIPP(1, v);
+        }
+
+        private void CboPhieuTblIPP_OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                if (int.TryParse(CboPhieuTblIPP.Text, out int v))
+                    if (v >= 5 && v <= 50)
+                        _vm.SetTableIPP(2, v);
         }
 
         private void CboPhieuTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             // Đặt items per page cho bảng phiếu
-            if (CboPhieuTblIPP.SelectedValue is int v)
-                _vm.SetTableIPP(2, v);
+            if (int.TryParse(CboPhieuTblIPP.Text, out int v))
+                if (v >= 5 && v <= 50)
+                    _vm.SetTableIPP(2, v);
+        }
+        #endregion
+
+        private void NMPaginator_OnPageClicked(object? sender, int e)
+        {
+            if (sender == null) return;
+            if (sender.Equals(PgDonHang))
+            {
+                _vm.ChangeDonHangPage(e);
+            }
+            else if (sender.Equals(PgPhieu))
+            {
+                _vm.ChangePhieuPage(e);
+            }
         }
 
         private async void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -203,6 +217,11 @@ namespace QuanLyTTBTv2.Views
                 CreateTPColumns([.. _vm.Workspace.DsMaThanhPhan]);
                 _vm.AutoLoadDsPhieu(true);
             }
+        }
+
+        private void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            _vm.Workspace.LoadChiTietPhieu();
         }
 
         #region Table mẻ
@@ -222,28 +241,28 @@ namespace QuanLyTTBTv2.Views
             }
         }
 
-        private void CreateTPColumns(List<string> headers)
+        private void CreateTPColumns(List<CHThanhPhan> headers)
         {
             for (int i = 0; i < headers.Count; i++)
             {
                 int tpIndex = i;
                 var column = new TableViewColumn
                 {
-                    Header = headers[i],
+                    Header = headers[i].GetHeader(),
                     Width = new GridLength(108),
-                    CellTemplate = new FuncDataTemplate<HTMeVM>((item, scope) =>
+                    CellTemplate = new FuncDataTemplate<HTMeVM>((item, _) =>
                     {
                         var textBlock = new TextBlock
                         {
-                            Text = item.TPs[tpIndex],
+                            // Text = item.TPs[tpIndex],
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center,
                         };
 
-                        // textBlock.Bind(
-                        //     TextBlock.TextProperty,
-                        //     new Binding($"TPs[{i}]")
-                        // );
+                        textBlock.Bind(
+                            TextBlock.TextProperty,
+                            new Binding($"TPs[{tpIndex}]")
+                        );
 
                         return textBlock;
                     })                    
@@ -254,10 +273,6 @@ namespace QuanLyTTBTv2.Views
         #endregion
         
         #region Test
-        private void BtTestMe_OnClick(object? sender, RoutedEventArgs e)
-        {
-            _vm.Workspace.LoadChiTietPhieu();
-        }
         #endregion
     }
 }

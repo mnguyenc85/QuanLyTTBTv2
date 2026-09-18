@@ -1,12 +1,13 @@
 <husk:AppWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:QuanLyTTBTv2.ViewModels"
+        xmlns:vmc="using:QuanLyTTBTv2.Utilities.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         xmlns:c="clr-namespace:QuanLyTTBTv2.Controls"
         xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
-        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="540"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Background="{DynamicResource NMBackgroundBrush}"
@@ -19,6 +20,11 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
+    
+    <Window.Resources>
+        <vmc:TableViewRowBgConverter x:Key="RowBackgroundConverter"/>
+        <vmc:TableViewRowFontWeightConverter x:Key="RowFontWeightConverter"/>
+    </Window.Resources>
 
     <LayoutTransformControl>
         <DockPanel>
@@ -117,6 +123,7 @@
                                 <nmc:NMPaginator x:Name="PgDonHang" Total="{Binding DhTotal}" CurIndex="{Binding DhPage}"
                                                  PageClicked="NMPaginator_OnPageClicked"/>
                                 <ComboBox x:Name="CboDHTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
+                                          IsEditable="True" Width="60"
                                           SelectionChanged="CboDHTblIPP_OnSelectionChanged"/>
                             </DockPanel>
                             <TableView Margin="6 6 6 3" Classes="striped"
@@ -152,11 +159,12 @@
                             <StackPanel Margin="6">
                                 <TextBlock Text="Thời gian" FontWeight="Bold" />
                                 <StackPanel Margin="6 0 0 0">
-                                    <c:DateTimeFilter Title="Từ"/>
-                                    <c:DateTimeFilter Title="Đến"/>
+                                    <c:DateTimeFilter Title="Từ" Used="{Binding LocPhieuTu}" DateTime="{Binding LocPhieuTuTg}"/>
+                                    <c:DateTimeFilter Title="Đến" Used="{Binding LocPhieuDen}" DateTime="{Binding LocPhieuDenTg}"/>
                                 </StackPanel>
                                 <c:TextBoxTitle Title="Biển số xe" Text="{Binding LocPhieuXe}"/>
                                 <c:TextBoxTitle Title="Lái xe" Text="{Binding LocPhieuLaiXe}"/>
+                                <c:TextBoxTitle Title="Cấp phối" Text="{Binding LocPhieuCapPhoi}"/>
                             
                                 <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
                                         Classes="Success" Content="Tìm kiếm"
@@ -168,7 +176,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition Height="3"/>
-                                <RowDefinition Height="240"/>
+                                <RowDefinition Height="320"/>
                             </Grid.RowDefinitions>
                                 
                             <!-- Bảng phiếu -->
@@ -177,12 +185,15 @@
                                     <nmc:NMPaginator x:Name="PgPhieu" Total="{Binding PhieuTotal}" CurIndex="{Binding PhieuPage}"
                                                      PageClicked="NMPaginator_OnPageClicked"/>
                                     <ComboBox x:Name="CboPhieuTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
+                                              IsEditable="True" Width="60"
+                                              KeyDown="CboPhieuTblIPP_OnKeyDown"
                                               SelectionChanged="CboPhieuTblIPP_OnSelectionChanged"/>
                                 </DockPanel>
                                 
                                 <TableView Margin="6 6 6 3" Classes="striped"
                                            ItemsSource="{Binding Workspace.DsPhieu}"
-                                           SelectedItem="{Binding Workspace.SelectedPhieu}">
+                                           SelectedItem="{Binding Workspace.SelectedPhieu}"
+                                           SelectionChanged="TvwPhieu_OnSelectionChanged">
                                     <TableView.Columns>
                                         <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
                                         <TableViewColumn Header="Số phiếu" Binding="{Binding Sophieu}"/>
@@ -200,20 +211,24 @@
                             </DockPanel>
                                 
                             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
+                            <!-- Mẻ -->
                             <DockPanel Grid.Row="2">
-                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="6 0">
-                                    <Button x:Name="BtTsetMe" Content="Test: Chi tiết phiếu"
-                                            Click="BtTestMe_OnClick"/>
-                                </StackPanel>
-                                
                                 <TableView x:Name="TvwMe" Margin="6"
                                            ItemsSource="{Binding Workspace.TkMe}"
                                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <TableView.Styles>
+                                        <Style Selector="TableViewRow">
+                                            <Setter Property="Background" Value="{Binding $self.DataContext, 
+                                                Converter={StaticResource RowBackgroundConverter}}"/>
+                                            <Setter Property="FontWeight" Value="{Binding $self.DataContext, 
+                                                Converter={StaticResource RowFontWeightConverter}}"/>
+                                        </Style>
+                                    </TableView.Styles>
 
                                     <TableView.Columns>
 
                                         <!-- STT -->
-                                        <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
+                                        <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
                                         <!-- M3 trộn -->
                                         <TableViewColumn Header="M³ trộn" Binding="{Binding M3Tron}" Width="100"/>
                                         <!-- Tổng khối lượng -->

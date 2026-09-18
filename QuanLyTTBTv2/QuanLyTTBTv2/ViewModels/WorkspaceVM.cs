@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Models.Server;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.ViewModels.Server;
@@ -28,7 +29,7 @@ public partial class WorkspaceVM: ViewModelBase
     /// <summary>
     /// Danh sách mã thành phần trong bảng thống kê (unique, ordered)
     /// </summary>
-    public List<string> DsMaThanhPhan { get; } = [];
+    public List<CHThanhPhan> DsMaThanhPhan { get; } = [];
     
     public ObservableCollection<HTPhieuVM> DsPhieu { get; set; } = [];
     [ObservableProperty] private HTPhieuVM? _selectedPhieu;
@@ -97,9 +98,9 @@ public partial class WorkspaceVM: ViewModelBase
         
         lsttp.Sort((x, y) =>
         {
-            int comparePhanLoai = Nullable.Compare(x.PhanLoai, y.PhanLoai);
+            int comparePhanLoai = x.PhanLoai.CompareTo(y.PhanLoai);
             if (comparePhanLoai != 0) return comparePhanLoai;
-            return Nullable.Compare(x.Silo, y.Silo);
+            return x.Silo.CompareTo(y.Silo);
         });
         
         _dsUniqueThanhPhan.Clear();
@@ -112,7 +113,7 @@ public partial class WorkspaceVM: ViewModelBase
             if (tp.Ma != null)
             {
                 if (_dsUniqueThanhPhan.TryAdd(tp.Ma, tp))
-                    DsMaThanhPhan.Add(tp.Ma);
+                    DsMaThanhPhan.Add(new CHThanhPhan(tp.Ma) { Ten = tp.Ten, PL = tp.PhanLoai, Silo = tp.Silo });
             }
         }
     }
@@ -160,10 +161,29 @@ public partial class WorkspaceVM: ViewModelBase
         }
 
         var cttps = await _srvDb.ThanhPhan_SelectByCtAsync(SelFactory.Id, SelectedPhieu.CtId);
+        var lstme = await _srvDb.Me_SelectByPhieuAsync(SelFactory.Id, SelectedPhieu.LocalId);
         
         var dcttps = new Dictionary<string, HTThanhPhan>();
         foreach (var tp in cttps) if (tp.Ma != null) dcttps.Add(tp.Ma, tp);
         
+        TkMe.Clear();
+        
+        TkMe.Add(HTMeVM.FromThanhPhan(DsMaThanhPhan));
         TkMe.Add(HTMeVM.FromCapPhoi(DsMaThanhPhan, dcttps));
+
+        if (lstme != null)
+        {
+            int stt = 0;
+            List<HTMeVM> dsmetmp = [];
+            foreach (var m in lstme)
+            {
+                var me = HTMeVM.FromMe(DsMaThanhPhan, dcttps, m);
+                me.Stt = (++stt).ToString();
+                TkMe.Add(me);
+                dsmetmp.Add(me);
+            }
+            
+            TkMe.Add(HTMeVM.CreateMeTong(dsmetmp));
+        }
     }
 }

@@ -174,10 +174,10 @@ public class SrvDbBridge
     public async Task<long> Phieu_CountAsync(HTPhieuCond cond)
     {
         if (_db == null) return 0;
-        // TODO: use CreatePhieuQuery, hoặc dùng riêng
-        return await _db.Select<HTPhieu>()
-            .Where(p => p.SourceId == cond.SourceId && p.DonhangId == cond.DonHangId)
-            .CountAsync();
+
+        var query = CreatePhieuQuery(cond);
+
+        return await query.CountAsync();
     }
     
     private ISelect<HTPhieu, KDXe, KDLaiXe, HTCongThuc> CreatePhieuQuery(HTPhieuCond cond)
@@ -189,7 +189,7 @@ public class SrvDbBridge
                 ph.XeId == xe.LocalId)
             .LeftJoin((ph, xe, lx, ct) =>
                 ph.SourceId == lx.SourceId &&
-                ph.XeId == lx.LocalId)
+                ph.LxId == lx.LocalId)
             .LeftJoin((ph, xe, lx, ct) =>
                 ph.SourceId == ct.SourceId &&
                 ph.CongthucId == ct.LocalId);
@@ -248,8 +248,8 @@ public class SrvDbBridge
 
         var result = rows.Select(x =>
         {
-            x.Phieu.Bsx = x.Xe.Bsx;
-            x.Phieu.LaiXe = x.Lx.Ten;
+            x.Phieu.Bsx = x.Xe?.Bsx;
+            x.Phieu.LaiXe = x.Lx?.Ten;
             x.Phieu.CongThuc = x.Ct;
             return x.Phieu;
         }).ToList();
@@ -354,7 +354,23 @@ public class SrvDbBridge
                 ph.SourceId == source_id &&
                 ph.DonhangId == donhang_id);
         
-        return await stmt.ToListAsync<HTPhieuFkey>();
+        return await stmt.ToListAsync();
+    }
+    #endregion
+
+    #region Mẻ
+
+    public async Task<List<HtMe>?> Me_SelectByPhieuAsync(long src_id, long ph_id)
+    {
+        if (_db == null) return null;
+        
+        var stmt = _db
+            .Select<HtMe>()
+            .Where((m) =>
+                m.SourceId == src_id &&
+                m.PhieuId == ph_id);
+        
+        return await stmt.ToListAsync();
     }
     #endregion
     

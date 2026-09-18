@@ -32,7 +32,8 @@ public class LocalDbBridge
                 $"Data Source={dbPath};Pooling=true")
             .Build();
 
-        //CreateDatabase();
+        // if (!File.Exists(dbPath))
+        //     CreateDatabase();
     }
     
     public void SyncSchema()
