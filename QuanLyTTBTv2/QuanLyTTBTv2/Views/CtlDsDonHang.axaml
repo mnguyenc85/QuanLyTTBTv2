@@ -1,0 +1,79 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
+             xmlns:c="clr-namespace:QuanLyTTBTv2.Controls"
+             xmlns:vm="using:QuanLyTTBTv2.ViewModels"
+             x:DataType="vm:CtlDsDonHangVM"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="320"
+             x:Class="QuanLyTTBTv2.Views.CtlDsDonHang"
+             Loaded="Control_OnLoaded">
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:CtlDsDonHangVM />
+    </Design.DataContext>
+   
+    <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="264"/>
+                <ColumnDefinition Width="6"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3">
+                <StackPanel Margin="6">
+                    <TextBlock Text="Thời gian" FontWeight="Bold" />
+                    <StackPanel Margin="6 0 0 0">
+                        <c:DateTimeFilter Title="Từ" Used="{Binding LocDHTu}" DateTime="{Binding LocDHTuTg}"/>
+                        <c:DateTimeFilter Title="Đến" Used="{Binding LocDHDen}" DateTime="{Binding LocDHDenTg}"/>
+                    </StackPanel>
+
+                    <c:TextBoxTitle Title="Khách hàng" PlaceholderText="Khách hàng / sđt" Text="{Binding LocDHKH}"/>
+                    <c:TextBoxTitle Title="Công trình" PlaceholderText="Dự án / công trình / hạng mục" Text="{Binding LocDHDuAn}"/>
+
+                    <Separator Margin="3 6 3 0"/>
+                    <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
+                            Classes="Success" Content="Tìm kiếm"
+                            Command="{Binding FilterDonHangCommand}"/>
+
+                    <!-- <DropDownButton x:Name="BtShowDHData" Content="Dữ liệu"> -->
+                    <!--     <DropDownButton.Flyout> -->
+                    <!--         <MenuFlyout> -->
+                    <!--             <MenuItem x:Name="MniDHNL" Header="Nguyên liệu" Click="MniDHNL_OnClick"/> -->
+                    <!--             <MenuItem Header="Xe / lái xe" IsEnabled="False"/> -->
+                    <!--             <MenuItem Header="Khách hàng" IsEnabled="False"/> -->
+                    <!--             <MenuItem Header="Dự án" IsEnabled="False"/> -->
+                    <!--         </MenuFlyout> -->
+                    <!--     </DropDownButton.Flyout> -->
+                    <!-- </DropDownButton> -->
+                </StackPanel>
+            </Border>
+
+            <!-- Bảng đơn hàng -->
+            <DockPanel Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
+                <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
+                    <nmc:NMPaginator x:Name="PgDonHang" Total="{Binding DhTotal}" CurIndex="{Binding DhPage}"
+                                     PageClicked="NMPaginator_OnPageClicked"/>
+                    <ComboBox x:Name="CboDHTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
+                              IsEditable="True" Width="60"
+                              SelectionChanged="CboDHTblIPP_OnSelectionChanged"/>
+                </DockPanel>
+                <TableView Margin="6 6 6 3" Classes="striped"
+                          ItemsSource="{Binding Workspace.DsDonHang}"
+                          SelectedItem="{Binding Workspace.SelectedDonHang}">
+                    <TableView.Columns>
+                        <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
+                        <TableViewColumn Header="Mã" Binding="{Binding Ma}" Width="90"/>
+                        <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
+                        <TableViewColumn Header="Công trình" Binding="{Binding DuAn}"/>
+                        <TableViewColumn Header="KL (m3)" Binding="{Binding Kl}"/>
+                        <TableViewColumn Header="Bắt đầu" Binding="{Binding Tgbd}"/>
+                        <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
+                    </TableView.Columns>
+                </TableView>
+            </DockPanel>
+        </Grid>
+    
+</UserControl>

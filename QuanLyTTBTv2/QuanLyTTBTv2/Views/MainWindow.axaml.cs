@@ -1,23 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
-using Avalonia.Data;
-using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Huskui.Avalonia.Controls;
 using Huskui.Avalonia.Models;
-using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels;
-using QuanLyTTBTv2.ViewModels.Server;
 
 namespace QuanLyTTBTv2.Views
 {
@@ -27,33 +20,19 @@ namespace QuanLyTTBTv2.Views
         private readonly DbCache _dbCache = DbCache.Instance;
 
         private readonly MainViewModel _vm = new();
-
+        
         #region Initialization & Startup & Closed
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm;
-
+            
             LoadIcons();
         }
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
         {
-            CboDHTblIPP.Items.Add("10");
-            CboDHTblIPP.Items.Add("15");
-            CboDHTblIPP.Items.Add("20");
-            CboDHTblIPP.Items.Add("23");
-            CboDHTblIPP.Items.Add("25");
-            CboDHTblIPP.SelectedIndex = 2;
-
-            CboPhieuTblIPP.Items.Add("5");
-            CboPhieuTblIPP.Items.Add("10");
-            CboPhieuTblIPP.Items.Add("15");
-            CboPhieuTblIPP.Items.Add("20");
-            CboPhieuTblIPP.Items.Add("25");
-            CboPhieuTblIPP.SelectedIndex = 2;
-
             Init();
         }
 
@@ -168,111 +147,21 @@ namespace QuanLyTTBTv2.Views
         }
 
         #endregion
-        
-        private void CboDHTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            // Đặt items per page cho bảng đơn hàng
-            if (int.TryParse(CboDHTblIPP.Text, out int v))
-                if (v >= 5 && v < 50)
-                    _vm.SetTableIPP(1, v);
-        }
-
-        private void CboPhieuTblIPP_OnKeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                if (int.TryParse(CboPhieuTblIPP.Text, out int v))
-                    if (v >= 5 && v <= 50)
-                        _vm.SetTableIPP(2, v);
-        }
-
-        private void CboPhieuTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            // Đặt items per page cho bảng phiếu
-            if (int.TryParse(CboPhieuTblIPP.Text, out int v))
-                if (v >= 5 && v <= 50)
-                    _vm.SetTableIPP(2, v);
-        }
         #endregion
-
-        private void NMPaginator_OnPageClicked(object? sender, int e)
-        {
-            if (sender == null) return;
-            if (sender.Equals(PgDonHang))
-            {
-                _vm.ChangeDonHangPage(e);
-            }
-            else if (sender.Equals(PgPhieu))
-            {
-                _vm.ChangePhieuPage(e);
-            }
-        }
 
         private async void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded) return;
             if (TabMain.SelectedIndex == 1)
             {
-                await _vm.AutoLoadChiTietDonHang(false);
-                RemoveTPColumns();
-                CreateTPColumns([.. _vm.Workspace.DsMaThanhPhan]);
-                _vm.AutoLoadDsPhieu(true);
+                await _vm.PhieuVM.AutoLoadChiTietDonHang(false);
+                CtlDsPh.ReCreateTblMeColumns();
+                _vm.PhieuVM.AutoLoadDsPhieu(true);
             }
         }
-
-        private void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            _vm.Workspace.LoadChiTietPhieu();
-        }
-
-        #region Table mẻ
-        
-        private void RemoveTPColumns()
-        {
-            int totalColumns = TvwMe.Columns.Count;
-
-            // Luôn giữ 3 cột đầu và 2 cột cuối
-            int tpStartIndex = 3;
-            int tpEndIndex = totalColumns - 2;
-
-            // Xóa từ cuối về đầu để không bị thay đổi index
-            for (int i = tpEndIndex - 1; i >= tpStartIndex; i--)
-            {
-                TvwMe.Columns.RemoveAt(i);
-            }
-        }
-
-        private void CreateTPColumns(List<CHThanhPhan> headers)
-        {
-            for (int i = 0; i < headers.Count; i++)
-            {
-                int tpIndex = i;
-                var column = new TableViewColumn
-                {
-                    Header = headers[i].GetHeader(),
-                    Width = new GridLength(108),
-                    CellTemplate = new FuncDataTemplate<HTMeVM>((item, _) =>
-                    {
-                        var textBlock = new TextBlock
-                        {
-                            // Text = item.TPs[tpIndex],
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                        };
-
-                        textBlock.Bind(
-                            TextBlock.TextProperty,
-                            new Binding($"TPs[{tpIndex}]")
-                        );
-
-                        return textBlock;
-                    })                    
-                };
-                TvwMe.Columns.Insert(3 + i, column);
-            }
-        }
-        #endregion
         
         #region Test
+        //
         #endregion
     }
 }

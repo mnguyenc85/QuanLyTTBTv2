@@ -127,6 +127,8 @@ public partial class WorkspaceVM: ViewModelBase
     {
         SelectedPhieu = null;
         DsPhieu.Clear();
+        SelectedPhieu = null;
+        TkMe.Clear();
     }
     
     public async Task LoadDsPhieu(HTPhieuCond cond)

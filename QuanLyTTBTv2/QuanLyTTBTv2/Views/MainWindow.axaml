@@ -1,12 +1,13 @@
 <husk:AppWindow xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:QuanLyTTBTv2.ViewModels"
-        xmlns:vmc="using:QuanLyTTBTv2.Utilities.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
+        xmlns:local="clr-namespace:QuanLyTTBTv2.Views"
         xmlns:c="clr-namespace:QuanLyTTBTv2.Controls"
+        xmlns:vm="using:QuanLyTTBTv2.ViewModels"
+        xmlns:vmc="using:QuanLyTTBTv2.Utilities.Converters"
         xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
+        xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -20,11 +21,6 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
-    
-    <Window.Resources>
-        <vmc:TableViewRowBgConverter x:Key="RowBackgroundConverter"/>
-        <vmc:TableViewRowFontWeightConverter x:Key="RowFontWeightConverter"/>
-    </Window.Resources>
 
     <LayoutTransformControl>
         <DockPanel>
@@ -82,65 +78,7 @@
                             <TextBlock Text="Đơn hàng" FontSize="16" VerticalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="264"/>
-                            <ColumnDefinition Width="6"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3">
-                            <StackPanel Margin="6">
-                                <TextBlock Text="Thời gian" FontWeight="Bold" />
-                                <StackPanel Margin="6 0 0 0">
-                                    <c:DateTimeFilter Title="Từ" Used="{Binding LocDHTu}" DateTime="{Binding LocDHTuTg}"/>
-                                    <c:DateTimeFilter Title="Đến" Used="{Binding LocDHDen}" DateTime="{Binding LocDHDenTg}"/>
-                                </StackPanel>
-
-                                <c:TextBoxTitle Title="Khách hàng" PlaceholderText="Khách hàng / sđt" Text="{Binding LocDHKH}"/>
-                                <c:TextBoxTitle Title="Công trình" PlaceholderText="Dự án / công trình / hạng mục" Text="{Binding LocDHDuAn}"/>
-
-                                <Separator Margin="3 6 3 0"/>
-                                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
-                                        Classes="Success" Content="Tìm kiếm"
-                                        Command="{Binding FilterDonHangCommand}"/>
-
-                                <DropDownButton x:Name="BtShowDHData" Content="Dữ liệu">
-                                    <DropDownButton.Flyout>
-                                        <MenuFlyout>
-                                            <MenuItem x:Name="MniDHNL" Header="Nguyên liệu" Click="MniDHNL_OnClick"/>
-                                            <MenuItem Header="Xe / lái xe" IsEnabled="False"/>
-                                            <MenuItem Header="Khách hàng" IsEnabled="False"/>
-                                            <MenuItem Header="Dự án" IsEnabled="False"/>
-                                        </MenuFlyout>
-                                    </DropDownButton.Flyout>
-                                </DropDownButton>
-                            </StackPanel>
-                        </Border>
-
-                        <!-- Bảng đơn hàng -->
-                        <DockPanel Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
-                            <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
-                                <nmc:NMPaginator x:Name="PgDonHang" Total="{Binding DhTotal}" CurIndex="{Binding DhPage}"
-                                                 PageClicked="NMPaginator_OnPageClicked"/>
-                                <ComboBox x:Name="CboDHTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
-                                          IsEditable="True" Width="60"
-                                          SelectionChanged="CboDHTblIPP_OnSelectionChanged"/>
-                            </DockPanel>
-                            <TableView Margin="6 6 6 3" Classes="striped"
-                                      ItemsSource="{Binding Workspace.DsDonHang}"
-                                      SelectedItem="{Binding Workspace.SelectedDonHang}">
-                                <TableView.Columns>
-                                    <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
-                                    <TableViewColumn Header="Mã" Binding="{Binding Ma}" Width="90"/>
-                                    <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
-                                    <TableViewColumn Header="Công trình" Binding="{Binding DuAn}"/>
-                                    <TableViewColumn Header="KL (m3)" Binding="{Binding Kl}"/>
-                                    <TableViewColumn Header="Bắt đầu" Binding="{Binding Tgbd}"/>
-                                    <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
-                                </TableView.Columns>
-                            </TableView>
-                        </DockPanel>
-                    </Grid>
+                    <local:CtlDsDonHang DataContext="{Binding DhVM}"/>
                 </TabItem>
 
                 <!-- Phiếu -->
@@ -152,104 +90,7 @@
                             <TextBlock Text="Phiếu trộn" FontSize="16" VerticalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
-                    <Grid ColumnDefinitions="264,3,*">
-                        <GridSplitter Grid.Column="1" Background="Transparent"/>
-                        
-                        <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3" MinWidth="264">
-                            <StackPanel Margin="6">
-                                <TextBlock Text="Thời gian" FontWeight="Bold" />
-                                <StackPanel Margin="6 0 0 0">
-                                    <c:DateTimeFilter Title="Từ" Used="{Binding LocPhieuTu}" DateTime="{Binding LocPhieuTuTg}"/>
-                                    <c:DateTimeFilter Title="Đến" Used="{Binding LocPhieuDen}" DateTime="{Binding LocPhieuDenTg}"/>
-                                </StackPanel>
-                                <c:TextBoxTitle Title="Biển số xe" Text="{Binding LocPhieuXe}"/>
-                                <c:TextBoxTitle Title="Lái xe" Text="{Binding LocPhieuLaiXe}"/>
-                                <c:TextBoxTitle Title="Cấp phối" Text="{Binding LocPhieuCapPhoi}"/>
-                            
-                                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
-                                        Classes="Success" Content="Tìm kiếm"
-                                        Command="{Binding FilterPhieuCommand}"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Grid Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition Height="3"/>
-                                <RowDefinition Height="320"/>
-                            </Grid.RowDefinitions>
-                                
-                            <!-- Bảng phiếu -->
-                            <DockPanel >
-                                <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
-                                    <nmc:NMPaginator x:Name="PgPhieu" Total="{Binding PhieuTotal}" CurIndex="{Binding PhieuPage}"
-                                                     PageClicked="NMPaginator_OnPageClicked"/>
-                                    <ComboBox x:Name="CboPhieuTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
-                                              IsEditable="True" Width="60"
-                                              KeyDown="CboPhieuTblIPP_OnKeyDown"
-                                              SelectionChanged="CboPhieuTblIPP_OnSelectionChanged"/>
-                                </DockPanel>
-                                
-                                <TableView Margin="6 6 6 3" Classes="striped"
-                                           ItemsSource="{Binding Workspace.DsPhieu}"
-                                           SelectedItem="{Binding Workspace.SelectedPhieu}"
-                                           SelectionChanged="TvwPhieu_OnSelectionChanged">
-                                    <TableView.Columns>
-                                        <TableViewColumn Header="STT" Binding="{Binding Stt}" Width="60"/>
-                                        <TableViewColumn Header="Số phiếu" Binding="{Binding Sophieu}"/>
-                                        <TableViewColumn Header="Xe" Binding="{Binding Bsx}"/>
-                                        <TableViewColumn Header="Lái xe" Binding="{Binding Lx}"/>
-                                        <TableViewColumn Header="Cấp phối" Binding="{Binding CongThuc?.Ma}"/>
-                                        <TableViewColumn Header="Mác" Binding="{Binding CongThuc?.Mac}"/>
-                                        <TableViewColumn Header="M³ trộn" Binding="{Binding Ttht}"/>
-                                        <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtDon}"/>
-                                        <TableViewColumn Header="Kl (kg)" Binding="{Binding Klht}"/>
-                                        <TableViewColumn Header="Bắt đầu" Binding="{Binding Tgbd}"/>
-                                        <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
-                                    </TableView.Columns>
-                                </TableView>
-                            </DockPanel>
-                                
-                            <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
-                            <!-- Mẻ -->
-                            <DockPanel Grid.Row="2">
-                                <TableView x:Name="TvwMe" Margin="6"
-                                           ItemsSource="{Binding Workspace.TkMe}"
-                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <TableView.Styles>
-                                        <Style Selector="TableViewRow">
-                                            <Setter Property="Background" Value="{Binding $self.DataContext, 
-                                                Converter={StaticResource RowBackgroundConverter}}"/>
-                                            <Setter Property="FontWeight" Value="{Binding $self.DataContext, 
-                                                Converter={StaticResource RowFontWeightConverter}}"/>
-                                        </Style>
-                                    </TableView.Styles>
-
-                                    <TableView.Columns>
-
-                                        <!-- STT -->
-                                        <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
-                                        <!-- M3 trộn -->
-                                        <TableViewColumn Header="M³ trộn" Binding="{Binding M3Tron}" Width="100"/>
-                                        <!-- Tổng khối lượng -->
-                                        <TableViewColumn Header="Tổng KL" Binding="{Binding TongKL}" Width="100"/>
-
-                                        <!-- Thành phần 1 -> 15 -->
-                                        <TableViewColumn Header="TP1" Binding="{Binding TPs[0]}" Width="72"/>
-                                        <TableViewColumn Header="TP2" Binding="{Binding TPs[1]}" Width="72"/>
-                                        <TableViewColumn Header="TP3" Binding="{Binding TPs[2]}" Width="72"/>
-                                        
-		                                <!-- Thời gian hoàn thành -->
-                                        <TableViewColumn Header="TGHT" Binding="{Binding Tght}" Width="100"/>
-                                        <!-- Trạng thái -->
-                                        <TableViewColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
-
-                                    </TableView.Columns>
-                                </TableView>
-                                
-                            </DockPanel>
-                        </Grid>
-                    </Grid>
+                    <local:CtlDsPhieu x:Name="CtlDsPh" DataContext="{Binding PhieuVM}"/>
                 </TabItem>
             </TabControl>
         </DockPanel>
