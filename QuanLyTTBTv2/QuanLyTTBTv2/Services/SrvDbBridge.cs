@@ -30,10 +30,10 @@ public class SrvDbBridge
             _db = new FreeSqlBuilder()
                 .UseConnectionString(DataType.MySql, connStr)
                 //.UseAutoSyncStructure(true)
-                .UseMonitorCommand(cmd =>
-                {
-                    System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
-                })
+                // .UseMonitorCommand(cmd =>
+                // {
+                //     System.Diagnostics.Debug.WriteLine("SQL: " + cmd.CommandText);
+                // })
                 .Build();
         }
         catch (Exception ex)
@@ -326,7 +326,7 @@ public class SrvDbBridge
     }
     
         
-    public async Task<List<HTThanhPhan>> ThanhPhan_SelectByCtAsync(long source_id, long ct_id)
+    public async Task<List<HTThanhPhan>?> ThanhPhan_SelectByCtAsync(long source_id, long ct_id)
     {
         var data = await _db
             .Select<HTCongThucThanhPhan, HTThanhPhan>()

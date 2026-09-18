@@ -92,6 +92,17 @@
                     </TabItem.Header>
                     <local:CtlDsPhieu x:Name="CtlDsPh" DataContext="{Binding PhieuVM}"/>
                 </TabItem>
+                
+                <!-- Phiếu đã in -->
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="IconTabPhieuIn" Source="../Assets/printed_document_64.png" Width="24"
+                                   Margin="0 0 6 0" />
+                            <TextBlock Text="Phiếu in" FontSize="16" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
             </TabControl>
         </DockPanel>
     </LayoutTransformControl>

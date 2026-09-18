@@ -122,4 +122,26 @@ public class HTMeVM
         
         return tk;
     }
+
+    public static HTMeVM FromCapPhoiMe(List<CHThanhPhan> dsMaThanhPhan, HTMeVM mecp, double ttme, int sotp = 15)
+    {        
+        HTMeVM tk = new()
+        {
+            M3Tron = "CP mẻ",
+            Css = "cpc",
+        };
+
+        for (int i = 0; i < sotp; i++)
+        {
+            double kl = mecp.TpKls[i] * ttme;
+            kl = dsMaThanhPhan[i].PL == 3 ? Math.Round(kl, 2) : Math.Round(kl);
+            
+            tk.TpKls[i] = kl;
+            tk.TPs[i] = kl.ToString();
+            tk.KlTong += kl;
+        }
+        tk.TongKL = tk.KlTong.ToString("F0");
+        
+        return tk;
+    }
 }

@@ -127,8 +127,9 @@ public partial class WorkspaceVM: ViewModelBase
     {
         SelectedPhieu = null;
         DsPhieu.Clear();
-        SelectedPhieu = null;
         TkMe.Clear();
+        
+        System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
     }
     
     public async Task LoadDsPhieu(HTPhieuCond cond)
@@ -152,8 +153,9 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
 
-    public async void LoadChiTietPhieu()
+    public async Task LoadChiTietPhieu()
     {
+        System.Diagnostics.Debug.WriteLine($"LoadChiTietPhieu 1: {SelectedPhieu}, {SelFactory}");
         if (SelectedPhieu == null || SelFactory == null)
         {
             // Xóa nếu lấy thành phần theo phiếu
@@ -162,30 +164,41 @@ public partial class WorkspaceVM: ViewModelBase
             return;
         }
 
+        System.Diagnostics.Debug.WriteLine($"LoadChiTietPhieu 2: {SelectedPhieu}, {SelFactory}");
         var cttps = await _srvDb.ThanhPhan_SelectByCtAsync(SelFactory.Id, SelectedPhieu.CtId);
+        System.Diagnostics.Debug.WriteLine($"LoadChiTietPhieu 3: {SelectedPhieu}, {SelFactory}");
         var lstme = await _srvDb.Me_SelectByPhieuAsync(SelFactory.Id, SelectedPhieu.LocalId);
+
+        if (cttps == null || lstme == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"cttps == null? {cttps == null}, lstme == null? {lstme == null}");
+            return;
+        }
         
         var dcttps = new Dictionary<string, HTThanhPhan>();
         foreach (var tp in cttps) if (tp.Ma != null) dcttps.Add(tp.Ma, tp);
         
         TkMe.Clear();
-        
-        TkMe.Add(HTMeVM.FromThanhPhan(DsMaThanhPhan));
-        TkMe.Add(HTMeVM.FromCapPhoi(DsMaThanhPhan, dcttps));
 
-        if (lstme != null)
+        int sotp = dcttps.Count;
+        TkMe.Add(HTMeVM.FromThanhPhan(DsMaThanhPhan));
+        var mecp = HTMeVM.FromCapPhoi(DsMaThanhPhan, dcttps); 
+        TkMe.Add(mecp);
+        double ttme = (SelectedPhieu != null && SelectedPhieu.Medat > 0)
+            ? SelectedPhieu.Ttdat / SelectedPhieu.Medat
+            : 0;
+        TkMe.Add(HTMeVM.FromCapPhoiMe(DsMaThanhPhan, mecp, ttme, sotp));
+
+        int stt = 0;
+        List<HTMeVM> dsmetmp = [];
+        foreach (var m in lstme)
         {
-            int stt = 0;
-            List<HTMeVM> dsmetmp = [];
-            foreach (var m in lstme)
-            {
-                var me = HTMeVM.FromMe(DsMaThanhPhan, dcttps, m);
-                me.Stt = (++stt).ToString();
-                TkMe.Add(me);
-                dsmetmp.Add(me);
-            }
-            
-            TkMe.Add(HTMeVM.CreateMeTong(dsmetmp));
+            var me = HTMeVM.FromMe(DsMaThanhPhan, dcttps, m);
+            me.Stt = (++stt).ToString();
+            TkMe.Add(me);
+            dsmetmp.Add(me);
         }
+        
+        TkMe.Add(HTMeVM.CreateMeTong(dsmetmp, sotp));
     }
 }

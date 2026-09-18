@@ -42,7 +42,7 @@ public partial class CtlDsPhieuVM: ViewModelBase
     
     public CtlDsPhieuVM()
     {
-        FilterPhieuCommand = new RelayCommand(FilterPhieu);
+        FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
         Init();
     }
     
@@ -50,7 +50,7 @@ public partial class CtlDsPhieuVM: ViewModelBase
     {
         Workspace = ws;
         MainVM = mainvm;
-        FilterPhieuCommand = new RelayCommand(FilterPhieu);
+        FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
         Init();
     }
     
@@ -64,7 +64,7 @@ public partial class CtlDsPhieuVM: ViewModelBase
     } 
 
     
-    private async void FilterPhieu()
+    private async Task FilterPhieu()
     {
         if (Workspace == null || Workspace.SelFactory == null || Workspace.SelectedDonHang == null || _isLoadingDockets) return;
 
@@ -114,50 +114,49 @@ public partial class CtlDsPhieuVM: ViewModelBase
         _stopwatch.Stop();
         MainVM.LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
     }
-    
-            
-    public async Task AutoLoadChiTietDonHang(bool setCurDhId)
+
+    public long CheckSelectedDonHangChanged()
     {
-        if (Workspace == null) return;
+        if (Workspace == null) return 0;
         
         if (Workspace.SelectedDonHang == null)
         {
-            Workspace.ClearCurDonHangData();
-            return;
+            if (CurDonHangId == -1)
+            {
+                return 0;
+            }
+
+            CurDonHangId = -1;
+            return -1;
         }
 
-        if (Workspace.SelectedDonHang.Id != CurDonHangId)
+        if (CurDonHangId == Workspace.SelectedDonHang.Id)
         {
-            await Workspace.LoadCurDonHangData();
-
-            if (setCurDhId) CurDonHangId = Workspace.SelectedDonHang.Id;
+            return 0;
         }
+
+        CurDonHangId = Workspace.SelectedDonHang.Id;
+        return CurDonHangId;
+    }
+            
+    public async Task AutoLoadChiTietDonHang()
+    {
+        if (Workspace == null) return;
+        
+        await Workspace.LoadCurDonHangData();
     }
     
-    public void AutoLoadDsPhieu(bool setCurDhId)
+    public async Task AutoLoadDsPhieu()
     {
         if (Workspace == null) return;
         
-        if (Workspace.SelectedDonHang == null)
-        {
-            Workspace.ClearDsPhieu();
-            return;
-        }
-
-        if (Workspace.SelectedDonHang.Id != CurDonHangId)
-        {
-            Workspace.ClearDsPhieu();
-            
-            // Reset điều kiện
-            LocPhieuTu = false;
-            LocPhieuDen = false;
-            LocPhieuXe = null;
-            LocPhieuLaiXe = null;
-            _phCond.Offset = 0;
-            FilterPhieu();
-                
-            if (setCurDhId) CurDonHangId = Workspace.SelectedDonHang.Id;
-        }            
+        // Reset điều kiện
+        LocPhieuTu = false;
+        LocPhieuDen = false;
+        LocPhieuXe = null;
+        LocPhieuLaiXe = null;
+        _phCond.Offset = 0;
+        await FilterPhieu();
     }
         
     public void SetTableIPP(int ipp, int tableId = 1)

@@ -149,15 +149,34 @@ namespace QuanLyTTBTv2.Views
         #endregion
         #endregion
 
+        private int _lastTabIndex = -1;
         private async void TabMain_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (!IsLoaded) return;
-            if (TabMain.SelectedIndex == 1)
+
+            CtlDsPh.IsActive = TabMain.SelectedIndex == 1;
+            
+            if (TabMain.SelectedIndex == 1 && TabMain.SelectedIndex != _lastTabIndex)
             {
-                await _vm.PhieuVM.AutoLoadChiTietDonHang(false);
-                CtlDsPh.ReCreateTblMeColumns();
-                _vm.PhieuVM.AutoLoadDsPhieu(true);
+                System.Diagnostics.Debug.WriteLine("Selected tab 1: Phiếu");
+                
+                long isDHChanged = _vm.PhieuVM.CheckSelectedDonHangChanged(); 
+                if (isDHChanged != 0)
+                {
+                    _vm.Workspace.ClearCurDonHangData();
+                    _vm.Workspace.ClearDsPhieu();
+
+                    if (isDHChanged > 0)
+                    {
+                        await _vm.PhieuVM.AutoLoadChiTietDonHang();
+                        CtlDsPh.ReCreateTblMeColumns();
+                        await _vm.PhieuVM.AutoLoadDsPhieu();
+                    }
+                }
             }
+            
+
+            _lastTabIndex = TabMain.SelectedIndex;
         }
         
         #region Test

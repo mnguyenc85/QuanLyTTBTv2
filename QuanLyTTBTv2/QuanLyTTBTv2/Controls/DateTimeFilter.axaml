@@ -26,6 +26,7 @@
             <TimePicker
                 x:Name="TimePicker"
                 MinWidth="120"
+                Width="120"
                 VerticalAlignment="Stretch" />
         </StackPanel>
         

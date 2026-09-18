@@ -27,6 +27,22 @@
         
         <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3" MinWidth="264">
             <StackPanel Margin="6">
+                <GroupBox Padding="3">
+                    <GroupBox.Header>
+                        <TextBlock Text="Đơn hàng" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
+                    </GroupBox.Header>
+                    <StackPanel>
+                        <TextBlock Text="Số đơn" FontWeight="Bold"/>
+                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.Ma}"/>
+                        <TextBlock Text="Khách hàng" FontWeight="Bold" />
+                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.KhachHang}"/>
+                        <TextBlock Text="Công trinh" FontWeight="Bold" />
+                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.DuAn}"/>
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- Lọc phiếu -->
+                <Separator Margin="0 6 0 0"/>
                 <TextBlock Text="Thời gian" FontWeight="Bold" />
                 <StackPanel Margin="6 0 0 0">
                     <c:DateTimeFilter Title="Từ" Used="{Binding LocPhieuTu}" DateTime="{Binding LocPhieuTuTg}"/>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -15,6 +16,7 @@ namespace QuanLyTTBTv2.Views;
 public partial class CtlDsPhieu : UserControl
 {
     private CtlDsPhieuVM? _vm;
+    public bool IsActive { get; set; }
     
     public CtlDsPhieu()
     {
@@ -58,11 +60,18 @@ public partial class CtlDsPhieu : UserControl
                 _vm?.SetTableIPP(v);
     }
     
-    private void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (_vm == null || _vm.Workspace == null) return;
-        
-        _vm.Workspace.LoadChiTietPhieu();
+        if (_vm == null || _vm.Workspace == null || !IsActive) return;
+
+        try
+        {
+            await _vm.Workspace.LoadChiTietPhieu();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+        }
     }
     
     #region Table mẻ
