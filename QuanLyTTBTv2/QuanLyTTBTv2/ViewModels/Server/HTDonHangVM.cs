@@ -20,21 +20,28 @@ public partial class HTDonHangVM: ViewModelBase
     [ObservableProperty] private DateTime _tgbd;
     [ObservableProperty] private DateTime _tgkt;
 
+    public HTDonHangTKVM TK { get; set; } = new();
+    
     public HTDonHangVM()
     {
         
     }
 
-    public HTDonHangVM(HTDonHang dh)
+    public HTDonHangVM(HTDonHang o)
     {
-        Id = dh.Id;
-        LocalId = dh.LocalId;
-        Ma = dh.Ma;
-        KhachHang = dh.KhachHang?.Ten;
+        FromDBO(o);
+    }
+
+    public void FromDBO(HTDonHang o)
+    {
+        Id = o.Id;
+        LocalId = o.LocalId;
+        Ma = o.Ma;
+        KhachHang = o.KhachHang?.Ten;
         // DuAn = $"{dh.DaId} - {dh.CtId} - {dh.HmId}";
-        DuAn = $"{dh.DuAn} - {dh.CongTrinh} - {dh.HangMuc}";
-        Kl = dh.Klht;
-        Tgbd = dh.CreatedAt;
-        Tgkt = dh.Tght ?? DateTime.MinValue;
+        DuAn = $"{o.DuAn} - {o.CongTrinh} - {o.HangMuc}";
+        Kl = o.Klht;
+        Tgbd = o.CreatedAt;
+        Tgkt = o.Tght ?? DateTime.MinValue;
     }
 }

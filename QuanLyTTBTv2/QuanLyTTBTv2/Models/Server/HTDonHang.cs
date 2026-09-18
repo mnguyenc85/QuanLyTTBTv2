@@ -8,7 +8,7 @@ public class HTDonHang
 {
     #region Fields
     [Column(Name = "id", IsPrimary = true, IsIdentity = true)]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [Column(Name = "local_id")]
     public int LocalId { get; set; }
@@ -78,4 +78,6 @@ public class HTDonHang
     public string? HangMuc { get; set; }
     [Column(IsIgnore = true)]
     public string? DiaChi { get; set; }
+    [Column(IsIgnore = true)]
+    public HTDonHangTK? Tk  { get; set; }
 }

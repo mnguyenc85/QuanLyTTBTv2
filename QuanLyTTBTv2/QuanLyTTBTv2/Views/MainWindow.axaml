@@ -32,6 +32,11 @@
                             <Separator />
                             <MenuItem x:Name="MniSysExit" Header="Thoát" Click="MniSysExit_OnClick" />
                         </MenuItem>
+                        <MenuItem Header="Công cụ">
+                            <MenuItem x:Name="MniToolsDonHang" Header="Đơn hàng">
+                                <MenuItem x:Name="MniToolsDHTk1" Header="Thống kê đơn chọn" Click="MniToolsDHTk1_OnClick"/>
+                            </MenuItem>
+                        </MenuItem>
                     </Menu>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">

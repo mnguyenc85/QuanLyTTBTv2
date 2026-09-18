@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using QuanLyTTBTv2.Models;
@@ -14,10 +15,12 @@ namespace QuanLyTTBTv2.ViewModels;
 public partial class WorkspaceVM: ViewModelBase
 {
     private readonly SrvDbBridge _srvDb;
+    private CancellationTokenSource? _ctsLoadDhTk;
     
     public ObservableCollection<SrvFactory> SrvFactories { get; set; } = [];
     [ObservableProperty] private SrvFactory? _selFactory;
 
+    private Dictionary<long, HTDonHangVM> _tudienDonHang = [];
     public ObservableCollection<HTDonHangVM> DsDonHang { get; set; } = [];
     [ObservableProperty] private HTDonHangVM? _selectedDonHang;
     
@@ -61,7 +64,10 @@ public partial class WorkspaceVM: ViewModelBase
     }
     
     public async Task LoadDsDonHang(HTDonHangCond cond) {
-        DsDonHang.Clear();
+        _ctsLoadDhTk?.Cancel();
+
+        // Load dữ liệu đơn hàng
+        ClearDsDonHang();
 
         if (cond.Changed)
         {
@@ -75,8 +81,35 @@ public partial class WorkspaceVM: ViewModelBase
         int stt = cond.Offset;
         foreach (var dh in lst)
         {
-            stt++;
-            DsDonHang.Add(new HTDonHangVM(dh) { Stt = stt });
+            AddDonHang(dh, ++stt);
+        }
+
+        await LoadDuLieuDhTk();
+    }
+
+    private async Task LoadDuLieuDhTk()
+    {
+        try
+        {
+            // Load dữ liệu tk kèm đơn hàng
+            _ctsLoadDhTk = new CancellationTokenSource();
+            var dhtks = await _srvDb.DonHangTk_SelectByDhIdsAsync(_tudienDonHang.Keys.ToList(), _ctsLoadDhTk.Token);
+
+            // Update tk vào DsDonHang
+            if (dhtks != null)
+                foreach (var tk in dhtks)
+                {
+                    if (_tudienDonHang.TryGetValue(tk.DonHangId, out HTDonHangVM? value)) value.TK.FromDBO(tk);
+                }
+        }
+        catch { }
+        finally
+        {
+            if (_ctsLoadDhTk != null)
+            {
+                _ctsLoadDhTk.Dispose();
+                _ctsLoadDhTk = null;
+            }
         }
     }
 
@@ -116,20 +149,6 @@ public partial class WorkspaceVM: ViewModelBase
                     DsMaThanhPhan.Add(new CHThanhPhan(tp.Ma) { Ten = tp.Ten, PL = tp.PhanLoai, Silo = tp.Silo });
             }
         }
-    }
-
-    public void ClearCurDonHangData()
-    {
-        DsThanhPhan.Clear();
-    }
-
-    public void ClearDsPhieu()
-    {
-        SelectedPhieu = null;
-        DsPhieu.Clear();
-        TkMe.Clear();
-        
-        System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
     }
     
     public async Task LoadDsPhieu(HTPhieuCond cond)
@@ -200,5 +219,49 @@ public partial class WorkspaceVM: ViewModelBase
         }
         
         TkMe.Add(HTMeVM.CreateMeTong(dsmetmp, sotp));
+    }
+
+    /// <summary>
+    /// Tính lại dữ liệu của đơn hàng
+    /// </summary>
+    public async void DonHangTkHt()
+    {
+        if (SelectedDonHang == null || SelFactory == null) return;
+
+        var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, SelectedDonHang.LocalId);
+        tk.DonHangId = SelectedDonHang.Id;
+        await _srvDb.DonHangTk_SaveAsync(tk);
+        
+        SelectedDonHang.TK.FromDBO(tk);
+    }
+
+    /// <summary>
+    /// Sử dụng hàm này để đảm bảo DsDonHang và _tudienDonHang
+    /// </summary>
+    public void AddDonHang(HTDonHang dh, int stt)
+    {
+        var vm = new HTDonHangVM(dh) { Stt = stt };
+        DsDonHang.Add(vm);
+        _tudienDonHang.TryAdd(dh.Id, vm);
+    }
+    
+    public void ClearDsDonHang()
+    {
+        DsDonHang.Clear();
+        _tudienDonHang.Clear();
+    }
+    
+    public void ClearCurDonHangData()
+    {
+        DsThanhPhan.Clear();
+    }
+
+    public void ClearDsPhieu()
+    {
+        SelectedPhieu = null;
+        DsPhieu.Clear();
+        TkMe.Clear();
+        
+        System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
     }
 }

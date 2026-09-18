@@ -77,6 +77,11 @@ namespace QuanLyTTBTv2.Views
             await wnd.ShowDialog(this);
         }
         
+        private void MniToolsDHTk1_OnClick(object? sender, RoutedEventArgs e)
+        {
+            _vm.Workspace.DonHangTkHt();
+        }
+        
         private async void MniDHNL_OnClick(object? sender, RoutedEventArgs e)
         {
             WndDataViewer wnd = new WndDataViewer();
@@ -93,6 +98,7 @@ namespace QuanLyTTBTv2.Views
         // Chuyển màu icon theo theme Light/Dark
         private Bitmap? _bmpCTLight, _bmpCTDark;
         private Bitmap? _bmpPhieuLight, _bmpPhieuDark;
+        private Bitmap? _bmpPhieuInLight, _bmpPhieuInDark;
 
         private void OnSwitchThemeClick(object? sender, RoutedEventArgs e)
         {
@@ -128,6 +134,7 @@ namespace QuanLyTTBTv2.Views
         {
             LoadIcon("avares://QuanLyTTBTv2/Assets/congtrinh_1_64.png", out _bmpCTLight, out _bmpCTDark);
             LoadIcon("avares://QuanLyTTBTv2/Assets/concrete_truck_2_64.png", out _bmpPhieuLight, out _bmpPhieuDark);
+            LoadIcon("avares://QuanLyTTBTv2/Assets/printed_document_64.png", out _bmpPhieuInLight, out _bmpPhieuInDark);
         }
 
         private void UpdateIcon()
@@ -136,6 +143,7 @@ namespace QuanLyTTBTv2.Views
 
             IconTabCongTrinh.Source = isDark ? _bmpCTLight : _bmpCTDark;
             IconTabPhieu.Source = isDark ? _bmpPhieuLight : _bmpPhieuDark;
+            IconTabPhieuIn.Source = isDark ? _bmpPhieuInLight : _bmpPhieuInDark;
         }
 
         private void LoadIcon(string path, out Bitmap? light, out Bitmap? dark)

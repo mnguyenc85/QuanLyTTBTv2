@@ -68,9 +68,10 @@
                         <TableViewColumn Header="Mã" Binding="{Binding Ma}" Width="90"/>
                         <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
                         <TableViewColumn Header="Công trình" Binding="{Binding DuAn}"/>
-                        <TableViewColumn Header="KL (m3)" Binding="{Binding Kl}"/>
+                        <TableViewColumn Header="KL (m3)" Binding="{Binding TK.TongTT, StringFormat={}{0:F2}}" Width="90"/>
+                        <TableViewColumn Header="Số phiếu" Binding="{Binding TK.TongPhieu}" Width="90"/>
                         <TableViewColumn Header="Bắt đầu" Binding="{Binding Tgbd}"/>
-                        <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
+                        <TableViewColumn Header="Kết thúc" Binding="{Binding TK.Tght}"/>
                     </TableView.Columns>
                 </TableView>
             </DockPanel>

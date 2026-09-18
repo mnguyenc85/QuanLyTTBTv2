@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FreeSql;
 using QuanLyTTBTv2.Models.Server;
@@ -167,6 +168,34 @@ public class SrvDbBridge
 
         return await query.CountAsync();
     }
+
+    public async Task<List<HTDonHangTK>?> DonHangTk_SelectByDhIdsAsync(List<long> ids, CancellationToken ct)
+    {
+        if (_db == null) return null;
+
+        var query = _db.Select<HTDonHangTK>()
+            .Where(dh => ids.Contains(dh.DonHangId));
+        
+        return await query.ToListAsync(ct);
+    }
+    
+    public async Task DonHangTk_SaveAsync(HTDonHangTK dh)
+    {
+        if (_db == null) return;
+
+        dh.UpdatedAt = DateTime.Now;
+        if (dh.Id > 0)
+        {
+            await _db.Update<HTDonHangTK>()
+                .SetSource(dh)
+                .ExecuteAffrowsAsync();
+        }
+        else
+        {
+            var id = await _db.Insert(dh).ExecuteIdentityAsync();
+            dh.Id = id;
+        }
+    }
     #endregion
 
     #region Phiếu
@@ -253,6 +282,33 @@ public class SrvDbBridge
             x.Phieu.CongThuc = x.Ct;
             return x.Phieu;
         }).ToList();
+
+        return result;
+    }
+
+    public async Task<HTDonHangTK?> Phieu_TinhTKAsync(long src_id, long dh_id)
+    {
+        if (_db == null) return null;
+        
+        var sql = """
+                  SELECT
+                      COUNT(id) AS TongPhieu,
+                      COALESCE(SUM(thetichht), 0) AS TongTT,
+                      COALESCE(SUM(klht), 0) AS TongKL,
+                      COALESCE(SUM(meht), 0) AS TongMe,
+                      MAX(tght) AS Tght
+                  FROM ht_phieu
+                  WHERE source_id = @src_id
+                    AND donhang_id = @dh_id
+                  """;
+
+        var result = await _db.Ado.QuerySingleAsync<HTDonHangTK>(
+            sql,
+            new
+            {
+                src_id,
+                dh_id
+            });
 
         return result;
     }

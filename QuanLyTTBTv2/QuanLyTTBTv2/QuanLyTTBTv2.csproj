@@ -33,4 +33,8 @@
     <ProjectReference Include="..\MsBox.Avalonia\MsBox.Avalonia.csproj" />
     <ProjectReference Include="..\NCMAvaControls\NCMAvaControls.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Printing\" />
+  </ItemGroup>
 </Project>
