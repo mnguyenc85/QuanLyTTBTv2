@@ -1,0 +1,115 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
+             x:Class="QuanLyTTBTv2.Views.CtlPnlInPhieu">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="360"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3" MinWidth="264">
+            <DockPanel >
+                <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
+                    <nmc:NMPaginator x:Name="PgPhieu"
+                                     PageClicked="NMPaginator_OnPageClicked"/>
+                    <ComboBox x:Name="CboInPhieuTblIPP" MinHeight="24" VerticalAlignment="Center" DockPanel.Dock="Right"
+                              IsEditable="True" Width="60"
+                              KeyDown="CboPhieuTblIPP_OnKeyDown"
+                              SelectionChanged="CboPhieuTblIPP_OnSelectionChanged"/>
+                </DockPanel>
+                
+                <TableView Margin="6 6 6 3" Classes="striped"
+                           SelectionChanged="TvwPhieu_OnSelectionChanged">
+                    <TableView.Columns>
+                        <TableViewColumn Header="STT" Width="60"/>
+                        <TableViewColumn Header="Khách hàng"/>
+                        <TableViewColumn Header="Công trình"/>
+                        <TableViewColumn Header="Số phiếu"/>
+                        <TableViewColumn Header="M³ trộn"/>
+                        <TableViewColumn Header="M³ tích lũy"/>
+                        <TableViewColumn Header="TG tạo"/>
+                    </TableView.Columns>
+                </TableView>
+            </DockPanel>
+        </Border>
+        
+        <GroupBox Grid.Column="2" Padding="3 6">
+            <GroupBox.Header>
+                <TextBlock Text="Dữ liệu in" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
+            </GroupBox.Header>
+
+            <StackPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Số phiếu:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Left" Width="150" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Ngày trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="TG rời trạm:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                
+                <Separator Margin="3"/>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Khách hàng:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"
+                             TextWrapping="Wrap" AcceptsReturn="True" MinLines="2" Height="49"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Công trình:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Địa điểm:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Biển số xe:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Lái xe:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                
+                <Separator Margin="3"/>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Mác bê tông:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Độ sụt:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Cốt liệu max:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="Kẹp chì:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                </DockPanel>
+
+                <Separator Margin="3"/>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="TT trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"/>
+                    <TextBlock Text="m³" Width="102" TextAlignment="Left" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                </DockPanel>
+                <DockPanel Margin="0 3">
+                    <TextBlock Text="TT tich lũy:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                    <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"/>
+                    <TextBlock Text="m³" Width="102" TextAlignment="Left" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                </DockPanel>
+
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>

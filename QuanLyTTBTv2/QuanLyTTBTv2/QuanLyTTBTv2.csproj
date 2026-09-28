@@ -23,6 +23,7 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2026.2.8" />
     <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.5.311" />
     <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.5.311" />
     <PackageReference Include="Huskui.Avalonia" Version="2.0.1" />
@@ -32,9 +33,5 @@
   <ItemGroup>
     <ProjectReference Include="..\MsBox.Avalonia\MsBox.Avalonia.csproj" />
     <ProjectReference Include="..\NCMAvaControls\NCMAvaControls.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Printing\" />
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@
 
     <Application.Styles>
         <FluentTheme/>
-        <husk:HuskuiTheme Accent="Blue" />
+        <husk:HuskuiTheme Accent="Orange" />
         
         <StyleInclude Source="/Assets/Styles/FluentThemeMods.axaml" />
         
@@ -31,24 +31,28 @@
              <ResourceDictionary.ThemeDictionaries>
                  <!-- Light -->
                  <ResourceDictionary x:Key="Default">
-                     <SolidColorBrush x:Key="NMBackgroundBrush" Color="#F5F5F5" />   <!-- WhiteSmoke -->
-                     <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#E8E8E8" />
+                     <SolidColorBrush x:Key="NMBg0" Color="#FFFFFF" />
+                     <SolidColorBrush x:Key="NMBg1" Color="#F9F9F9" />
+                     <SolidColorBrush x:Key="NMBg2" Color="#F0F0F0" />
+                     <SolidColorBrush x:Key="NMBg3" Color="#E0E0E0" />
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64.png</Bitmap>
                      
-                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#F9F9F9" />
-                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="White" />
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#40F0F0F0" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#40FFFFFF" />
                  </ResourceDictionary>
 
                  <!-- Dark -->
                  <ResourceDictionary x:Key="Dark">
-                     <SolidColorBrush x:Key="NMBackgroundBrush" Color="#1A1A1A" />
-                     <SolidColorBrush x:Key="NMStatusbarBrush"  Color="#111111" />
+                     <SolidColorBrush x:Key="NMBg0" Color="#101010" />
+                     <SolidColorBrush x:Key="NMBg1" Color="#161616" />
+                     <SolidColorBrush x:Key="NMBg2" Color="#1F1F1F" />
+                     <SolidColorBrush x:Key="NMBg3" Color="#303030" />
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64_i.png</Bitmap>
 
-                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#202226" />
-                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#1A1B1E" />
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#40F0F0F0" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#40FFFFFF" />
                  </ResourceDictionary>
              </ResourceDictionary.ThemeDictionaries>
              

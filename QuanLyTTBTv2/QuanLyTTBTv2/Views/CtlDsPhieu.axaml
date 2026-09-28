@@ -22,27 +22,30 @@
         <vmc:TableViewRowFontWeightConverter x:Key="RowFontWeightConverter"/>
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="264,3,*">
+    <Grid ColumnDefinitions="274,3,*">
         <GridSplitter Grid.Column="1" Background="Transparent"/>
         
-        <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3" MinWidth="264">
+        <Border Grid.Column="0" Background="{DynamicResource NMBg2}" CornerRadius="3" MinWidth="264">
             <StackPanel Margin="6">
                 <GroupBox Padding="3">
                     <GroupBox.Header>
-                        <TextBlock Text="Đơn hàng" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
+                        <TextBlock Text="Thông tin đơn hàng" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
                     </GroupBox.Header>
                     <StackPanel>
                         <TextBlock Text="Số đơn" FontWeight="Bold"/>
-                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.Ma}"/>
+                        <TextBox IsReadOnly="True" Margin="3" Padding="8 6"
+                                 Text="{Binding Workspace?.SelectedDonHang?.Ma}"/>
                         <TextBlock Text="Khách hàng" FontWeight="Bold" />
-                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.KhachHang}"/>
+                        <TextBox IsReadOnly="True" Margin="3" Padding="8 6"
+                                 Text="{Binding Workspace?.SelectedDonHang?.KhachHang}"/>
                         <TextBlock Text="Công trinh" FontWeight="Bold" />
-                        <TextBox IsReadOnly="True" Margin="3" Text="{Binding Workspace?.SelectedDonHang?.DuAn}"/>
+                        <TextBox IsReadOnly="True" Margin="3" Padding="8 6" 
+                                 Text="{Binding Workspace?.SelectedDonHang?.DuAn}"/>
                     </StackPanel>
                 </GroupBox>
                 
                 <!-- Lọc phiếu -->
-                <Separator Margin="0 6 0 0"/>
+                <Separator Margin="0 12 0 6"/>
                 <TextBlock Text="Thời gian" FontWeight="Bold" />
                 <StackPanel Margin="6 0 0 0">
                     <c:DateTimeFilter Title="Từ" Used="{Binding LocPhieuTu}" DateTime="{Binding LocPhieuTuTg}"/>
@@ -58,7 +61,7 @@
             </StackPanel>
         </Border>
 
-        <Grid Grid.Column="2" Background="{DynamicResource NMStatusbarBrush}">
+        <Grid Grid.Column="2" Background="{DynamicResource NMBg2}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="3"/>
@@ -76,7 +79,8 @@
                               SelectionChanged="CboPhieuTblIPP_OnSelectionChanged"/>
                 </DockPanel>
                 
-                <TableView Margin="6 6 6 3" Classes="striped"
+                <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
+                <TableView Classes="striped"
                            ItemsSource="{Binding Workspace.DsPhieu}"
                            SelectedItem="{Binding Workspace.SelectedPhieu}"
                            SelectionChanged="TvwPhieu_OnSelectionChanged">
@@ -94,13 +98,14 @@
                         <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
                     </TableView.Columns>
                 </TableView>
+                </DockPanel>
             </DockPanel>
                 
             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
             <!-- Mẻ -->
-            <DockPanel Grid.Row="2">
-                <TableView x:Name="TvwMe" Margin="6"
-                           ItemsSource="{Binding Workspace.TkMe}"
+            <DockPanel Grid.Row="2" Margin="6" Background="{DynamicResource NMBg0}">
+                <TableView x:Name="TvwMe"
+                           ItemsSource="{Binding Workspace?.TkMe}"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TableView.Styles>
                         <Style Selector="TableViewRow">

@@ -8,7 +8,7 @@ namespace QuanLyTTBTv2.Views;
 
 public partial class WndConfig : Window
 {
-    private readonly LocalDbBridge _db = LocalDbBridge.Instance;
+    private readonly SqliteDbBridge _db = SqliteDbBridge.Instance;
     private readonly DbCache _c = DbCache.Instance;
     
     public WndConfig()

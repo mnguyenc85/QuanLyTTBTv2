@@ -11,9 +11,10 @@
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Background="{DynamicResource NMBackgroundBrush}"
+        Background="{DynamicResource NMBg2}"
         Icon="/Assets/avalonia-logo.ico" FontFamily="Times New Roman"
         Title="Quản lý trạm trộn bê tông" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        TransparencyLevelHint="Mica, None"
         Loaded="Window_OnLoaded" Closed="Window_OnClosed">
 
     <Design.DataContext>
@@ -24,7 +25,8 @@
 
     <LayoutTransformControl>
         <DockPanel>
-            <Border BorderBrush="LightGray" BorderThickness="0 0 0 1" DockPanel.Dock="Top">
+            <Border DockPanel.Dock="Top">
+                <!-- Menu -->
                 <Grid ColumnDefinitions="*,Auto">
                     <Menu>
                         <MenuItem Header="Hệ thống">
@@ -48,21 +50,21 @@
                 </Grid>
             </Border>
 
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
-                        Background="{DynamicResource NMStatusbarBrush}">
-                <StackPanel Orientation="Horizontal" Margin="3">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{DynamicResource NMBg3}">
+                <StackPanel Orientation="Horizontal" Margin="3 6">
                     <TextBlock Text="Server: " Foreground="DimGray" />
                     <TextBlock Text="{Binding SrvStatus}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="6 3 3 3">
+                <StackPanel Orientation="Horizontal" Margin="6 6 3 6">
                     <TextBlock Text="{Binding LastAction}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="3">
+                <StackPanel Orientation="Horizontal" Margin="3 6">
                     <TextBlock Text="TG thực hiện: " Foreground="DimGray" />
                     <TextBlock Text="{Binding LastExecTime}" />
                 </StackPanel>
             </StackPanel>
 
+            <DockPanel Background="{DynamicResource NMBg1}">
             <DockPanel DockPanel.Dock="Top" Margin="9 6 3 3">
                 <TextBlock Text="Trạm: " VerticalAlignment="Center" />
                 <Button DockPanel.Dock="Right" VerticalAlignment="Stretch"
@@ -73,7 +75,9 @@
                           ItemsSource="{Binding Workspace.SrvFactories}"
                           DisplayMemberBinding="{Binding Ten}" SelectedItem="{Binding Workspace.SelFactory}" />
             </DockPanel>
-            <TabControl x:Name="TabMain" SelectionChanged="TabMain_OnSelectionChanged">
+            
+            <TabControl x:Name="TabMain" Padding="6" 
+                        SelectionChanged="TabMain_OnSelectionChanged">
                 <!-- Đơn hàng -->
                 <TabItem>
                     <TabItem.Header>
@@ -107,8 +111,12 @@
                             <TextBlock Text="Phiếu in" FontSize="16" VerticalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
+                    
+                    <local:CtlPnlInPhieu/>
                 </TabItem>
             </TabControl>
+            </DockPanel>
+                
         </DockPanel>
     </LayoutTransformControl>
 </husk:AppWindow>

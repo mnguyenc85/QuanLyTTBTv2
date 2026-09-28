@@ -102,7 +102,7 @@ public partial class WorkspaceVM: ViewModelBase
                     if (_tudienDonHang.TryGetValue(tk.DonHangId, out HTDonHangVM? value)) value.TK.FromDBO(tk);
                 }
         }
-        catch { }
+        // catch { }
         finally
         {
             if (_ctsLoadDhTk != null)
@@ -229,10 +229,13 @@ public partial class WorkspaceVM: ViewModelBase
         if (SelectedDonHang == null || SelFactory == null) return;
 
         var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, SelectedDonHang.LocalId);
-        tk.DonHangId = SelectedDonHang.Id;
-        await _srvDb.DonHangTk_SaveAsync(tk);
-        
-        SelectedDonHang.TK.FromDBO(tk);
+        if (tk != null)
+        {
+            tk.DonHangId = SelectedDonHang.Id;
+            await _srvDb.DonHangTk_SaveAsync(tk);
+
+            SelectedDonHang.TK.FromDBO(tk);
+        }
     }
 
     /// <summary>

@@ -5,30 +5,54 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="320"
         Width="600" Height="320"
         x:Class="QuanLyTTBTv2.Views.WndConfig"
-        Title="Cài đặt cấu hình" Background="WhiteSmoke" WindowStartupLocation="CenterOwner"
+        Title="Cài đặt cấu hình" WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource NMBackgroundBrush}"
         Loaded="Window_OnLoaded" Closing="Window_OnClosing">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="6" HorizontalAlignment="Right">
-            <Button x:Name="BtAccep" Content="Lưu" Width="72" HorizontalContentAlignment="Center" Click="BtAccep_OnClick"/>
+            <Button x:Name="BtAccep" Content="Lưu" Width="90" HorizontalContentAlignment="Center" Classes="Success"
+                    Click="BtAccep_OnClick"/>
         </StackPanel>
         
-        <TabControl>
+        <TabControl Padding="6 0">
             <TabItem Header="Server">
-                <StackPanel Background="#fafafa">
-                    <StackPanel Orientation="Horizontal" Margin="6 6 0 6">
+                <StackPanel Background="{DynamicResource NMStatusbarBrush}">
+                    <StackPanel Orientation="Horizontal" Margin="6 12 0 6">
                         <TextBlock Text="Server: " VerticalAlignment="Center" Width="72"/>
-                        <TextBox x:Name="TxtServer" Width="240"/>
+                        <TextBox x:Name="TxtServer" Width="240" Padding="8 6"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="6 0 0 6">
                         <TextBlock Text="Tài khoản: " VerticalAlignment="Center" Width="72"/>
-                        <TextBox x:Name="TxtAccount" Width="240"/>
+                        <TextBox x:Name="TxtAccount" Width="240" Padding="8 6"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="6 0 0 6">
                         <TextBlock Text="Mật mã: " VerticalAlignment="Center" Width="72"/>
-                        <TextBox x:Name="TxtPassword" PasswordChar="*" Width="240"/>
+                        <TextBox x:Name="TxtPassword" PasswordChar="*" Width="240" Padding="8 6"/>
                     </StackPanel>
-                    <Button x:Name="BtTestSrv" Content="Test connection" Margin="78 0 0 0" HorizontalAlignment="Left" Classes="Success"
+                    <Button x:Name="BtTestSrv" Content="Test connection" Margin="78 0 0 0" HorizontalAlignment="Left"
                             Click="BtTestSrv_OnClick"/>
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="In phiếu">
+                <StackPanel Background="{DynamicResource NMStatusbarBrush}">
+                    <TextBlock Text="Công ty" VerticalAlignment="Center" FontWeight="Bold" Margin="6 12 6 6"/>
+                    <DockPanel Margin="12 0 6 6">
+                        <TextBlock Text="Tên: " VerticalAlignment="Center" Width="90"/>
+                        <TextBox x:Name="TxtTenCTy" Padding="8 6"/>
+                    </DockPanel>
+                    <DockPanel Margin="12 0 6 6">
+                        <TextBlock Text="Địa chỉ: " VerticalAlignment="Center" Width="90"/>
+                        <TextBox x:Name="TxtDiaChiCTy" Padding="8 6"/>
+                    </DockPanel>
+                    <DockPanel Margin="12 0 6 6">
+                        <TextBlock Text="Sđt 1: " VerticalAlignment="Center" Width="90"/>
+                        <TextBox x:Name="TxtSdt1" Padding="8 6" Width="150" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <DockPanel Margin="12 0 6 6">
+                        <TextBlock Text="Sđt 2: " VerticalAlignment="Center" Width="90"/>
+                        <TextBox x:Name="TxtSdt2" Padding="8 6" Width="150" HorizontalAlignment="Left"/>
+                    </DockPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

@@ -11,7 +11,7 @@ public class DbCache
     public static DbCache Instance => _instance.Value;
     #endregion
 
-    private readonly LocalDbBridge _db = LocalDbBridge.Instance;
+    private readonly SqliteDbBridge _db = SqliteDbBridge.Instance;
 
     public string AppPath { get; set; }
     public string DocketPath { get; set; }

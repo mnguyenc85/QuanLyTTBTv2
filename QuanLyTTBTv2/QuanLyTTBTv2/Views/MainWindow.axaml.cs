@@ -16,7 +16,7 @@ namespace QuanLyTTBTv2.Views
 {
     public partial class MainWindow : AppWindow
     {
-        private readonly LocalDbBridge _ldb = LocalDbBridge.Instance;
+        private readonly SqliteDbBridge _ldb = SqliteDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
 
         private readonly MainViewModel _vm = new();

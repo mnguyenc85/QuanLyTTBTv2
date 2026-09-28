@@ -8,17 +8,32 @@ namespace QuanLyTTBTv2.Utilities.Converters;
 
 public class TableViewRowBgConverter: IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    private static SolidColorBrush Brush(byte alpha, byte r, byte g, byte b)
+        => new(Color.FromArgb(alpha, r, g, b));
+
+    private static readonly IBrush TentpBrush = Brush(64, 230, 230, 160);
+    private static readonly IBrush CpcBrush   = Brush(64, 210, 210, 210);
+    private static readonly IBrush MeBrush    = Brush(64, 255, 255, 255);
+    private static readonly IBrush TongBrush  = Brush(64, 230, 230, 160);
+
+    public object Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture)
     {
         if (value is HTMeVM me)
-            switch (me.Css)
+        {
+            return me.Css switch
             {
-                case "tentp": return Brushes.Beige;
-                case "cpc": return Brushes.WhiteSmoke;
-                case "me": return Brushes.White;
-                case "tong": return Brushes.Beige;
-            }
-            
+                "tentp" => TentpBrush,
+                "cpc"   => CpcBrush,
+                "me"    => MeBrush,
+                "tong"  => TongBrush,
+                _       => Brushes.Transparent
+            };
+        }
+
         return Brushes.Transparent;
     }
 

@@ -10,7 +10,7 @@
                    FontWeight="Bold"
                    Margin="0 6 0 0" />
 
-        <TextBox Margin="6 0 2 0"
+        <TextBox Margin="6 0 2 0" Padding="8 6"
                  Text="{Binding Text, ElementName=root}"
                  PlaceholderText="{Binding PlaceholderText, ElementName=root}">
 
