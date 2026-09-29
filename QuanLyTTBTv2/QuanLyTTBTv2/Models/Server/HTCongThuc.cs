@@ -13,7 +13,7 @@ public class HTCongThuc
     [Column(Name = "mac")] public string? Mac { get; set; } 
     [Column(Name = "slump")] public string? Slump { get; set; } 
     [Column(Name = "wcratio")] public double? WcRatio { get; set; } 
-    [Column(Name = "kthat")] public double? KThat { get; set; } 
+    [Column(Name = "kthat")] public double? KichThuocHat { get; set; } 
     [Column(Name = "klnuoc")] public double? KlNuoc { get; set; } 
     [Column(Name = "sotp")] public int? SoTp { get; set; }
     

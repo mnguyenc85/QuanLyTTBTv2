@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using MsBox.Avalonia;
@@ -76,5 +77,27 @@ public partial class WndConfig : Window
             
         await comm.Connect(srv, user, pass);
         comm.SyncDb();
+    }
+
+    private async void BtCreateCSDL_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var ldb = new LocalDbBridge();
+        try
+        {
+            ldb.CreateDb();
+            ldb.Initialize();
+            ldb.SyncSchema();
+
+            var box = MessageBoxManager
+                .GetMessageBoxStandard("Kết nối csdl", $"Kết nối thành công!");
+            await box.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+            var box = MessageBoxManager
+                .GetMessageBoxStandard("Kết nối csdl", $"Lỗi: không kết nối được!");
+            await box.ShowAsync();
+        }
     }
 }

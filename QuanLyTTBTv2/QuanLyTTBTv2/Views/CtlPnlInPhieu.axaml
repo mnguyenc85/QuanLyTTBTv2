@@ -3,15 +3,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:nmc="clr-namespace:NCMAvaControls;assembly=NCMAvaControls"
+             xmlns:vm="using:QuanLyTTBTv2.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
-             x:Class="QuanLyTTBTv2.Views.CtlPnlInPhieu">
+             x:Class="QuanLyTTBTv2.Views.CtlPnlInPhieu"
+             x:DataType="vm:CtlPnlInPhieuVM"
+             Loaded="Control_OnLoaded">
+    
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:CtlPnlInPhieuVM />
+    </Design.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="360"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Background="{DynamicResource NMStatusbarBrush}" CornerRadius="3" MinWidth="264">
+        <Border Grid.Column="0" Background="{DynamicResource NMBg2}" CornerRadius="3" MinWidth="264">
             <DockPanel >
                 <DockPanel DockPanel.Dock="Bottom" Margin="3 0 6 3" LastChildFill="False">
                     <nmc:NMPaginator x:Name="PgPhieu"
@@ -37,7 +47,7 @@
             </DockPanel>
         </Border>
         
-        <GroupBox Grid.Column="2" Padding="3 6">
+        <GroupBox Grid.Column="2" Padding="3 6" DataContext="{Binding Workspace.CurInPhieu}">
             <GroupBox.Header>
                 <TextBlock Text="Dữ liệu in" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
             </GroupBox.Header>
@@ -45,11 +55,11 @@
             <StackPanel>
                 <DockPanel Margin="0 3">
                     <TextBlock Text="Số phiếu:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                    <TextBox HorizontalAlignment="Left" Width="150" Padding="8 6"/>
+                    <TextBox HorizontalAlignment="Left" Width="150" Padding="8 6" Text="{Binding SoPhieu}"/>
                 </DockPanel>
                 <DockPanel Margin="0 3">
                     <TextBlock Text="Ngày trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                    <TextBox HorizontalAlignment="Stretch" Padding="8 6"/>
+                    <TextBox HorizontalAlignment="Stretch" Padding="8 6" Text="{Binding NgayTron}"/>
                 </DockPanel>
                 <DockPanel Margin="0 3">
                     <TextBlock Text="TG rời trạm:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>

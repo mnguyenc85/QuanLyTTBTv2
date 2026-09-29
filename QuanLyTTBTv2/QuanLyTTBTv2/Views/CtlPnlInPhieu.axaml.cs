@@ -1,16 +1,23 @@
 ﻿using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
+using QuanLyTTBTv2.ViewModels;
 
 namespace QuanLyTTBTv2.Views;
 
 public partial class CtlPnlInPhieu : UserControl
 {
+    private CtlPnlInPhieuVM? _vm;
+    
     public CtlPnlInPhieu()
     {
         InitializeComponent();
+    }
+    
+    private void Control_OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        _vm = DataContext as CtlPnlInPhieuVM;
     }
     
     private void NMPaginator_OnPageClicked(object? sender, int e)

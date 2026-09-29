@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
+using QuanLyTTBTv2.Models.Local;
+using QuanLyTTBTv2.ViewModels.Server;
 
 namespace QuanLyTTBTv2.ViewModels.Printing;
 
@@ -31,4 +34,147 @@ public partial class InPhieuVM: ViewModelBase
     [ObservableProperty] private double _ttTron;
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
+    
+    public void FromDO(DbInPhieu o)
+    {
+        Id = o.Id;
+        PhieuId = o.PhieuId;
+
+        SoPhieu = o.SoPhieu;
+        NgayTron = o.NgayTron;
+        TgRoiTram = o.TgRoiTram;
+
+        KhachHang = o.KhachHang;
+        DiaChiKH = o.DiaChiKH;
+
+        DuAn = o.DuAn;
+        CongTrinh = o.CongTrinh;
+        HangMuc = o.HangMuc;
+        DiaDiem = o.DiaDiem;
+
+        Bsx = o.Bsx;
+        LaiXe = o.LaiXe;
+
+        MacBeTong = o.MacBeTong;
+        DoSut = o.DoSut;
+        CotLieuMax = o.CotLieuMax;
+        KepChi = o.KepChi;
+
+        TtTron = o.TtTron;
+        TtTichLuy = o.TtTichLuy;
+        KlTron = o.KlTron;
+    }
+
+
+    public void ToDO(DbInPhieu o)
+    {
+        o.Id = Id;
+        o.PhieuId = PhieuId;
+
+        o.SoPhieu = SoPhieu;
+        o.NgayTron = NgayTron;
+        o.TgRoiTram = TgRoiTram;
+
+        o.KhachHang = KhachHang;
+        o.DiaChiKH = DiaChiKH;
+
+        o.DuAn = DuAn;
+        o.CongTrinh = CongTrinh;
+        o.HangMuc = HangMuc;
+        o.DiaDiem = DiaDiem;
+
+        o.Bsx = Bsx;
+        o.LaiXe = LaiXe;
+
+        o.MacBeTong = MacBeTong;
+        o.DoSut = DoSut;
+        o.CotLieuMax = CotLieuMax;
+        o.KepChi = KepChi;
+
+        o.TtTron = TtTron;
+        o.TtTichLuy = TtTichLuy;
+        o.KlTron = KlTron;
+    }
+
+    public void Clear()
+    {
+        Id = -1;
+        PhieuId = -1;
+
+        SoPhieu = "";
+        NgayTron = "";
+        TgRoiTram = "";
+
+        KhachHang = "";
+        DiaChiKH = "";
+
+        DuAn = "";
+        CongTrinh = "";
+        HangMuc = "";
+        DiaDiem = "";
+
+        Bsx = "";
+        LaiXe = "";
+
+        MacBeTong = "";
+        DoSut = "";
+        CotLieuMax = "";
+        KepChi = "";
+
+        TtTron = 0;
+        TtTichLuy = 0;
+        KlTron = 0;
+    }
+
+    public void CopyFrom(HTDonHangVM? dh, HTPhieuVM ph)
+    {
+        Id = -1;
+        PhieuId = ph.Id;
+
+        SoPhieu = ph.Sophieu;
+        NgayTron = ph.Tgkt.ToString("MM/dd/yyyy HH:mm:ss");
+        TgRoiTram = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
+        if (dh != null)
+        {
+            KhachHang = dh.KhachHang;
+            DiaChiKH = dh.DiaChiKH;
+
+            DuAn = dh.DADuAn;
+            CongTrinh = dh.DACongTrinh;
+            HangMuc = dh.DAHangMuc;
+            DiaDiem = dh.DADiaChi;
+        }
+        else
+        {
+            KhachHang = "";
+            DiaChiKH = "";
+            DuAn = "";
+            CongTrinh = "";
+            HangMuc = "";
+            DiaDiem = "";
+        }
+
+        Bsx = ph.Bsx;
+        LaiXe = ph.Lx;
+
+        if (ph.CongThuc != null)
+        {
+            MacBeTong = ph.CongThuc.Mac;
+            DoSut = ph.CongThuc.Slump;
+            CotLieuMax = ph.CongThuc.KichThuocHat.ToString();
+        }
+        else
+        {
+            MacBeTong = "";
+            DoSut = "";
+            CotLieuMax = "";
+        }
+
+        KepChi = "";
+
+        TtTron = ph.Ttht;
+        TtTichLuy = ph.TtDon;
+        KlTron = ph.Klht;    
+    }
 }

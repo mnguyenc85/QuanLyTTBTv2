@@ -13,7 +13,15 @@ public partial class HTDonHangVM: ViewModelBase
     [ObservableProperty] private string? _ma;
     
     [ObservableProperty] private string? _khachHang;
+    public string? DiaChiKH { get; set; }
+    /// <summary>
+    /// Chuỗi gộp dự án - công trình - hang mục
+    /// </summary>
     [ObservableProperty] private string? _duAn;
+    public string? DADuAn { get; set; }
+    public string? DACongTrinh { get; set; }
+    public string? DAHangMuc { get; set; }
+    public string? DADiaChi { get; set; }
 
     [ObservableProperty] private double _kl;
 
@@ -37,9 +45,34 @@ public partial class HTDonHangVM: ViewModelBase
         Id = o.Id;
         LocalId = o.LocalId;
         Ma = o.Ma;
-        KhachHang = o.KhachHang?.Ten;
-        // DuAn = $"{dh.DaId} - {dh.CtId} - {dh.HmId}";
-        DuAn = $"{o.DuAn} - {o.CongTrinh} - {o.HangMuc}";
+        if (o.KhachHang != null)
+        {
+            KhachHang = o.KhachHang.Ten;
+            DiaChiKH = o.KhachHang.Diachi;
+        }
+        else
+        {
+            KhachHang = "";
+            DiaChiKH = "";
+        }
+
+        if (o.DuAn != null)
+        {
+            // DuAn = $"{dh.DaId} - {dh.CtId} - {dh.HmId}";
+            DuAn = $"{o.DuAn} - {o.CongTrinh} - {o.HangMuc}";
+            DADuAn = o.DuAn;
+            DACongTrinh = o.CongTrinh;
+            DAHangMuc = o.HangMuc;
+            DADiaChi = o.DiaChi;
+        }
+        else
+        {
+            DADuAn = "";
+            DACongTrinh = "";
+            DAHangMuc = "";
+            DADiaChi = "";
+        }
+
         Kl = o.Klht;
         Tgbd = o.CreatedAt;
         Tgkt = o.Tght ?? DateTime.MinValue;

@@ -43,10 +43,10 @@ public partial class CtlDsDonHangVM: ViewModelBase
         Init();
     }
     
-    public CtlDsDonHangVM(WorkspaceVM ws, MainViewModel mainvm)
+    public CtlDsDonHangVM(MainViewModel mainvm)
     {
-        Workspace = ws;
         MainVM = mainvm;
+        Workspace = mainvm.Workspace;
         FilterDonHangCommand = new RelayCommand(FilterDonHang);
         Init();
     }
@@ -63,7 +63,7 @@ public partial class CtlDsDonHangVM: ViewModelBase
     private async void FilterDonHang()
     {
         if (Workspace == null || Workspace.SelFactory == null) return;
-
+        
         MainVM.LastAction = "Lấy đơn hàng";
         MainVM.LastExecTime = "...";
         _stopwatch.Restart();

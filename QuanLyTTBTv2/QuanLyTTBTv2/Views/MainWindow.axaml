@@ -87,11 +87,11 @@
                             <TextBlock Text="Đơn hàng" FontSize="16" VerticalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
-                    <local:CtlDsDonHang DataContext="{Binding DhVM}"/>
+                    <local:CtlDsDonHang DataContext="{Binding CtlDonHangVM}"/>
                 </TabItem>
 
                 <!-- Phiếu -->
-                <TabItem>
+                <TabItem >
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="IconTabPhieu" Source="../Assets/concrete_truck_2_64.png" Width="24"
@@ -99,7 +99,7 @@
                             <TextBlock Text="Phiếu trộn" FontSize="16" VerticalAlignment="Center" />
                         </StackPanel>
                     </TabItem.Header>
-                    <local:CtlDsPhieu x:Name="CtlDsPh" DataContext="{Binding PhieuVM}"/>
+                    <local:CtlDsPhieu x:Name="CtlDsPh" DataContext="{Binding CtlPhieuVM}"/>
                 </TabItem>
                 
                 <!-- Phiếu đã in -->
@@ -112,7 +112,7 @@
                         </StackPanel>
                     </TabItem.Header>
                     
-                    <local:CtlPnlInPhieu/>
+                    <local:CtlPnlInPhieu DataContext="{Binding CtlInPhieuVM}"/>
                 </TabItem>
             </TabControl>
             </DockPanel>

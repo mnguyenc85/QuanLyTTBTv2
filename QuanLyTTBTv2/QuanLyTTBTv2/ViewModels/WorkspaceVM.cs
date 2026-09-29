@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Models.Server;
 using QuanLyTTBTv2.Services;
+using QuanLyTTBTv2.ViewModels.Printing;
 using QuanLyTTBTv2.ViewModels.Server;
 
 namespace QuanLyTTBTv2.ViewModels;
@@ -17,10 +18,12 @@ public partial class WorkspaceVM: ViewModelBase
     private readonly SrvDbBridge _srvDb;
     private CancellationTokenSource? _ctsLoadDhTk;
     
+    // ----- Factory
     public ObservableCollection<SrvFactory> SrvFactories { get; set; } = [];
     [ObservableProperty] private SrvFactory? _selFactory;
 
-    private Dictionary<long, HTDonHangVM> _tudienDonHang = [];
+    // ----- Đơn hàng
+    private readonly Dictionary<long, HTDonHangVM> _tudienDonHang = [];
     public ObservableCollection<HTDonHangVM> DsDonHang { get; set; } = [];
     [ObservableProperty] private HTDonHangVM? _selectedDonHang;
     
@@ -34,6 +37,7 @@ public partial class WorkspaceVM: ViewModelBase
     /// </summary>
     public List<CHThanhPhan> DsMaThanhPhan { get; } = [];
     
+    // ----- Phiếu & mẻ 
     public ObservableCollection<HTPhieuVM> DsPhieu { get; set; } = [];
     [ObservableProperty] private HTPhieuVM? _selectedPhieu;
     
@@ -41,6 +45,11 @@ public partial class WorkspaceVM: ViewModelBase
     /// Hiển thị mẻ
     /// </summary>
     public ObservableCollection<HTMeVM> TkMe { get; set; } = [];
+    
+    // ----- Phiếu in
+    [ObservableProperty] private InPhieuVM? _curInPhieu;
+    
+    public WorkspaceVM() { }
     
     public WorkspaceVM(SrvDbBridge srv)
     {
@@ -267,4 +276,26 @@ public partial class WorkspaceVM: ViewModelBase
         
         System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
     }
+
+
+    public long LoadPhieuInByPhieuTron()
+    {
+        
+        CurInPhieu ??= new InPhieuVM();
+        
+        if (SelectedPhieu == null || SelectedPhieu.Id <= 0)
+        {
+            CurInPhieu?.Clear();
+            return -1;
+        }
+
+        if (SelectedPhieu.Id != CurInPhieu.PhieuId)
+        {
+            CurInPhieu.CopyFrom(SelectedDonHang, SelectedPhieu);
+            return CurInPhieu.Id;
+        }
+
+        return 0;
+    }
+    
 }

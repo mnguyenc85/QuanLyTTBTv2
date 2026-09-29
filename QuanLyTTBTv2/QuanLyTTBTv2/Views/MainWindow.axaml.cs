@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -124,9 +125,11 @@ namespace QuanLyTTBTv2.Views
                 {
                     Level = GrowlLevel.Warning,
                     Title = "Thông báo",
-                    Content = "Tính năng này đang được thử nghiệm."
+                    Content = "Tính năng này đang được thử nghiệm.",
+                    IsTabStop = false,
                 };
-                appSurface.PopGrowl(notification);
+                
+                _ = ShowGrowl(appSurface, notification, 3000);
             }
         }
         
@@ -153,6 +156,18 @@ namespace QuanLyTTBTv2.Views
             dark = new Bitmap(stream);
             light = ImageHelper.Invert(dark);
         }
+        
+        private async Task ShowGrowl(
+            AppSurface appSurface,
+            GrowlItem notification,
+            int milliseconds = 3000)
+        {
+            appSurface.PopGrowl(notification);
+
+            await Task.Delay(milliseconds);
+
+            notification.Dismiss();
+        }
 
         #endregion
         #endregion
@@ -163,28 +178,38 @@ namespace QuanLyTTBTv2.Views
             if (!IsLoaded) return;
 
             CtlDsPh.IsActive = TabMain.SelectedIndex == 1;
-            
-            if (TabMain.SelectedIndex == 1 && TabMain.SelectedIndex != _lastTabIndex)
+
+            if (TabMain.SelectedIndex != _lastTabIndex)
             {
-                System.Diagnostics.Debug.WriteLine("Selected tab 1: Phiếu");
-                
-                long isDHChanged = _vm.PhieuVM.CheckSelectedDonHangChanged(); 
-                if (isDHChanged != 0)
+                switch (TabMain.SelectedIndex)
                 {
-                    _vm.Workspace.ClearCurDonHangData();
-                    _vm.Workspace.ClearDsPhieu();
+                    case 1:
+                        System.Diagnostics.Debug.WriteLine("Selected tab 1: Phiếu");
 
-                    if (isDHChanged > 0)
-                    {
-                        await _vm.PhieuVM.AutoLoadChiTietDonHang();
-                        CtlDsPh.ReCreateTblMeColumns();
-                        await _vm.PhieuVM.AutoLoadDsPhieu();
-                    }
+                        long isDHChanged = _vm.CtlPhieuVM.CheckSelectedDonHangChanged();
+                        if (isDHChanged != 0)
+                        {
+                            _vm.Workspace.ClearCurDonHangData();
+                            _vm.Workspace.ClearDsPhieu();
+
+                            if (isDHChanged > 0)
+                            {
+                                await _vm.CtlPhieuVM.AutoLoadChiTietDonHang();
+                                CtlDsPh.ReCreateTblMeColumns();
+                                await _vm.CtlPhieuVM.AutoLoadDsPhieu();
+                            }
+                        }
+                        break;
+                    case 2:
+                        System.Diagnostics.Debug.WriteLine("Selected tab 2: In phiếu");
+
+                        _vm.Workspace.LoadPhieuInByPhieuTron();
+                        break;
                 }
-            }
-            
+                
 
-            _lastTabIndex = TabMain.SelectedIndex;
+                _lastTabIndex = TabMain.SelectedIndex;
+            }
         }
         
         #region Test

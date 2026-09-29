@@ -42,14 +42,15 @@ public partial class CtlDsPhieuVM: ViewModelBase
     
     public CtlDsPhieuVM()
     {
+        // Chỉ để dùng khi designer
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
         Init();
     }
     
-    public CtlDsPhieuVM(WorkspaceVM ws, MainViewModel mainvm)
+    public CtlDsPhieuVM(MainViewModel mainvm)
     {
-        Workspace = ws;
         MainVM = mainvm;
+        Workspace = mainvm.Workspace;
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
         Init();
     }
@@ -115,6 +116,10 @@ public partial class CtlDsPhieuVM: ViewModelBase
         MainVM.LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
     }
 
+    /// <summary>
+    /// Kiểm tra đơn hàng hiện tại có thay đổi không
+    /// </summary>
+    /// <returns>Id/0:Not changed/-1:null</returns>
     public long CheckSelectedDonHangChanged()
     {
         if (Workspace == null) return 0;

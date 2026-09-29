@@ -6,7 +6,7 @@
         Width="600" Height="320"
         x:Class="QuanLyTTBTv2.Views.WndConfig"
         Title="Cài đặt cấu hình" WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource NMBackgroundBrush}"
+        Background="{DynamicResource NMBg2}"
         Loaded="Window_OnLoaded" Closing="Window_OnClosing">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="6" HorizontalAlignment="Right">
@@ -16,7 +16,7 @@
         
         <TabControl Padding="6 0">
             <TabItem Header="Server">
-                <StackPanel Background="{DynamicResource NMStatusbarBrush}">
+                <StackPanel Background="{DynamicResource NMBg1}">
                     <StackPanel Orientation="Horizontal" Margin="6 12 0 6">
                         <TextBlock Text="Server: " VerticalAlignment="Center" Width="72"/>
                         <TextBox x:Name="TxtServer" Width="240" Padding="8 6"/>
@@ -34,8 +34,18 @@
                 </StackPanel>
             </TabItem>
             
+            <TabItem Header="CSDL">
+                <StackPanel Background="{DynamicResource NMBg1}">
+                    <StackPanel Orientation="Horizontal" Margin="6 12 0 6">
+                        <TextBlock Text="Tạo mới: " VerticalAlignment="Center" Width="72"/>
+                        <Button x:Name="BtCreateCSDL" Content="Test connection"
+                                Click="BtCreateCSDL_OnClick"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            
             <TabItem Header="In phiếu">
-                <StackPanel Background="{DynamicResource NMStatusbarBrush}">
+                <StackPanel Background="{DynamicResource NMBg1}">
                     <TextBlock Text="Công ty" VerticalAlignment="Center" FontWeight="Bold" Margin="6 12 6 6"/>
                     <DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Tên: " VerticalAlignment="Center" Width="90"/>
