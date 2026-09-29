@@ -23,6 +23,11 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
+    <husk:AppWindow.Resources>
+        <vmc:NullToBoolConverter x:Key="Null2BoolCvt"/>
+    </husk:AppWindow.Resources>
+
+    
     <LayoutTransformControl>
         <DockPanel>
             <Border DockPanel.Dock="Top">
@@ -91,7 +96,7 @@
                 </TabItem>
 
                 <!-- Phiếu -->
-                <TabItem >
+                <TabItem IsEnabled="{Binding Workspace.SelectedDonHang, Converter={StaticResource Null2BoolCvt}}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="IconTabPhieu" Source="../Assets/concrete_truck_2_64.png" Width="24"
@@ -103,7 +108,7 @@
                 </TabItem>
                 
                 <!-- Phiếu đã in -->
-                <TabItem>
+                <TabItem IsEnabled="{Binding Workspace.SelectedPhieu, Converter={StaticResource Null2BoolCvt}}">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="IconTabPhieuIn" Source="../Assets/printed_document_64.png" Width="24"

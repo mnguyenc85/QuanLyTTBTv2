@@ -18,9 +18,7 @@ public partial class InPhieuVM: ViewModelBase
     [ObservableProperty] private string? _khachHang;
     [ObservableProperty] private string? _diaChiKH;
     
-    [ObservableProperty] private string? _duAn;
     [ObservableProperty] private string? _congTrinh;
-    [ObservableProperty] private string? _hangMuc;
     [ObservableProperty] private string? _diaDiem;
     
     [ObservableProperty] private string? _bsx;
@@ -47,9 +45,7 @@ public partial class InPhieuVM: ViewModelBase
         KhachHang = o.KhachHang;
         DiaChiKH = o.DiaChiKH;
 
-        DuAn = o.DuAn;
         CongTrinh = o.CongTrinh;
-        HangMuc = o.HangMuc;
         DiaDiem = o.DiaDiem;
 
         Bsx = o.Bsx;
@@ -78,9 +74,7 @@ public partial class InPhieuVM: ViewModelBase
         o.KhachHang = KhachHang;
         o.DiaChiKH = DiaChiKH;
 
-        o.DuAn = DuAn;
         o.CongTrinh = CongTrinh;
-        o.HangMuc = HangMuc;
         o.DiaDiem = DiaDiem;
 
         o.Bsx = Bsx;
@@ -108,9 +102,7 @@ public partial class InPhieuVM: ViewModelBase
         KhachHang = "";
         DiaChiKH = "";
 
-        DuAn = "";
         CongTrinh = "";
-        HangMuc = "";
         DiaDiem = "";
 
         Bsx = "";
@@ -140,18 +132,14 @@ public partial class InPhieuVM: ViewModelBase
             KhachHang = dh.KhachHang;
             DiaChiKH = dh.DiaChiKH;
 
-            DuAn = dh.DADuAn;
-            CongTrinh = dh.DACongTrinh;
-            HangMuc = dh.DAHangMuc;
+            CongTrinh = dh.DuAn;
             DiaDiem = dh.DADiaChi;
         }
         else
         {
             KhachHang = "";
             DiaChiKH = "";
-            DuAn = "";
             CongTrinh = "";
-            HangMuc = "";
             DiaDiem = "";
         }
 

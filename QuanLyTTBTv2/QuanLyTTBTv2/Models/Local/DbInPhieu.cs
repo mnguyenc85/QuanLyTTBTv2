@@ -26,14 +26,8 @@ public class DbInPhieu
     [Column(Name = "dia_chi_kh")]
     public string? DiaChiKH { get; set; }
 
-    [Column(Name = "du_an")]
-    public string? DuAn { get; set; }
-
     [Column(Name = "cong_trinh")]
     public string? CongTrinh { get; set; }
-
-    [Column(Name = "hang_muc")]
-    public string? HangMuc { get; set; }
 
     [Column(Name = "dia_diem")]
     public string? DiaDiem { get; set; }

@@ -247,36 +247,6 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
 
-    /// <summary>
-    /// Sử dụng hàm này để đảm bảo DsDonHang và _tudienDonHang
-    /// </summary>
-    public void AddDonHang(HTDonHang dh, int stt)
-    {
-        var vm = new HTDonHangVM(dh) { Stt = stt };
-        DsDonHang.Add(vm);
-        _tudienDonHang.TryAdd(dh.Id, vm);
-    }
-    
-    public void ClearDsDonHang()
-    {
-        DsDonHang.Clear();
-        _tudienDonHang.Clear();
-    }
-    
-    public void ClearCurDonHangData()
-    {
-        DsThanhPhan.Clear();
-    }
-
-    public void ClearDsPhieu()
-    {
-        SelectedPhieu = null;
-        DsPhieu.Clear();
-        TkMe.Clear();
-        
-        System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
-    }
-
 
     public long LoadPhieuInByPhieuTron()
     {
@@ -298,4 +268,36 @@ public partial class WorkspaceVM: ViewModelBase
         return 0;
     }
     
+    
+    /// <summary>
+    /// Sử dụng hàm này để đảm bảo DsDonHang và _tudienDonHang
+    /// </summary>
+    public void AddDonHang(HTDonHang dh, int stt)
+    {
+        var vm = new HTDonHangVM(dh) { Stt = stt };
+        DsDonHang.Add(vm);
+        _tudienDonHang.TryAdd(dh.Id, vm);
+    }
+    
+    public void ClearDsDonHang()
+    {
+        DsDonHang.Clear();
+        _tudienDonHang.Clear();
+        // TODO: check
+        SelectedPhieu = null;
+    }
+    
+    public void ClearCurDonHangData()
+    {
+        DsThanhPhan.Clear();
+    }
+
+    public void ClearDsPhieu()
+    {
+        SelectedPhieu = null;
+        DsPhieu.Clear();
+        TkMe.Clear();
+        
+        System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
+    }
 }

@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using QuanLyTTBTv2.ViewModels.Printing;
-using QuanLyTTBTv2.ViewModels.Server;
+﻿using QuanLyTTBTv2.ViewModels.Printing;
 
 namespace QuanLyTTBTv2.ViewModels;
 
@@ -17,7 +15,12 @@ public partial class CtlPnlInPhieuVM: ViewModelBase
             CurInPhieu = new InPhieuVM()
             {
                 Id = -1,
-                SoPhieu = "Test000"
+                SoPhieu = "Test000",
+                NgayTron = "01/01/0001",
+                TgRoiTram = "00:00 AM",
+                KhachHang = "Khách hàng",
+                DiaChiKH = "Địa chỉ KH",
+                CongTrinh = "Dự án - công trình - hạng mục"
             }
         };
     }

@@ -59,7 +59,7 @@ public partial class HTDonHangVM: ViewModelBase
         if (o.DuAn != null)
         {
             // DuAn = $"{dh.DaId} - {dh.CtId} - {dh.HmId}";
-            DuAn = $"{o.DuAn} - {o.CongTrinh} - {o.HangMuc}";
+            DuAn = GetTenCongTrinh(o.DuAn, o.CongTrinh, o.HangMuc);
             DADuAn = o.DuAn;
             DACongTrinh = o.CongTrinh;
             DAHangMuc = o.HangMuc;
@@ -76,5 +76,22 @@ public partial class HTDonHangVM: ViewModelBase
         Kl = o.Klht;
         Tgbd = o.CreatedAt;
         Tgkt = o.Tght ?? DateTime.MinValue;
+    }
+
+    private static string GetTenCongTrinh(string? da, string? ct, string? hm)
+    {
+        if (!string.IsNullOrWhiteSpace(hm))
+        {
+            return $"{da} - {ct} - {hm}";
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(ct))
+            {
+                return $"{da} - {ct}";
+            }
+        }
+
+        return da;
     }
 }
