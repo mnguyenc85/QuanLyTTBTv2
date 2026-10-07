@@ -36,6 +36,8 @@
                      <SolidColorBrush x:Key="NMBg2" Color="#F0F0F0" />
                      <SolidColorBrush x:Key="NMBg3" Color="#E0E0E0" />
                      
+                     <SolidColorBrush x:Key="NMStatusBg" Color="#FFE0B2" />
+                     
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64.png</Bitmap>
                      
                      <SolidColorBrush x:Key="MyStripeOddBrush" Color="#40F0F0F0" />
@@ -48,6 +50,8 @@
                      <SolidColorBrush x:Key="NMBg1" Color="#161616" />
                      <SolidColorBrush x:Key="NMBg2" Color="#1F1F1F" />
                      <SolidColorBrush x:Key="NMBg3" Color="#303030" />
+                     
+                     <SolidColorBrush x:Key="NMStatusBg" Color="#FFE0B2" />
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64_i.png</Bitmap>
 

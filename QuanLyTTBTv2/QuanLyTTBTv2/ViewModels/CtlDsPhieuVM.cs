@@ -106,6 +106,8 @@ public partial class CtlDsPhieuVM: ViewModelBase
     {
         if (Workspace == null) return;
         
+        MainVM.LastAction = "Lấy phiếu";
+        MainVM.LastExecTime = "...";
         _stopwatch.Restart();
             
         _phCond.Offset = (p - 1) * _phCond.Limit; 

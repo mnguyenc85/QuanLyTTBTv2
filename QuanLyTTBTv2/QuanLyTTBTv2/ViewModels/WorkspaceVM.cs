@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using QuanLyTTBTv2.Models;
+using QuanLyTTBTv2.Models.Local;
 using QuanLyTTBTv2.Models.Server;
 using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.ViewModels.Printing;
@@ -16,6 +17,7 @@ namespace QuanLyTTBTv2.ViewModels;
 public partial class WorkspaceVM: ViewModelBase
 {
     private readonly SrvDbBridge _srvDb;
+    private readonly DbCache _cache = DbCache.Instance;
     private CancellationTokenSource? _ctsLoadDhTk;
     
     // ----- Factory
@@ -47,9 +49,13 @@ public partial class WorkspaceVM: ViewModelBase
     public ObservableCollection<HTMeVM> TkMe { get; set; } = [];
     
     // ----- Phiếu in
+    public ObservableCollection<InPhieuVM> DsPhieuIn { get; set; } = [];
     [ObservableProperty] private InPhieuVM? _curInPhieu;
-    
-    public WorkspaceVM() { }
+
+    public WorkspaceVM()
+    {
+        _srvDb = new SrvDbBridge();
+    }
     
     public WorkspaceVM(SrvDbBridge srv)
     {
@@ -72,7 +78,7 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
     
-    public async Task LoadDsDonHang(HTDonHangCond cond) {
+    public async Task DsDonHang_Load(HTDonHangCond cond) {
         _ctsLoadDhTk?.Cancel();
 
         // Load dữ liệu đơn hàng
@@ -248,7 +254,7 @@ public partial class WorkspaceVM: ViewModelBase
     }
 
 
-    public long LoadPhieuInByPhieuTron()
+    public long PhieuIn_LoadByPhieuTron()
     {
         
         CurInPhieu ??= new InPhieuVM();
@@ -268,6 +274,55 @@ public partial class WorkspaceVM: ViewModelBase
         return 0;
     }
     
+    /// <summary>
+    /// Lưu phiếu in hiện tại
+    /// </summary>
+    /// <returns>True: nếu save</returns>
+    public async Task<bool> PhieuInSave()
+    {
+        if (CurInPhieu == null) return false;
+        var o = CurInPhieu.CreateDO();
+        await _cache.LocalDB.PhieuIn_SaveAsync(o);
+        return true;
+    }
+
+    public async Task DsPhieuIn_Load(DbInPhieuCond cond, bool byDonHang = false)
+    {
+        var db = _cache.LocalDB;
+        // Load dữ liệu đơn hàng
+        ClearDsPhieuIn();
+
+        if (byDonHang)
+        {
+            cond.PhieuIds.Clear();
+            foreach (var ph in DsPhieu)
+            {
+                cond.PhieuIds.Add(ph.Id);
+            }
+            cond.DonHangId = SelectedDonHang?.Id ?? -1;
+        }
+        else
+        {
+            if (SelectedPhieu == null) return; 
+            cond.PhieuIds.Clear();
+            cond.PhieuId = SelectedPhieu.Id;
+        }
+        
+        if (cond.Changed)
+        {
+            cond.Offset = 0;
+            long total = await db.PhieuIn_CountAsync(cond);
+            cond.Total = (int)total;
+        }
+        
+        var lst = await _cache.LocalDB.PhieuIn_LoadAsync(cond);
+        if (lst == null) return;
+        int stt = cond.Offset;
+        foreach (var ph in lst)
+        {
+            AddPhieuIn(ph, ++stt);
+        }
+    }
     
     /// <summary>
     /// Sử dụng hàm này để đảm bảo DsDonHang và _tudienDonHang
@@ -278,7 +333,16 @@ public partial class WorkspaceVM: ViewModelBase
         DsDonHang.Add(vm);
         _tudienDonHang.TryAdd(dh.Id, vm);
     }
+
+    public void AddPhieuIn(DbInPhieu ph, int stt)
+    {
+        var vm = new InPhieuVM(ph) { Stt = stt };
+        DsPhieuIn.Add(vm);
+    }
     
+    /// <summary>
+    /// Đảm báo xóa đồng bộ DsDonHang và _tudienDonHang
+    /// </summary>
     public void ClearDsDonHang()
     {
         DsDonHang.Clear();
@@ -299,5 +363,10 @@ public partial class WorkspaceVM: ViewModelBase
         TkMe.Clear();
         
         System.Diagnostics.Debug.WriteLine($"ClearDsPhieu: {SelectedPhieu}, {SelFactory}");
+    }
+
+    public void ClearDsPhieuIn()
+    {
+        DsPhieuIn.Clear();
     }
 }

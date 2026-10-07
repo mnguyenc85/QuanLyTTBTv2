@@ -12,7 +12,7 @@
         x:Class="QuanLyTTBTv2.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Background="{DynamicResource NMBg2}"
-        Icon="/Assets/avalonia-logo.ico" FontFamily="Times New Roman"
+        Icon="/Assets/avalonia-logo.ico"
         Title="Quản lý trạm trộn bê tông" WindowStartupLocation="CenterScreen" WindowState="Maximized"
         TransparencyLevelHint="Mica, None"
         Loaded="Window_OnLoaded" Closed="Window_OnClosed">
@@ -55,17 +55,17 @@
                 </Grid>
             </Border>
 
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{DynamicResource NMBg3}">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{DynamicResource NMStatusBg}">
                 <StackPanel Orientation="Horizontal" Margin="3 6">
                     <TextBlock Text="Server: " Foreground="DimGray" />
-                    <TextBlock Text="{Binding SrvStatus}" />
+                    <TextBlock Text="{Binding SrvStatus}" Foreground="Black"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="6 6 3 6">
-                    <TextBlock Text="{Binding LastAction}" />
+                    <TextBlock Text="{Binding LastAction}" Foreground="Black"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="3 6">
                     <TextBlock Text="TG thực hiện: " Foreground="DimGray" />
-                    <TextBlock Text="{Binding LastExecTime}" />
+                    <TextBlock Text="{Binding LastExecTime}" Foreground="Black"/>
                 </StackPanel>
             </StackPanel>
 

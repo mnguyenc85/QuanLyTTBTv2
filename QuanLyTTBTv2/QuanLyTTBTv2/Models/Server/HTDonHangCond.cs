@@ -75,6 +75,7 @@ public class HTDonHangCond
         }
     }
 
+    #region Offset, Limit, Total
     private int _limit = 10;
     /// <summary>
     /// Offet = page * Limit
@@ -98,4 +99,5 @@ public class HTDonHangCond
     /// Tổng số bản ghi theo điều kiện
     /// </summary>
     public int Total { get; set; }
+    #endregion
 }

@@ -262,8 +262,7 @@ public class SrvDbBridge
 
         var query = CreatePhieuQuery(cond);
 
-        query
-            .OrderByDescending((ph, xe, lx, ct) => ph.CreatedAt)
+        query.OrderByDescending((ph, xe, lx, ct) => ph.CreatedAt)
             .Offset(cond.Offset)
             .Limit(cond.Limit);
 

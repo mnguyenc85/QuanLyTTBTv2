@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.ViewModels;
 
 namespace QuanLyTTBTv2.Views;
@@ -52,5 +53,22 @@ public partial class CtlPnlInPhieu : UserControl
         // {
         //     System.Diagnostics.Debug.WriteLine(ex.Message);
         // }
+    }
+
+    private void BtPrint_OnClick(object? sender, RoutedEventArgs e)
+    {
+        // TODO: print
+        // Lưu phiếu đã in
+        _vm?.Workspace.PhieuInSave();
+    }
+
+    private void BtPIByDH_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _vm.DsPhieuIn_LoadByDH();
+    }
+
+    private void BtPIByPhieu_OnClick(object? sender, RoutedEventArgs e)
+    {
+        
     }
 }

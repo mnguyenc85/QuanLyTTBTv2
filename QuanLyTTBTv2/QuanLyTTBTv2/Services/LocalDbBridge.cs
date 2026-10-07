@@ -77,4 +77,65 @@ public class LocalDbBridge
         );
     }
     #endregion
+
+    #region Phiếu in
+    public async Task PhieuIn_SaveAsync(DbInPhieu ph)
+    {
+        if (_db == null) return;
+
+        ph.UpdatedAt = DateTime.Now;
+        if (ph.Id > 0)
+        {
+            await _db.Update<DbInPhieu>()
+                .SetSource(ph)
+                .ExecuteAffrowsAsync();
+        }
+        else
+        {
+            ph.CreatedAt = DateTime.Now;
+            var id = await _db.Insert(ph).ExecuteIdentityAsync();
+            ph.Id = id;
+        }
+    }
+
+    private ISelect<DbInPhieu> PhieuIn_CreateQuery(DbInPhieuCond cond)
+    {
+        var query = _db!
+            .Select<DbInPhieu>();
+
+        if (cond.PhieuId != 0)
+        {
+            query.Where(ph => ph.PhieuId == cond.PhieuId);
+        }
+        else
+        {
+            query.Where(ph => cond.PhieuIds.Contains(ph.PhieuId));
+        }
+
+        return query;
+    }
+    
+    public async Task<List<DbInPhieu>?> PhieuIn_LoadAsync(DbInPhieuCond cond)
+    {
+        if (_db == null) return null;
+            
+        var query = PhieuIn_CreateQuery(cond);
+        query
+            .OrderByDescending((ph) => ph.CreatedAt)
+            .Offset(cond.Offset)
+            .Limit(cond.Limit);
+
+        var rows = await query.ToListAsync();
+
+        return rows;
+    }
+    public async Task<long> PhieuIn_CountAsync(DbInPhieuCond cond)
+    {
+        if (_db == null) return 0;
+
+        var query = PhieuIn_CreateQuery(cond);
+
+        return await query.CountAsync();
+    }
+    #endregion
 }

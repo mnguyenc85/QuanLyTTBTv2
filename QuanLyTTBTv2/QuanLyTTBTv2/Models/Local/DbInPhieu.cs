@@ -1,4 +1,5 @@
-﻿using FreeSql.DataAnnotations;
+﻿using System;
+using FreeSql.DataAnnotations;
 
 namespace QuanLyTTBTv2.Models.Local;
 
@@ -58,4 +59,13 @@ public class DbInPhieu
 
     [Column(Name = "kl_tron")]
     public double KlTron { get; set; }
+    
+    [Column(Name = "flags")]
+    public int Flags { get; set; }
+    
+    [Column(Name = "updated_at")]
+    public DateTime UpdatedAt { get; set; }
+    
+    [Column(Name = "created_at")]
+    public DateTime CreatedAt { get; set; }
 }

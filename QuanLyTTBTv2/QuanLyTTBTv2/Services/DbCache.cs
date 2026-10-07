@@ -12,6 +12,8 @@ public class DbCache
     #endregion
 
     private readonly SqliteDbBridge _db = SqliteDbBridge.Instance;
+    private readonly LocalDbBridge _localdb = new LocalDbBridge();
+    public LocalDbBridge LocalDB => _localdb;
 
     public string AppPath { get; set; }
     public string DocketPath { get; set; }
@@ -38,5 +40,7 @@ public class DbCache
                 Settings.LoadSetting(s);
             }
         }
+
+        _localdb.Initialize();
     }
 }

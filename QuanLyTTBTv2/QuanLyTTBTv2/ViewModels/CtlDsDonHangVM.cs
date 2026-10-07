@@ -62,7 +62,7 @@ public partial class CtlDsDonHangVM: ViewModelBase
     
     private async void FilterDonHang()
     {
-        if (Workspace == null || Workspace.SelFactory == null) return;
+        if (Workspace?.SelFactory == null) return;
         
         MainVM.LastAction = "Lấy đơn hàng";
         MainVM.LastExecTime = "...";
@@ -83,7 +83,7 @@ public partial class CtlDsDonHangVM: ViewModelBase
         // Điều kiện không đổi
         if (!_dhCond.Changed) return;       
             
-        await Workspace.LoadDsDonHang(_dhCond);
+        await Workspace.DsDonHang_Load(_dhCond);
         if (_dhCond.Changed)
         {
             DhTotal = (_dhCond.Total - 1) / _dhCond.Limit + 1;
@@ -102,7 +102,7 @@ public partial class CtlDsDonHangVM: ViewModelBase
         _stopwatch.Restart();
             
         _dhCond.Offset = (p - 1) * _dhCond.Limit; 
-        await Workspace.LoadDsDonHang(_dhCond);
+        await Workspace.DsDonHang_Load(_dhCond);
         DhPage = p;
 
         _stopwatch.Stop();

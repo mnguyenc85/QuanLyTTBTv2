@@ -7,6 +7,8 @@ namespace QuanLyTTBTv2.ViewModels.Printing;
 
 public partial class InPhieuVM: ViewModelBase
 {
+    public int Stt { get; set; }
+    
     public long Id { get; set; }
     
     public long PhieuId { get; set; }
@@ -32,6 +34,13 @@ public partial class InPhieuVM: ViewModelBase
     [ObservableProperty] private double _ttTron;
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
+    
+    public InPhieuVM() { }
+
+    public InPhieuVM(DbInPhieu o)
+    {
+        FromDO(o);
+    }
     
     public void FromDO(DbInPhieu o)
     {
@@ -164,5 +173,12 @@ public partial class InPhieuVM: ViewModelBase
         TtTron = ph.Ttht;
         TtTichLuy = ph.TtDon;
         KlTron = ph.Klht;    
+    }
+
+    public DbInPhieu CreateDO()
+    {
+        var o = new DbInPhieu();
+        ToDO(o);
+        return o;
     }
 }
