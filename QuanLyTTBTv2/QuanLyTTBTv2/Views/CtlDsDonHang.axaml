@@ -18,24 +18,31 @@
    
     <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="274"/>
+                <ColumnDefinition Width="288"/>
                 <ColumnDefinition Width="6"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Background="{DynamicResource NMBg2}" CornerRadius="3">
-                <StackPanel Margin="6">
-                    <TextBlock Text="Thời gian" FontWeight="Bold" />
-                    <StackPanel Margin="6 0 0 0">
-                        <c:DateTimeFilter Title="Từ" Used="{Binding LocDHTu}" DateTime="{Binding LocDHTuTg}"/>
-                        <c:DateTimeFilter Title="Đến" Used="{Binding LocDHDen}" DateTime="{Binding LocDHDenTg}"/>
-                    </StackPanel>
+                <DockPanel Margin="6">
+                    <GroupBox Padding="6" DockPanel.Dock="Top">
+                        <GroupBox.Header>
+                            <TextBlock Text="Lọc đơn hàng" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
+                        </GroupBox.Header>
+                        <StackPanel>
+                            <TextBlock Text="Thời gian" FontWeight="Bold" />
+                            <StackPanel Margin="6 0 0 0">
+                                <c:DateTimeFilter Title="Từ" Used="{Binding LocDHTu}" DateTime="{Binding LocDHTuTg}"/>
+                                <c:DateTimeFilter Title="Đến" Used="{Binding LocDHDen}" DateTime="{Binding LocDHDenTg}"/>
+                            </StackPanel>
 
-                    <c:TextBoxTitle Title="Khách hàng" PlaceholderText="Khách hàng / sđt" Text="{Binding LocDHKH}"/>
-                    <c:TextBoxTitle Title="Công trình" PlaceholderText="Dự án / công trình / hạng mục" Text="{Binding LocDHDuAn}"/>
+                            <c:TextBoxTitle Title="Khách hàng" PlaceholderText="Khách hàng / sđt" Text="{Binding LocDHKH}"/>
+                            <c:TextBoxTitle Title="Công trình" PlaceholderText="Dự án / công trình / hạng mục" Text="{Binding LocDHDuAn}"/>
 
-                    <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
-                            Classes="Success" Content="Tìm kiếm"
-                            Command="{Binding FilterDonHangCommand}"/>
+                            <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0 6"
+                                    Classes="Success" Content="Tìm kiếm"
+                                    Command="{Binding FilterDonHangCommand}"/>
+                        </StackPanel>
+                    </GroupBox>
 
                     <!-- <DropDownButton x:Name="BtShowDHData" Content="Dữ liệu"> -->
                     <!--     <DropDownButton.Flyout> -->
@@ -47,7 +54,7 @@
                     <!--         </MenuFlyout> -->
                     <!--     </DropDownButton.Flyout> -->
                     <!-- </DropDownButton> -->
-                </StackPanel>
+                </DockPanel>
             </Border>
 
             <!-- Bảng đơn hàng -->

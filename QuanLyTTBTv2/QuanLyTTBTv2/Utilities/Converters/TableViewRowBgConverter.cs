@@ -14,7 +14,7 @@ public class TableViewRowBgConverter: IValueConverter
     private static readonly IBrush TentpBrush = Brush(64, 230, 230, 160);
     private static readonly IBrush CpcBrush   = Brush(64, 210, 210, 210);
     private static readonly IBrush MeBrush    = Brush(64, 255, 255, 255);
-    private static readonly IBrush TongBrush  = Brush(64, 230, 230, 160);
+    private static readonly IBrush TongBrush  = Brush(64, 160, 230, 160);
 
     public object Convert(
         object? value,

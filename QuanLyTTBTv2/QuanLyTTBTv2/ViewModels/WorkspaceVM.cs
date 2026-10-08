@@ -52,6 +52,8 @@ public partial class WorkspaceVM: ViewModelBase
     public ObservableCollection<InPhieuVM> DsPhieuIn { get; set; } = [];
     [ObservableProperty] private InPhieuVM? _curInPhieu;
 
+    public ObservableCollection<InPhieuVM> DsPhieuInTK { get; set; } = [];
+    
     public WorkspaceVM()
     {
         _srvDb = new SrvDbBridge();
@@ -99,7 +101,9 @@ public partial class WorkspaceVM: ViewModelBase
             AddDonHang(dh, ++stt);
         }
 
+        // Lấy dữ liệu thống kê hoặc tính
         await LoadDuLieuDhTk();
+        await DonHang_CalTKs();
     }
 
     private async Task LoadDuLieuDhTk()
@@ -237,11 +241,11 @@ public partial class WorkspaceVM: ViewModelBase
     }
 
     /// <summary>
-    /// Tính lại dữ liệu của đơn hàng
+    /// Tính thống kê cho đơn hàng
     /// </summary>
-    public async void DonHangTkHt()
+    public async void DonHang_CalTK()
     {
-        if (SelectedDonHang == null || SelFactory == null) return;
+        if (SelFactory == null || SelectedDonHang == null) return;
 
         var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, SelectedDonHang.LocalId);
         if (tk != null)
@@ -253,7 +257,28 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Tính thống kê cho các đơn hàng hiển thị
+    /// </summary>
+    public async Task DonHang_CalTKs()
+    {
+        if (SelFactory == null) return;
 
+        foreach (var dh in DsDonHang)
+        {
+            if (dh.TK.Id > 0) continue;
+            
+            var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, dh.LocalId);
+            if (tk != null)
+            {
+                tk.DonHangId = dh.Id;
+                await _srvDb.DonHangTk_SaveAsync(tk);
+
+                dh.TK.FromDBO(tk);
+            }
+        }
+    }
+    
     public long PhieuIn_LoadByPhieuTron()
     {
         

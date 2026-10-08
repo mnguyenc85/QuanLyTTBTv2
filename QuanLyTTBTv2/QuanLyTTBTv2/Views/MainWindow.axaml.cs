@@ -80,7 +80,7 @@ namespace QuanLyTTBTv2.Views
         
         private void MniToolsDHTk1_OnClick(object? sender, RoutedEventArgs e)
         {
-            _vm.Workspace.DonHangTkHt();
+            _vm.Workspace.DonHang_CalTK();
         }
         
         private async void MniDHNL_OnClick(object? sender, RoutedEventArgs e)

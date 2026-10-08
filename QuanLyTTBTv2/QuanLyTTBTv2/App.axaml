@@ -40,8 +40,8 @@
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64.png</Bitmap>
                      
-                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#40F0F0F0" />
-                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#40FFFFFF" />
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#30E8E8E8" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#30FFFFFF" />
                  </ResourceDictionary>
 
                  <!-- Dark -->
@@ -55,8 +55,8 @@
                      
                      <Bitmap x:Key="IconClean">avares://QuanLyTTBTv2/Assets/clear_64_i.png</Bitmap>
 
-                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#40F0F0F0" />
-                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#40FFFFFF" />
+                     <SolidColorBrush x:Key="MyStripeOddBrush" Color="#30E8E8E8" />
+                     <SolidColorBrush x:Key="MyStripeEvenBrush" Color="#30FFFFFF" />
                  </ResourceDictionary>
              </ResourceDictionary.ThemeDictionaries>
              

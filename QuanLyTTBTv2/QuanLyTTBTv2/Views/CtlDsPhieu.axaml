@@ -102,43 +102,68 @@
             </DockPanel>
                 
             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
-            <!-- Mẻ -->
-            <DockPanel Grid.Row="2" Margin="6" Background="{DynamicResource NMBg0}">
-                <TableView x:Name="TvwMe"
-                           ItemsSource="{Binding Workspace?.TkMe}"
-                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TableView.Styles>
-                        <Style Selector="TableViewRow">
-                            <Setter Property="Background" Value="{Binding $self.DataContext, 
-                                Converter={StaticResource RowBackgroundConverter}}"/>
-                            <Setter Property="FontWeight" Value="{Binding $self.DataContext, 
-                                Converter={StaticResource RowFontWeightConverter}}"/>
-                        </Style>
-                    </TableView.Styles>
-
-                    <TableView.Columns>
-
-                        <!-- STT -->
-                        <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
-                        <!-- M3 trộn -->
-                        <TableViewColumn Header="M³ trộn" Binding="{Binding M3Tron}" Width="100"/>
-                        <!-- Tổng khối lượng -->
-                        <TableViewColumn Header="Tổng KL" Binding="{Binding TongKL}" Width="100"/>
-
-                        <!-- Thành phần 1 -> 15 -->
-                        <TableViewColumn Header="TP1" Binding="{Binding TPs[0]}" Width="72"/>
-                        <TableViewColumn Header="TP2" Binding="{Binding TPs[1]}" Width="72"/>
-                        <TableViewColumn Header="TP3" Binding="{Binding TPs[2]}" Width="72"/>
-                        
-		                <!-- Thời gian hoàn thành -->
-                        <TableViewColumn Header="TGHT" Binding="{Binding Tght}" Width="100"/>
-                        <!-- Trạng thái -->
-                        <TableViewColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
-
-                    </TableView.Columns>
-                </TableView>
+            
+            <TabControl Grid.Row="2" Padding="0">
+                <!-- Phiếu in -->
+                <TabItem Header="Phiếu in">
+                    <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
+                        <TableView Classes="striped" ItemsSource="{Binding Workspace?.DsPhieuIn}"
+                                   SelectionChanged="TvwPhieu_OnSelectionChanged">
+                            <TableView.Columns>
+                                <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
+                                <TableViewColumn Header="Số phiếu" Binding="{Binding SoPhieu}"/>
+                                <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
+                                <TableViewColumn Header="Công trình" Binding="{Binding CongTrinh}"/>
+                                <TableViewColumn Header="M³ trộn" Binding="{Binding TtTron}"/>
+                                <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtTichLuy}"/>
+                                <TableViewColumn Header="TG in phiếu" Binding="{Binding TgRoiTram}"/>
+                            </TableView.Columns>
+                        </TableView>
+                    </DockPanel>
+                </TabItem>
                 
-            </DockPanel>
+                <!-- Mẻ -->
+                <TabItem Header="Chi tiết mẻ">
+                    <DockPanel Margin="6" Background="{DynamicResource NMBg0}">
+                        <TableView x:Name="TvwMe"
+                                   ItemsSource="{Binding Workspace?.TkMe}"
+                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <TableView.Styles>
+                                <Style Selector="TableViewRow">
+                                    <Setter Property="Background" Value="{Binding $self.DataContext, 
+                                        Converter={StaticResource RowBackgroundConverter}}"/>
+                                    <Setter Property="FontWeight" Value="{Binding $self.DataContext, 
+                                        Converter={StaticResource RowFontWeightConverter}}"/>
+                                </Style>
+                            </TableView.Styles>
+
+                            <TableView.Columns>
+
+                                <!-- STT -->
+                                <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
+                                <!-- M3 trộn -->
+                                <TableViewColumn Header="M³ trộn" Binding="{Binding M3Tron}" Width="100"/>
+                                <!-- Tổng khối lượng -->
+                                <TableViewColumn Header="Tổng KL" Binding="{Binding TongKL}" Width="100"/>
+
+                                <!-- Thành phần 1 -> 15 -->
+                                <TableViewColumn Header="TP1" Binding="{Binding TPs[0]}" Width="72"/>
+                                <TableViewColumn Header="TP2" Binding="{Binding TPs[1]}" Width="72"/>
+                                <TableViewColumn Header="TP3" Binding="{Binding TPs[2]}" Width="72"/>
+                                
+		                        <!-- Thời gian hoàn thành -->
+                                <TableViewColumn Header="TGHT" Binding="{Binding Tght}" Width="100"/>
+                                <!-- Trạng thái -->
+                                <TableViewColumn Header="Trạng thái" Binding="{Binding TrangThai}" Width="120"/>
+
+                            </TableView.Columns>
+                        </TableView>
+                    </DockPanel>                    
+                </TabItem>
+                
+                
+            </TabControl>
+
         </Grid>
     </Grid>
     

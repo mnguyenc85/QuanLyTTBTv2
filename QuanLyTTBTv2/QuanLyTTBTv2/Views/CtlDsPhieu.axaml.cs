@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -8,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using QuanLyTTBTv2.Models;
+using QuanLyTTBTv2.Models.Local;
 using QuanLyTTBTv2.ViewModels;
 using QuanLyTTBTv2.ViewModels.Server;
 
@@ -67,12 +69,41 @@ public partial class CtlDsPhieu : UserControl
         try
         {
             await _vm.Workspace.LoadChiTietPhieu();
+            
+            await DsPhieuIn_LoadByCurPhieu();
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
+    
+    /// <summary>
+    /// Load phiếu in từ phiếu cân được chọn
+    /// </summary>
+    public async Task DsPhieuIn_LoadByCurPhieu()
+    {
+        if (_vm == null || _vm.Workspace == null) return;
+        try
+        {
+            var cond = new DbInPhieuCond();
+            cond.Offset = 0 * cond.Limit;
+            if (!cond.Changed) return;
+
+            await _vm.Workspace.DsPhieuIn_Load(cond);
+            if (cond.Changed)
+            {
+                // PhieuTotal = (cond.Total - 1) / cond.Limit + 1;
+                // PhieuPage = 1;
+                cond.Changed = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+        }
+    }
+
     
     #region Table mẻ
 
