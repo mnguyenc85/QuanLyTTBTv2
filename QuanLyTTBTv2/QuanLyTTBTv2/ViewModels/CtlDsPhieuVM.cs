@@ -39,11 +39,6 @@ public partial class CtlDsPhieuVM: ViewModelBase
     public long CurDonHangId { get; private set; } = -1;
 
     public ICommand FilterPhieuCommand { get; }
-    /// <summary>
-    /// Lấy dữ liệu phiếu in từ phiếu cân
-    /// </summary>
-    public ICommand PI2PCCommand { get; }
-    public ICommand PISaveCommand { get; }
     
     public CtlDsPhieuVM()
     {
@@ -62,7 +57,6 @@ public partial class CtlDsPhieuVM: ViewModelBase
         Workspace = mainvm.Workspace;
         
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
-        PISaveCommand = new RelayCommand(PhieuInSave);
         
         Init();
     }
@@ -182,10 +176,5 @@ public partial class CtlDsPhieuVM: ViewModelBase
     private bool CanExecPI2PCCommand()
     {
         return Workspace.SelectedPhieu != null;
-    }
-
-    private async void PhieuInSave()
-    {
-        await Workspace.PhieuInSave();
     }
 }

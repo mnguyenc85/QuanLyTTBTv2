@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -50,9 +49,13 @@ public partial class WorkspaceVM: ViewModelBase
     
     // ----- Phiếu in
     public ObservableCollection<PhieuInVM> DsPhieuIn { get; set; } = [];
-    [ObservableProperty] private PhieuInVM? _curPhieuIn;
+    [ObservableProperty] private PhieuInVM? _selectedPhieuIn;
+    public PhieuInVM CurPhieuIn { get; set; } = new PhieuInVM();
 
+    
+    // ----- Thống kê phiếu in
     public ObservableCollection<PhieuInVM> DsPhieuInTK { get; set; } = [];
+    
     
     public WorkspaceVM()
     {
@@ -294,12 +297,9 @@ public partial class WorkspaceVM: ViewModelBase
     
     public long PhieuIn_LoadByPhieuTron()
     {
-        
-        CurPhieuIn ??= new PhieuInVM();
-        
         if (SelectedPhieu == null || SelectedPhieu.Id <= 0)
         {
-            CurPhieuIn?.Clear();
+            CurPhieuIn.Clear();
             return -1;
         }
 
@@ -311,16 +311,27 @@ public partial class WorkspaceVM: ViewModelBase
 
         return 0;
     }
-    
+
+    public void PhieuIn_LoadByPhieuIn()
+    {
+        if (SelectedPhieuIn == null)
+        {
+            CurPhieuIn.Clear();
+            return;
+        }
+        
+        CurPhieuIn.CopyFrom(SelectedPhieuIn);
+    }
+
     /// <summary>
     /// Lưu phiếu in hiện tại
     /// </summary>
     /// <returns>True: nếu save</returns>
     public async Task<bool> PhieuInSave()
     {
-        if (CurPhieuIn == null) return false;
         var o = CurPhieuIn.CreateDO();
         await _cache.LocalDB.PhieuIn_SaveAsync(o);
+        CurPhieuIn.Changed = false;
         return true;
     }
 
@@ -387,6 +398,7 @@ public partial class WorkspaceVM: ViewModelBase
         _tudienDonHang.Clear();
         // TODO: check
         SelectedPhieu = null;
+        CurPhieuIn?.Clear();
     }
     
     public void ClearCurDonHangData()

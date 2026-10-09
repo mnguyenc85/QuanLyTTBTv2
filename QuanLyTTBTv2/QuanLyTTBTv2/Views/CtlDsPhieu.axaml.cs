@@ -8,6 +8,8 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Huskui.Avalonia.Controls;
+using Huskui.Avalonia.Models;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using QuanLyTTBTv2.Models;
@@ -21,6 +23,8 @@ public partial class CtlDsPhieu : UserControl
 {
     private CtlDsPhieuVM? _vm;
     public bool IsActive { get; set; }
+
+    public event EventHandler<GrowlItem>? PopGrowl; 
     
     public CtlDsPhieu()
     {
@@ -38,7 +42,11 @@ public partial class CtlDsPhieu : UserControl
     {
         _vm = DataContext as CtlDsPhieuVM;
     }
-    
+
+    #region Table: phiếu
+    /// <summary>
+    /// Kích đổi trang
+    /// </summary>
     private void NMPaginator_OnPageClicked(object? sender, int e)
     {
         if (sender == null) return;
@@ -47,7 +55,10 @@ public partial class CtlDsPhieu : UserControl
             _vm?.ChangePhieuPage(e);
         }
     }
-    
+
+    /// <summary>
+    /// Số phiếu / trang
+    /// </summary>
     private void CboPhieuTblIPP_OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
@@ -56,6 +67,9 @@ public partial class CtlDsPhieu : UserControl
                     _vm?.SetTableIPP(v);
     }
 
+    /// <summary>
+    /// Số phiếu / trang
+    /// </summary>
     private void CboPhieuTblIPP_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         // Đặt items per page cho bảng phiếu
@@ -92,32 +106,31 @@ public partial class CtlDsPhieu : UserControl
     }
     
     /// <summary>
-    /// Load phiếu in từ phiếu cân được chọn
+    /// Lấy dữ liệu phiếu in từ phiếu cân
     /// </summary>
-    public async Task DsPhieuIn_LoadByCurPhieu()
+    private async void BtFromPhCan_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_vm == null) return;
-        try
-        {
-            var cond = new DbInPhieuCond();
-            cond.Offset = 0 * cond.Limit;
-            if (!cond.Changed) return;
-
-            await _vm.Workspace.DsPhieuIn_Load(cond);
-            if (cond.Changed)
-            {
-                // PhieuTotal = (cond.Total - 1) / cond.Limit + 1;
-                // PhieuPage = 1;
-                cond.Changed = false;
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.Message);
-        }
+        await PhieuIn2PhieuCan();
     }
+
+    private async Task PhieuIn2PhieuCan()
+    {
+        var ws = _vm?.Workspace;
+        if (ws == null) return;
+     
+        BtFromPhCan.IsEnabled = false;
+        if (ws.CurPhieuIn != null && ws.CurPhieuIn.Changed)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard("Lưu phiếu in", "Bạn có muốn lưu thông tin đã sửa?", ButtonEnum.YesNo);
+            await box.ShowAsync();
+        }
+        
+        ws.PhieuIn_LoadByPhieuTron();
+        BtFromPhCan.IsEnabled = true;
+    }
+    #endregion
     
-    #region Table mẻ
+    #region Table: mẻ
     public void ReCreateTblMeColumns()
     {
         if (_vm == null) return;
@@ -171,28 +184,75 @@ public partial class CtlDsPhieu : UserControl
         }
     }
     #endregion
-
+    
+    #region Table: phiếu in
     /// <summary>
-    /// Lấy dữ liệu phiếu in từ phiếu cân
+    /// Load ds phiếu in từ phiếu cân được chọn
     /// </summary>
-    private async void BtFromPhCan_OnClick(object? sender, RoutedEventArgs e)
+    public async Task DsPhieuIn_LoadByCurPhieu()
     {
-        await PhieuIn2PhieuCan();
+        if (_vm == null) return;
+        try
+        {
+            var cond = new DbInPhieuCond();
+            cond.Offset = 0 * cond.Limit;
+            if (!cond.Changed) return;
+
+            await _vm.Workspace.DsPhieuIn_Load(cond);
+            if (cond.Changed)
+            {
+                // PhieuTotal = (cond.Total - 1) / cond.Limit + 1;
+                // PhieuPage = 1;
+                cond.Changed = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+        }
     }
 
-    private async Task PhieuIn2PhieuCan()
+    private async void TvwPhieuIn_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isLoadPhieu) return;
+        _isLoadPhieu = true;
+
+        await PhieuIn2PhieuIn();
+
+        _isLoadPhieu = false;
+    }
+    
+    private async Task PhieuIn2PhieuIn()
     {
         var ws = _vm?.Workspace;
         if (ws == null) return;
      
-        BtFromPhCan.IsEnabled = false;
-        if (ws.CurPhieuIn != null && ws.CurPhieuIn.Changed)
+        BtFromPhIn.IsEnabled = false;
+        if (ws.CurPhieuIn.Changed)
         {
-            var box = MessageBoxManager.GetMessageBoxStandard("Lưu phiếu in", "Bạn có muốn lưu thông tin đã sửa?", ButtonEnum.YesNo);
+            var box = MessageBoxManager.GetMessageBoxStandard("Lưu phiếu in", "Bạn có muốn lưu thông tin đã sửa?", ButtonEnum.YesNo, Icon.Info);
             await box.ShowAsync();
         }
         
-        ws.PhieuIn_LoadByPhieuTron();
-        BtFromPhCan.IsEnabled = true;
+        ws.PhieuIn_LoadByPhieuIn();
+        BtFromPhIn.IsEnabled = true;
     }
+    #endregion
+
+    #region Edit: phiếu in
+    private async void BtPhieuInSave_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var ws = _vm?.Workspace;
+        if (ws == null) return;
+
+        await ws.PhieuInSave();
+
+        PopGrowl?.Invoke(this, new GrowlItem()
+        {
+            Level = GrowlLevel.Information,
+            Content = "Phiếu in đã được lưu.",
+            IsTabStop = false,
+        });
+    }
+    #endregion
 }

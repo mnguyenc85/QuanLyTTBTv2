@@ -108,8 +108,9 @@
                 <!-- Phiếu in -->
                 <TabItem Header="Phiếu in">
                     <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
-                        <TableView Classes="striped" ItemsSource="{Binding Workspace?.DsPhieuIn}"
-                                   SelectionChanged="TvwPhieu_OnSelectionChanged">
+                        <TableView x:Name="TvwPhieuIn" Classes="striped" 
+                                   ItemsSource="{Binding Workspace?.DsPhieuIn}" SelectedItem="{Binding Workspace.SelectedPhieuIn}"
+                                   SelectionChanged="TvwPhieuIn_OnSelectionChanged">
                             <TableView.Columns>
                                 <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
                                 <TableViewColumn Header="Số phiếu" Binding="{Binding SoPhieu}"/>
@@ -117,7 +118,7 @@
                                 <TableViewColumn Header="Công trình" Binding="{Binding CongTrinh}"/>
                                 <TableViewColumn Header="M³ trộn" Binding="{Binding TtTron}"/>
                                 <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtTichLuy}"/>
-                                <TableViewColumn Header="TG in phiếu" Binding="{Binding TgRoiTram}"/>
+                                <TableViewColumn Header="TG rời trạm" Binding="{Binding TgRoiTram}"/>
                             </TableView.Columns>
                         </TableView>
                     </DockPanel>
@@ -181,7 +182,8 @@
                         <TextBlock Text="In phiếu" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button Content="Lưu" Margin="0 0 0 6" Command="{Binding PISaveCommand}"/>
+                <Button x:Name="BtPhieuInSave" Content="Lưu" Margin="0 0 0 6"
+                        Click="BtPhieuInSave_OnClick"/>
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <local:CtlPhieuIn DataContext="{Binding Workspace?.CurPhieuIn}"/>

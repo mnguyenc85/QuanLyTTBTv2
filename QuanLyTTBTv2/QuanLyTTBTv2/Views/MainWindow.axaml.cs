@@ -34,6 +34,7 @@ namespace QuanLyTTBTv2.Views
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
         {
+            CtlDsPh.PopGrowl += PopGrowl; 
             Init();
         }
 
@@ -169,6 +170,12 @@ namespace QuanLyTTBTv2.Views
             notification.Dismiss();
         }
 
+        private void PopGrowl(object? sender, GrowlItem e)
+        {
+            var appSurface = GetAppSurface();
+            if (appSurface != null)
+                _ = ShowGrowl(appSurface, e, 3000);
+        }
         #endregion
         #endregion
 

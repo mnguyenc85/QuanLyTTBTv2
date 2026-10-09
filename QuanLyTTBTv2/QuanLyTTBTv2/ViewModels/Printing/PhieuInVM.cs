@@ -37,12 +37,13 @@ public partial class PhieuInVM: ViewModelBase
     [ObservableProperty] private double _ttTron;
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
-    
+
     /// <summary>
     /// True khi các property thay đổi
     /// False khi copy từ DbInPhieu hoặc PhieuInVM khác
     /// </summary>
     public bool Changed { get; set; }
+    [ObservableProperty] private string? _tieuDe;
     
     public PhieuInVM() { }
 
@@ -55,7 +56,7 @@ public partial class PhieuInVM: ViewModelBase
     protected override void OnPropertyChanged(PropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
-        if (e.PropertyName != nameof(Changed))
+        if (e.PropertyName != nameof(Changed) && e.PropertyName != nameof(TieuDe))
         {
             Changed = true;
         }
@@ -91,9 +92,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
 
+        TieuDe = "Sửa phiếu in";
         Changed = false;
     }
-
 
     public void ToDO(DbInPhieu o)
     {
@@ -153,6 +154,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTron = 0;
         TtTichLuy = 0;
         KlTron = 0;
+
+        TieuDe = "(Không)";
+        Changed = false;
     }
 
     public void CopyFrom(HTDonHangVM? dh, HTPhieuVM ph)
@@ -204,9 +208,43 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = ph.TtDon;
         KlTron = ph.Klht;
 
+        TieuDe = "Phiếu in mới";
         Changed = false;
     }
 
+    public void CopyFrom(PhieuInVM o)
+    {
+        Id = o.Id;
+        PhieuId = o.PhieuId;
+
+        SoPhieu = o.SoPhieu;
+        SoPhieuIn = o.SoPhieuIn;
+        
+        NgayTron = o.NgayTron;
+        TgRoiTram = o.TgRoiTram;
+
+        KhachHang = o.KhachHang;
+        DiaChiKH = o.DiaChiKH;
+
+        CongTrinh = o.CongTrinh;
+        DiaDiem = o.DiaDiem;
+
+        Bsx = o.Bsx;
+        LaiXe = o.LaiXe;
+
+        MacBeTong = o.MacBeTong;
+        DoSut = o.DoSut;
+        CotLieuMax = o.CotLieuMax;
+        KepChi = o.KepChi;
+
+        TtTron = o.TtTron;
+        TtTichLuy = o.TtTichLuy;
+        KlTron = o.KlTron;
+
+        TieuDe = "Sửa phiếu in";
+        Changed = false;
+    }
+    
     public DbInPhieu CreateDO()
     {
         var o = new DbInPhieu();
