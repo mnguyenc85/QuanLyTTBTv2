@@ -8,6 +8,8 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Models.Local;
 using QuanLyTTBTv2.ViewModels;
@@ -61,21 +63,32 @@ public partial class CtlDsPhieu : UserControl
             if (v >= 5 && v <= 50)
                 _vm?.SetTableIPP(v);
     }
-    
+
+    private bool _isLoadPhieu = false;
     private async void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (_vm == null || _vm.Workspace == null || !IsActive) return;
+        if (_isLoadPhieu) return;
+        _isLoadPhieu = true;
+        
+        System.Diagnostics.Debug.WriteLine("CtlDsPhieu: chọn phiếu");
 
-        try
+        if (_vm != null && IsActive)
         {
-            await _vm.Workspace.LoadChiTietPhieu();
-            
-            await DsPhieuIn_LoadByCurPhieu();
+            try
+            {
+                await _vm.Workspace.LoadChiTietPhieu();
+
+                await DsPhieuIn_LoadByCurPhieu();
+
+                await PhieuIn2PhieuCan();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.Message);
-        }
+
+        _isLoadPhieu = false;
     }
     
     /// <summary>
@@ -83,7 +96,7 @@ public partial class CtlDsPhieu : UserControl
     /// </summary>
     public async Task DsPhieuIn_LoadByCurPhieu()
     {
-        if (_vm == null || _vm.Workspace == null) return;
+        if (_vm == null) return;
         try
         {
             var cond = new DbInPhieuCond();
@@ -103,14 +116,11 @@ public partial class CtlDsPhieu : UserControl
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
-
-    
     
     #region Table mẻ
-
     public void ReCreateTblMeColumns()
     {
-        if (_vm == null || _vm.Workspace == null) return;
+        if (_vm == null) return;
         
         RemoveTPColumns();
         CreateTPColumns([.. _vm.Workspace.DsMaThanhPhan]);
@@ -161,4 +171,28 @@ public partial class CtlDsPhieu : UserControl
         }
     }
     #endregion
+
+    /// <summary>
+    /// Lấy dữ liệu phiếu in từ phiếu cân
+    /// </summary>
+    private async void BtFromPhCan_OnClick(object? sender, RoutedEventArgs e)
+    {
+        await PhieuIn2PhieuCan();
+    }
+
+    private async Task PhieuIn2PhieuCan()
+    {
+        var ws = _vm?.Workspace;
+        if (ws == null) return;
+     
+        BtFromPhCan.IsEnabled = false;
+        if (ws.CurPhieuIn != null && ws.CurPhieuIn.Changed)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard("Lưu phiếu in", "Bạn có muốn lưu thông tin đã sửa?", ButtonEnum.YesNo);
+            await box.ShowAsync();
+        }
+        
+        ws.PhieuIn_LoadByPhieuTron();
+        BtFromPhCan.IsEnabled = true;
+    }
 }

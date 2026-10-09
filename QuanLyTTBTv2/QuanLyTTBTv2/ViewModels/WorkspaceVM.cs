@@ -49,10 +49,10 @@ public partial class WorkspaceVM: ViewModelBase
     public ObservableCollection<HTMeVM> TkMe { get; set; } = [];
     
     // ----- Phiếu in
-    public ObservableCollection<InPhieuVM> DsPhieuIn { get; set; } = [];
-    [ObservableProperty] private InPhieuVM? _curInPhieu;
+    public ObservableCollection<PhieuInVM> DsPhieuIn { get; set; } = [];
+    [ObservableProperty] private PhieuInVM? _curPhieuIn;
 
-    public ObservableCollection<InPhieuVM> DsPhieuInTK { get; set; } = [];
+    public ObservableCollection<PhieuInVM> DsPhieuInTK { get; set; } = [];
     
     public WorkspaceVM()
     {
@@ -295,18 +295,18 @@ public partial class WorkspaceVM: ViewModelBase
     public long PhieuIn_LoadByPhieuTron()
     {
         
-        CurInPhieu ??= new InPhieuVM();
+        CurPhieuIn ??= new PhieuInVM();
         
         if (SelectedPhieu == null || SelectedPhieu.Id <= 0)
         {
-            CurInPhieu?.Clear();
+            CurPhieuIn?.Clear();
             return -1;
         }
 
-        if (SelectedPhieu.Id != CurInPhieu.PhieuId)
+        if (SelectedPhieu.Id != CurPhieuIn.PhieuId)
         {
-            CurInPhieu.CopyFrom(SelectedDonHang, SelectedPhieu);
-            return CurInPhieu.Id;
+            CurPhieuIn.CopyFrom(SelectedDonHang, SelectedPhieu);
+            return CurPhieuIn.Id;
         }
 
         return 0;
@@ -318,8 +318,8 @@ public partial class WorkspaceVM: ViewModelBase
     /// <returns>True: nếu save</returns>
     public async Task<bool> PhieuInSave()
     {
-        if (CurInPhieu == null) return false;
-        var o = CurInPhieu.CreateDO();
+        if (CurPhieuIn == null) return false;
+        var o = CurPhieuIn.CreateDO();
         await _cache.LocalDB.PhieuIn_SaveAsync(o);
         return true;
     }
@@ -374,7 +374,7 @@ public partial class WorkspaceVM: ViewModelBase
 
     public void AddPhieuIn(DbInPhieu ph, int stt)
     {
-        var vm = new InPhieuVM(ph) { Stt = stt };
+        var vm = new PhieuInVM(ph) { Stt = stt };
         DsPhieuIn.Add(vm);
     }
     

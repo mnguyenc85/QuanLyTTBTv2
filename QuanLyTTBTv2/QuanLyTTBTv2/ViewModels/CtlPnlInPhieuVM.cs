@@ -18,7 +18,7 @@ public partial class CtlPnlInPhieuVM: ViewModelBase
         // Chỉ để dùng khi designer
         MainVM = new MainViewModel();
         Workspace = MainVM.Workspace;
-        Workspace.CurInPhieu = new InPhieuVM()
+        Workspace.CurPhieuIn = new PhieuInVM()
         {
             Id = -1,
             SoPhieu = "Test000",

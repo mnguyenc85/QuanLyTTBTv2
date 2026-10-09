@@ -43,12 +43,13 @@ public partial class CtlDsPhieuVM: ViewModelBase
     /// Lấy dữ liệu phiếu in từ phiếu cân
     /// </summary>
     public ICommand PI2PCCommand { get; }
+    public ICommand PISaveCommand { get; }
     
     public CtlDsPhieuVM()
     {
         // Chỉ để dùng khi designer
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
-        PI2PCCommand = new RelayCommand(PhieuInFromPhieuCan);
+        //PI2PCCommand = new RelayCommand(PhieuInFromPhieuCan);
         MainVM = new MainViewModel();
         Workspace = MainVM.Workspace;
         
@@ -59,7 +60,10 @@ public partial class CtlDsPhieuVM: ViewModelBase
     {
         MainVM = mainvm;
         Workspace = mainvm.Workspace;
+        
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
+        PISaveCommand = new RelayCommand(PhieuInSave);
+        
         Init();
     }
     
@@ -75,7 +79,7 @@ public partial class CtlDsPhieuVM: ViewModelBase
     
     private async Task FilterPhieu()
     {
-        if (Workspace == null || Workspace.SelFactory == null || Workspace.SelectedDonHang == null || _isLoadingDockets) return;
+        if (Workspace.SelFactory == null || Workspace.SelectedDonHang == null || _isLoadingDockets) return;
 
         _isLoadingDockets = true;
         MainVM.LastAction = "Lấy phiếu";
@@ -174,13 +178,14 @@ public partial class CtlDsPhieuVM: ViewModelBase
                 case 1: _phCond.Limit = ipp; break;
             }
     }
-
-    /// <summary>
-    /// Lấy dữ liệu phiếu in từ phiếu cân
-    /// </summary>
-    private void PhieuInFromPhieuCan()
+    
+    private bool CanExecPI2PCCommand()
     {
-        // TODO: kiểm tra và lưu phiếu in
-        Workspace.PhieuIn_LoadByPhieuTron();
+        return Workspace.SelectedPhieu != null;
+    }
+
+    private async void PhieuInSave()
+    {
+        await Workspace.PhieuInSave();
     }
 }

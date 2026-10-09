@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:QuanLyTTBTv2.ViewModels.Printing"
-             x:DataType="vm:InPhieuVM"
+             x:DataType="vm:PhieuInVM"
              x:Class="QuanLyTTBTv2.Views.CtlPhieuIn">
     
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:InPhieuVM />
+        <vm:PhieuInVM />
     </Design.DataContext>
 
     <GroupBox Padding="3 6">
@@ -28,7 +28,7 @@
             <DockPanel Margin="0 3">
                 <TextBlock Text="Số phiếu in:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
                 <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"
-                         Text="{Binding SoPhieu}"/>
+                         Text="{Binding SoPhieuIn}"/>
             </DockPanel>
             <DockPanel Margin="0 3">
                 <TextBlock Text="Ngày trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
@@ -93,13 +93,13 @@
 
             <Separator Margin="3"/>
             <DockPanel Margin="0 3">
-                <TextBlock Text="TT trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                <TextBlock Text="M3 trộn:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
                 <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"
                          Text="{Binding TtTron}"/>
                 <TextBlock Text="m³" Width="102" TextAlignment="Left" VerticalAlignment="Center" Margin="0 0 6 0"/>
             </DockPanel>
             <DockPanel Margin="0 3">
-                <TextBlock Text="TT tich lũy:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+                <TextBlock Text="M3 tich lũy:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
                 <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"
                          Text="{Binding TtTichLuy}"/>
                 <TextBlock Text="m³" Width="102" TextAlignment="Left" VerticalAlignment="Center" Margin="0 0 6 0"/>

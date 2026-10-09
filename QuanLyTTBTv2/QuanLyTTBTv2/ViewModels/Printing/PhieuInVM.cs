@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using QuanLyTTBTv2.Models.Local;
 using QuanLyTTBTv2.ViewModels.Server;
 
 namespace QuanLyTTBTv2.ViewModels.Printing;
 
-public partial class InPhieuVM: ViewModelBase
+public partial class PhieuInVM: ViewModelBase
 {
     public int Stt { get; set; }
     
@@ -37,12 +38,29 @@ public partial class InPhieuVM: ViewModelBase
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
     
-    public InPhieuVM() { }
+    /// <summary>
+    /// True khi các property thay đổi
+    /// False khi copy từ DbInPhieu hoặc PhieuInVM khác
+    /// </summary>
+    public bool Changed { get; set; }
+    
+    public PhieuInVM() { }
 
-    public InPhieuVM(DbInPhieu o)
+    public PhieuInVM(DbInPhieu o)
     {
         FromDO(o);
     }
+
+    #region Track changed
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+        if (e.PropertyName != nameof(Changed))
+        {
+            Changed = true;
+        }
+    }
+    #endregion
     
     public void FromDO(DbInPhieu o)
     {
@@ -72,6 +90,8 @@ public partial class InPhieuVM: ViewModelBase
         TtTron = o.TtTron;
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
+
+        Changed = false;
     }
 
 
@@ -182,7 +202,9 @@ public partial class InPhieuVM: ViewModelBase
 
         TtTron = ph.Ttht;
         TtTichLuy = ph.TtDon;
-        KlTron = ph.Klht;    
+        KlTron = ph.Klht;
+
+        Changed = false;
     }
 
     public DbInPhieu CreateDO()

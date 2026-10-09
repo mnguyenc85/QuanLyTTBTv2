@@ -23,8 +23,8 @@
         <vmc:TableViewRowFontWeightConverter x:Key="RowFontWeightConverter"/>
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="274,3,*,3,274">
-        <GridSplitter Grid.Column="1" Background="Transparent"/>
+    <Grid ColumnDefinitions="274,3,*,3,300">
+        <GridSplitter Grid.Column="3" Background="Transparent"/>
         
         <Border Grid.Column="0" Background="{DynamicResource NMBg2}" CornerRadius="3" MinWidth="264">
             <StackPanel Margin="6">
@@ -104,7 +104,7 @@
                 
             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
             
-            <TabControl Grid.Row="2" Padding="0">
+            <TabControl Grid.Row="2" Padding="0" Margin="0 0 0 3">
                 <!-- Phiếu in -->
                 <TabItem Header="Phiếu in">
                     <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
@@ -162,7 +162,6 @@
                     </DockPanel>                    
                 </TabItem>
                 
-                
             </TabControl>
 
         </Grid>
@@ -170,11 +169,23 @@
         <DockPanel Grid.Column="4">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 6">
                 <Button x:Name="BtFromPhCan" Content="PC" Width="36" Height="36" Padding="0" Margin="0 0 6 0"
-                        ToolTip.Tip="Lấy theo dữ liệu phiếu cân" Command="{Binding PI2PCCommand}"/>
+                        ToolTip.Tip="Lấy theo dữ liệu phiếu cân"
+                        Click="BtFromPhCan_OnClick"/>
                 <Button x:Name="BtFromPhIn" Content="PI" Width="36" Padding="0"
                         ToolTip.Tip="Lấy theo dữ liệu phiếu in"/>
             </StackPanel>
-            <local:CtlPhieuIn DataContext="{Binding Workspace?.CurInPhieu}"/>
+            <StackPanel DockPanel.Dock="Bottom" Margin="0 6 0 0">
+                <Button x:Name="BtInPhieu" Classes="Primary" Margin="0 0 0 6">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Assets/printer_24.png" Margin="0 0 6 0" Height="20"></Image>
+                        <TextBlock Text="In phiếu" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Content="Lưu" Margin="0 0 0 6" Command="{Binding PISaveCommand}"/>
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <local:CtlPhieuIn DataContext="{Binding Workspace?.CurPhieuIn}"/>
+            </ScrollViewer>
         </DockPanel>
     </Grid>
     
