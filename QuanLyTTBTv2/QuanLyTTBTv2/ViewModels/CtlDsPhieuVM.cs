@@ -13,7 +13,7 @@ public partial class CtlDsPhieuVM: ViewModelBase
     private readonly Stopwatch _stopwatch = new();
     private bool _isLoadingDockets = false;
     
-    public WorkspaceVM? Workspace { get; }
+    public WorkspaceVM Workspace { get; }
     public MainViewModel MainVM { get; }
     
     #region Điều kiện
@@ -39,14 +39,22 @@ public partial class CtlDsPhieuVM: ViewModelBase
     public long CurDonHangId { get; private set; } = -1;
 
     public ICommand FilterPhieuCommand { get; }
+    /// <summary>
+    /// Lấy dữ liệu phiếu in từ phiếu cân
+    /// </summary>
+    public ICommand PI2PCCommand { get; }
     
     public CtlDsPhieuVM()
     {
         // Chỉ để dùng khi designer
         FilterPhieuCommand = new AsyncRelayCommand(FilterPhieu);
+        PI2PCCommand = new RelayCommand(PhieuInFromPhieuCan);
+        MainVM = new MainViewModel();
+        Workspace = MainVM.Workspace;
+        
         Init();
     }
-    
+
     public CtlDsPhieuVM(MainViewModel mainvm)
     {
         MainVM = mainvm;
@@ -104,8 +112,6 @@ public partial class CtlDsPhieuVM: ViewModelBase
         
     public async void ChangePhieuPage(int p)
     {
-        if (Workspace == null) return;
-        
         MainVM.LastAction = "Lấy phiếu";
         MainVM.LastExecTime = "...";
         _stopwatch.Restart();
@@ -124,8 +130,6 @@ public partial class CtlDsPhieuVM: ViewModelBase
     /// <returns>Id/0:Not changed/-1:null</returns>
     public long CheckSelectedDonHangChanged()
     {
-        if (Workspace == null) return 0;
-        
         if (Workspace.SelectedDonHang == null)
         {
             if (CurDonHangId == -1)
@@ -148,15 +152,11 @@ public partial class CtlDsPhieuVM: ViewModelBase
             
     public async Task AutoLoadChiTietDonHang()
     {
-        if (Workspace == null) return;
-        
         await Workspace.LoadCurDonHangData();
     }
     
     public async Task AutoLoadDsPhieu()
     {
-        if (Workspace == null) return;
-        
         // Reset điều kiện
         LocPhieuTu = false;
         LocPhieuDen = false;
@@ -173,5 +173,14 @@ public partial class CtlDsPhieuVM: ViewModelBase
             {
                 case 1: _phCond.Limit = ipp; break;
             }
+    }
+
+    /// <summary>
+    /// Lấy dữ liệu phiếu in từ phiếu cân
+    /// </summary>
+    private void PhieuInFromPhieuCan()
+    {
+        // TODO: kiểm tra và lưu phiếu in
+        Workspace.PhieuIn_LoadByPhieuTron();
     }
 }

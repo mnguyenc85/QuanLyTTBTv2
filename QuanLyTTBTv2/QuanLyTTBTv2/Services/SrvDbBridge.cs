@@ -196,6 +196,24 @@ public class SrvDbBridge
             dh.Id = id;
         }
     }
+
+    public async Task DonHangTk_SaveAsync(HTDonHangTK dh, CancellationToken ct)
+    {
+        if (_db == null) return;
+
+        dh.UpdatedAt = DateTime.Now;
+        if (dh.Id > 0)
+        {
+            await _db.Update<HTDonHangTK>()
+                .SetSource(dh)
+                .ExecuteAffrowsAsync(ct);
+        }
+        else
+        {
+            var id = await _db.Insert(dh).ExecuteIdentityAsync(ct);
+            dh.Id = id;
+        }
+    }
     #endregion
 
     #region Phiếu
@@ -227,10 +245,10 @@ public class SrvDbBridge
         
         if (cond.UseFrom)
             query.Where((ph, xe, lx, ct) => 
-                ph.CreatedAt >= cond.FromTime);
+                ph.LocalCreatedAt >= cond.FromTime);
         if (cond.UseTo)
             query.Where((ph, xe, lx, ct) => 
-                ph.CreatedAt < cond.ToTime);
+                ph.LocalCreatedAt < cond.ToTime);
 
         if (!string.IsNullOrWhiteSpace(cond.CongThuc))
         {
@@ -262,7 +280,7 @@ public class SrvDbBridge
 
         var query = CreatePhieuQuery(cond);
 
-        query.OrderByDescending((ph, xe, lx, ct) => ph.CreatedAt)
+        query.OrderByDescending((ph, xe, lx, ct) => ph.LocalCreatedAt)
             .Offset(cond.Offset)
             .Limit(cond.Limit);
 
@@ -285,7 +303,7 @@ public class SrvDbBridge
         return result;
     }
 
-    public async Task<HTDonHangTK?> Phieu_TinhTKAsync(long src_id, long dh_id)
+    public async Task<HTDonHangTK?> Phieu_TinhTKAsync(long src_id, long dh_id, CancellationToken? ct = null)
     {
         if (_db == null) return null;
         
@@ -301,15 +319,21 @@ public class SrvDbBridge
                     AND donhang_id = @dh_id
                   """;
 
-        var result = await _db.Ado.QuerySingleAsync<HTDonHangTK>(
-            sql,
-            new
-            {
-                src_id,
-                dh_id
-            });
-
-        return result;
+        if (ct != null)
+        {
+            var result = await _db.Ado.QuerySingleAsync<HTDonHangTK>(
+                sql,
+                new { src_id, dh_id },
+                ct.Value);
+            return result;
+        }
+        else
+        {
+            var result = await _db.Ado.QuerySingleAsync<HTDonHangTK>(
+                sql,
+                new { src_id, dh_id });
+            return result;
+        }
     }
     #endregion
     

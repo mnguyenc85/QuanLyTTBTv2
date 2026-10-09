@@ -105,6 +105,7 @@ public partial class CtlDsPhieu : UserControl
     }
 
     
+    
     #region Table mẻ
 
     public void ReCreateTblMeColumns()

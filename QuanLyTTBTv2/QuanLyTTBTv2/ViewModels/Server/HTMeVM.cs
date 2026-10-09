@@ -16,6 +16,7 @@ public class HTMeVM
     public double KlTong { get; set; }
     
     public string?[] TPs { get; } = new string?[15];
+    public int[] TPPhanLoais { get; } = new int[15];
     public double[] TpKls { get; } = new double[15];
 
     public string? Tght { get; set; }
@@ -38,6 +39,7 @@ public class HTMeVM
             {
                 double kl = cttp.KlCongThuc;
                 tk.TpKls[i] = kl;
+                tk.TPPhanLoais[i] = cttp.PhanLoai;
                 tk.TPs[i] = kl.ToString();
                 tk.KlTong += kl;
             }
@@ -69,6 +71,7 @@ public class HTMeVM
                 kl = cttp.PhanLoai == 3 ? Math.Round(kl, 2) : Math.Round(kl);
                 
                 tk.TpKls[i] = kl;
+                tk.TPPhanLoais[i] = cttp.PhanLoai;
                 tk.TPs[i] = kl.ToString();
                 tk.KlTong += kl;
             }
@@ -92,6 +95,14 @@ public class HTMeVM
             Css = "tong",
         };
 
+        if (dsmetmp.Count > 0)
+        {
+            for (int i = 0; i < sotp; i++)
+            {
+                tk.TPPhanLoais[i] = dsmetmp[0].TPPhanLoais[i];
+            }
+        }
+        
         foreach (var me in dsmetmp)
         {
             for (int i = 0; i < sotp; i++)
@@ -100,9 +111,12 @@ public class HTMeVM
         }
 
         for (int i = 0; i < sotp; i++)
-            tk.TPs[i] = tk.TpKls[i].ToString();
-        
-        
+        {
+            double kl = tk.TPPhanLoais[i] == 3 ? Math.Round(tk.TpKls[i], 2) : Math.Round(tk.TpKls[i]);
+            tk.TPs[i] = kl.ToString();
+        }
+
+
         tk.TongKL = tk.KlTong.ToString("F0");
         
         return tk;
@@ -117,6 +131,7 @@ public class HTMeVM
 
         for (int i = 0; i < dsMaThanhPhan.Count; i++)
         {
+            tk.TPPhanLoais[i] = dsMaThanhPhan[i].PL;
             tk.TPs[i] = dsMaThanhPhan[i].Ten;
         }
         
@@ -137,6 +152,7 @@ public class HTMeVM
             kl = dsMaThanhPhan[i].PL == 3 ? Math.Round(kl, 2) : Math.Round(kl);
             
             tk.TpKls[i] = kl;
+            tk.TPPhanLoais[i] = dsMaThanhPhan[i].PL;
             tk.TPs[i] = kl.ToString();
             tk.KlTong += kl;
         }

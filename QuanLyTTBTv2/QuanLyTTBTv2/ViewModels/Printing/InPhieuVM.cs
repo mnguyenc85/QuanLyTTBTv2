@@ -14,6 +14,8 @@ public partial class InPhieuVM: ViewModelBase
     public long PhieuId { get; set; }
 
     [ObservableProperty] private string? _soPhieu;
+    [ObservableProperty] private string? _soPhieuIn;
+    
     [ObservableProperty] private string? _ngayTron;
     [ObservableProperty] private string? _tgRoiTram;
     
@@ -48,6 +50,8 @@ public partial class InPhieuVM: ViewModelBase
         PhieuId = o.PhieuId;
 
         SoPhieu = o.SoPhieu;
+        SoPhieuIn = o.SoPhieuIn;
+        
         NgayTron = o.NgayTron;
         TgRoiTram = o.TgRoiTram;
 
@@ -77,6 +81,8 @@ public partial class InPhieuVM: ViewModelBase
         o.PhieuId = PhieuId;
 
         o.SoPhieu = SoPhieu;
+        o.SoPhieuIn = SoPhieuIn;
+        
         o.NgayTron = NgayTron;
         o.TgRoiTram = TgRoiTram;
 
@@ -105,6 +111,8 @@ public partial class InPhieuVM: ViewModelBase
         PhieuId = -1;
 
         SoPhieu = "";
+        SoPhieuIn = "";
+        
         NgayTron = "";
         TgRoiTram = "";
 
@@ -133,6 +141,8 @@ public partial class InPhieuVM: ViewModelBase
         PhieuId = ph.Id;
 
         SoPhieu = ph.Sophieu;
+        SoPhieuIn = ph.SttDon.ToString();
+        
         NgayTron = ph.Tgkt.ToString("MM/dd/yyyy HH:mm:ss");
         TgRoiTram = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
 

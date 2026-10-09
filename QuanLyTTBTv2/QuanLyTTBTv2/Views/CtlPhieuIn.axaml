@@ -21,13 +21,13 @@
         <StackPanel>
             <DockPanel Margin="0 3">
                 <TextBlock Text="Số phiếu cân:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0" FontWeight="DemiBold" FontStyle="Italic"/>
-                <TextBox HorizontalAlignment="Left" Width="150" Padding="8 6" IsReadOnly="True"
+                <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6" IsReadOnly="True"
                          Text="{Binding SoPhieu}"/>
             </DockPanel>
             <Separator Margin="3"/>
             <DockPanel Margin="0 3">
                 <TextBlock Text="Số phiếu in:" Width="102" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Left" Width="150" Padding="8 6"
+                <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"
                          Text="{Binding SoPhieu}"/>
             </DockPanel>
             <DockPanel Margin="0 3">

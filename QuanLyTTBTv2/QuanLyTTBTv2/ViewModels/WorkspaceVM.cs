@@ -80,8 +80,13 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
     
+    /// <summary>
+    /// Lấy ds đơn hàng
+    /// </summary>
+    /// <param name="cond"></param>
     public async Task DsDonHang_Load(HTDonHangCond cond) {
-        _ctsLoadDhTk?.Cancel();
+        if (_ctsLoadDhTk != null)
+            await _ctsLoadDhTk.CancelAsync();
 
         // Load dữ liệu đơn hàng
         ClearDsDonHang();
@@ -101,25 +106,21 @@ public partial class WorkspaceVM: ViewModelBase
             AddDonHang(dh, ++stt);
         }
 
-        // Lấy dữ liệu thống kê hoặc tính
-        await LoadDuLieuDhTk();
-        await DonHang_CalTKs();
+        await LoadOrCalDhTk();
     }
 
-    private async Task LoadDuLieuDhTk()
+    /// <summary>
+    /// Lấy hoặc tính dữ liệu thống kê của đơn hàng (tổng phiếu, m3)
+    /// </summary>
+    private async Task LoadOrCalDhTk()
     {
         try
         {
             // Load dữ liệu tk kèm đơn hàng
             _ctsLoadDhTk = new CancellationTokenSource();
-            var dhtks = await _srvDb.DonHangTk_SelectByDhIdsAsync(_tudienDonHang.Keys.ToList(), _ctsLoadDhTk.Token);
 
-            // Update tk vào DsDonHang
-            if (dhtks != null)
-                foreach (var tk in dhtks)
-                {
-                    if (_tudienDonHang.TryGetValue(tk.DonHangId, out HTDonHangVM? value)) value.TK.FromDBO(tk);
-                }
+            await DonHang_LoadTKs(_ctsLoadDhTk.Token);
+            await DonHang_CalTKs(_ctsLoadDhTk.Token);
         }
         // catch { }
         finally
@@ -128,6 +129,57 @@ public partial class WorkspaceVM: ViewModelBase
             {
                 _ctsLoadDhTk.Dispose();
                 _ctsLoadDhTk = null;
+            }
+        }
+    }
+    
+    private async Task DonHang_LoadTKs(CancellationToken ct)
+    {
+        var dhtks = await _srvDb.DonHangTk_SelectByDhIdsAsync(_tudienDonHang.Keys.ToList(), ct);
+
+        // Update tk vào DsDonHang
+        if (dhtks != null)
+            foreach (var tk in dhtks)
+            {
+                if (_tudienDonHang.TryGetValue(tk.DonHangId, out HTDonHangVM? value)) value.TK.FromDBO(tk);
+            }
+    }
+    
+    /// <summary>
+    /// Tính thống kê cho đơn hàng
+    /// </summary>
+    public async void DonHang_CalTK()
+    {
+        if (SelFactory == null || SelectedDonHang == null) return;
+
+        var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, SelectedDonHang.LocalId);
+        if (tk != null)
+        {
+            tk.DonHangId = SelectedDonHang.Id;
+            await _srvDb.DonHangTk_SaveAsync(tk);
+
+            SelectedDonHang.TK.FromDBO(tk);
+        }
+    }
+
+    /// <summary>
+    /// Tính thống kê cho các đơn hàng hiển thị
+    /// </summary>
+    public async Task DonHang_CalTKs(CancellationToken ct)
+    {
+        if (SelFactory == null) return;
+
+        foreach (var dh in DsDonHang)
+        {
+            if (dh.TK.Id > 0) continue;
+            
+            var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, dh.LocalId, ct);
+            if (tk != null)
+            {
+                tk.DonHangId = dh.Id;
+                await _srvDb.DonHangTk_SaveAsync(tk, ct);
+
+                dh.TK.FromDBO(tk);
             }
         }
     }
@@ -238,45 +290,6 @@ public partial class WorkspaceVM: ViewModelBase
         }
         
         TkMe.Add(HTMeVM.CreateMeTong(dsmetmp, sotp));
-    }
-
-    /// <summary>
-    /// Tính thống kê cho đơn hàng
-    /// </summary>
-    public async void DonHang_CalTK()
-    {
-        if (SelFactory == null || SelectedDonHang == null) return;
-
-        var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, SelectedDonHang.LocalId);
-        if (tk != null)
-        {
-            tk.DonHangId = SelectedDonHang.Id;
-            await _srvDb.DonHangTk_SaveAsync(tk);
-
-            SelectedDonHang.TK.FromDBO(tk);
-        }
-    }
-
-    /// <summary>
-    /// Tính thống kê cho các đơn hàng hiển thị
-    /// </summary>
-    public async Task DonHang_CalTKs()
-    {
-        if (SelFactory == null) return;
-
-        foreach (var dh in DsDonHang)
-        {
-            if (dh.TK.Id > 0) continue;
-            
-            var tk = await _srvDb.Phieu_TinhTKAsync(SelFactory.Id, dh.LocalId);
-            if (tk != null)
-            {
-                tk.DonHangId = dh.Id;
-                await _srvDb.DonHangTk_SaveAsync(tk);
-
-                dh.TK.FromDBO(tk);
-            }
-        }
     }
     
     public long PhieuIn_LoadByPhieuTron()

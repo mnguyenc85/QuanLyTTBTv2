@@ -117,7 +117,7 @@
                         </StackPanel>
                     </TabItem.Header>
                     
-                    <local:CtlPnlInPhieu DataContext="{Binding CtlInPhieuVM}"/>
+                    <local:CtlDsPhieuIn DataContext="{Binding CtlInPhieuVM}"/>
                 </TabItem>
             </TabControl>
             </DockPanel>

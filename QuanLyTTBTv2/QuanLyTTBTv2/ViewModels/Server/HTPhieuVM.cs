@@ -65,8 +65,8 @@ public partial class HTPhieuVM: ViewModelBase
         GhiChu = ph.Ghichu;
         KepChi = ph.Kepchi;
 
-        Tgbd = ph.CreatedAt;
-        Tgkt = ph.UpdatedAt;
+        Tgbd = ph.LocalCreatedAt;
+        Tgkt = ph.LocalUpdatedAt;
         
         CongThuc = ph.CongThuc;
     }

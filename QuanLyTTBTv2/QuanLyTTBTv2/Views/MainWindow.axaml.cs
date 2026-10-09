@@ -203,7 +203,7 @@ namespace QuanLyTTBTv2.Views
                     case 2:
                         System.Diagnostics.Debug.WriteLine("Selected tab 2: In phiếu");
 
-                        _vm.Workspace.PhieuIn_LoadByPhieuTron();
+                        //_vm.Workspace.PhieuIn_LoadByPhieuTron();
                         break;
                 }
                 

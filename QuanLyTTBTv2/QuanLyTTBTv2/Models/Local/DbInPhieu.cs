@@ -15,6 +15,9 @@ public class DbInPhieu
     [Column(Name = "so_phieu")]
     public string? SoPhieu { get; set; }
 
+    [Column(Name = "so_phieu_in")]
+    public string? SoPhieuIn { get; set; }
+    
     [Column(Name = "ngay_tron")]
     public string? NgayTron { get; set; }
 
