@@ -58,6 +58,8 @@ namespace QuanLyTTBTv2.Views
 
                 await _vm.CreateServerComm();
                 _vm.InitData();
+
+                _dbCache.InitPrinting();
             }
             catch (Exception ex)
             {

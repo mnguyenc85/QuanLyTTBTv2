@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -28,16 +29,30 @@ public partial class WndConfig : Window
     
     private void Init()
     {
+        ListAllTemplates(CboPhieuIn, _c.DocketPath);
+        ListAllTemplates(CboPhieuInChiTiet, _c.DocketPath);
+        
         LoadSettings();
     }
     
     private void LoadSettings()
     {
-        var s = _c.Settings;
+        try
+        {
+            var s = _c.Settings;
 
-        TxtServer.Text = s.GetValue("srv.address");
-        TxtAccount.Text = s.GetValue("srv.username");
-        TxtPassword.Text = s.GetValue("srv.password");
+            TxtServer.Text = s.GetValue("srv.address");
+            TxtAccount.Text = s.GetValue("srv.username");
+            TxtPassword.Text = s.GetValue("srv.password");
+
+            CboPhieuIn.Text = s.GetValue("print.phieu.coban");
+            CboPhieuInChiTiet.Text = s.GetValue("print.phieu.chitiet");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"LoadSettings: {ex.Message}");
+        }
+        System.Diagnostics.Debug.WriteLine(CboPhieuIn.Text);
     }
     
     private async void SaveSettings()
@@ -47,6 +62,9 @@ public partial class WndConfig : Window
         s.Update("srv.address", TxtServer.Text);
         s.Update("srv.username", TxtAccount.Text);
         s.Update("srv.password", TxtPassword.Text);
+        
+        s.Update("print.phieu.coban", CboPhieuIn.Text);
+        s.Update("print.phieu.chitiet", CboPhieuInChiTiet.Text);
 
         (int noins, int noupdate) = await _db.Settings_SaveAsync(s);
         var box = MessageBoxManager
@@ -98,6 +116,24 @@ public partial class WndConfig : Window
             var box = MessageBoxManager
                 .GetMessageBoxStandard("Kết nối csdl", $"Lỗi: không kết nối được!");
             await box.ShowAsync();
+        }
+    }
+    
+    private void ListAllTemplates(ComboBox cbo, string folderPath)
+    {
+        if (Directory.Exists(folderPath))
+        {
+            string[] files = Directory.GetFiles(folderPath, "*.frx", SearchOption.TopDirectoryOnly);
+
+            foreach (string file in files)
+            {
+                string filename = Path.GetFileName(file);
+                cbo.Items.Add(filename);
+            }
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine("ListAllTemplates: Thư mục không tồn tại!");
         }
     }
 }
