@@ -35,10 +35,10 @@ public class SqliteDbBridge
                 $"Data Source={dbPath};Pooling=true")
             .Build();
 
-        // if (!File.Exists(dbPath))
-        //     CreateDatabase();
+        //if (!File.Exists(dbPath))
+        //    CreateDatabase();
     }
-    
+
     public void SyncSchema()
     {
         _db?.CodeFirst.SyncStructure(

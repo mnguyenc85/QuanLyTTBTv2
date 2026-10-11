@@ -55,19 +55,21 @@
                 </Grid>
             </Border>
 
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="{DynamicResource NMStatusBg}">
-                <StackPanel Orientation="Horizontal" Margin="3 6">
+            <DockPanel DockPanel.Dock="Bottom" Background="{DynamicResource NMStatusBg}" LastChildFill="False">
+                <StackPanel Orientation="Horizontal" Margin="3 8">
                     <TextBlock Text="Server: " Foreground="DimGray" />
                     <TextBlock Text="{Binding SrvStatus}" Foreground="Black"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="6 6 3 6">
+                <StackPanel Orientation="Horizontal" Margin="6 8 3 8">
                     <TextBlock Text="{Binding LastAction}" Foreground="Black"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="3 6">
+                <StackPanel Orientation="Horizontal" Margin="3 8">
                     <TextBlock Text="TG thực hiện: " Foreground="DimGray" />
                     <TextBlock Text="{Binding LastExecTime}" Foreground="Black"/>
                 </StackPanel>
-            </StackPanel>
+                
+                <Button x:Name="BtAppDebug" DockPanel.Dock="Right" Content="?" Padding="6 0" Margin="2" MinWidth="24" Click="BtAppDebug_OnClick"/>
+            </DockPanel>
 
             <DockPanel Background="{DynamicResource NMBg1}">
             <DockPanel DockPanel.Dock="Top" Margin="9 6 3 3">

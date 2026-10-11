@@ -19,6 +19,7 @@ namespace QuanLyTTBTv2.Views
     {
         private readonly SqliteDbBridge _ldb = SqliteDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
+        private readonly PrintingService _printService = new();
 
         private readonly MainViewModel _vm = new();
         
@@ -59,7 +60,7 @@ namespace QuanLyTTBTv2.Views
                 await _vm.CreateServerComm();
                 _vm.InitData();
 
-                _dbCache.InitPrinting();
+                _printService.InitPrinting();
             }
             catch (Exception ex)
             {
@@ -91,6 +92,15 @@ namespace QuanLyTTBTv2.Views
             WndDataViewer wnd = new WndDataViewer();
             wnd.SetWorkspace(_vm.Workspace);
             await wnd.ShowDialog(this);
+        }
+
+        private void BtAppDebug_OnClick(object? sender, RoutedEventArgs e)
+        {
+            WndAppInfo wnd = new WndAppInfo()
+            {
+                PrintingService = _printService
+            };
+            wnd.ShowDialog(this);
         }
         #endregion
 
