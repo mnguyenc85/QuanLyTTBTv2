@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using FastReport;
 using NMPrinting;
+using QuanLyTTBTv2.Models.Local;
 using QuanLyTTBTv2.Utilities;
 using QuanLyTTBTv2.ViewModels.Printing;
 using Serilog;
@@ -60,45 +61,55 @@ public class ReportPrinting
         }
     }
     
-    public async Task<bool> Print(PhieuInVM ph, bool showDialog = false, int solan = 1)
+    public async Task<bool> Print(PrintInfo pinfo, PhieuInVM ph, bool showDialog = false, int solan = 1)
+    {
+        try
         {
-            try
-            {
-                //_reportDocket.SetParameterValue("Title.CongTy.Ten", _c.Settings.GetValue("in.phieu.cty.ten"));
-                //_reportDocket.SetParameterValue("Title.CongTy.DiaChi", _c.Settings.GetValue("in.phieu.cty.diachi"));
-                //_reportDocket.SetParameterValue("Title.CongTy.Sdt1", _c.Settings.GetValue("in.phieu.cty.sdt1"));
-                //_reportDocket.SetParameterValue("Title.CongTy.Sdt2", _c.Settings.GetValue("in.phieu.cty.sdt2"));
+            var ci = pinfo.Company;
+            _reportDocket.SetParameterValue("Title.CongTy.Ten", ci.Ten);
+            _reportDocket.SetParameterValue("Title.CongTy.DiaChi", ci.DiaChi);
+            _reportDocket.SetParameterValue("Title.CongTy.Sdt1", ci.Sdt1);
+            _reportDocket.SetParameterValue("Title.CongTy.Sdt2", ci.Sdt2);
 
-                _reportDocket.SetParameterValue("Phieu.SoPhieu", ph.Id);
+            _reportDocket.SetParameterValue("Phieu.SoPhieu", ph.SoPhieu);
+            _reportDocket.SetParameterValue("Phieu.SoPhieuIn", ph.SoPhieuIn);
+            
+            _reportDocket.SetParameterValue("KhachHang.Ten", ph.KhachHang);
+            _reportDocket.SetParameterValue("KhachHang.DiaChi", ph.DiaChiKH);
+            _reportDocket.SetParameterValue("CongTrinh.Ten", ph.CongTrinh);
+            _reportDocket.SetParameterValue("CongTrinh.DiaChi", ph.DiaDiem);
 
-                // if (ph.KhachHang != null)
-                // {
-                //     _reportDocket.SetParameterValue("KhachHang.Ten", ph.KhachHang.Ten);
-                //     _reportDocket.SetParameterValue("KhachHang.DiaChi", ph.KhachHang.DiaChi);
-                // }
-                //if (ph.Xe != null)
-                //    report.SetParameterValue("Xe.BSX", ph.Xe.BSX);
-                //if (ph.LaiXe != null)
-                //    report.SetParameterValue("Xe.LaiXe", ph.LaiXe.Ten);
 
-                // Tối đa 5 thành phần
-                // for (int i = 0; i < ph.DsThanhPhan.Count && i < 7; i++)
-                // {
-                //     _reportDocket.SetParameterValue($"TP.TP{i + 1}", ph.DsThanhPhan[i].CongThuc);
-                //     _reportDocket.SetParameterValue($"TP.KL{i + 1}", ph.DsThanhPhan[i].KL.ToString("F0"));
-                // }
-                // _reportDocket.SetParameterValue($"NgayXuat", ph.Tgbd.ToString("dd/MM/yyyy HH:mm:ss"));
+            _reportDocket.SetParameterValue("Xe.BSX", ph.Bsx);
+            _reportDocket.SetParameterValue("Xe.LaiXe", ph.LaiXe);
 
-                await _reportDocket.PrepareAsync();
-                using var ms = FastReportPrintUtils.GetReportAsPdfStreamAsync(_reportDocket);
-                PrintUtils.PrintPdfMemoryStream(ms, showDialog, solan);
+            _reportDocket.SetParameterValue("BeTong.Ten", ph.BeTongTen);
+            _reportDocket.SetParameterValue("BeTong.Mac", ph.BeTongMac);
+            _reportDocket.SetParameterValue("BeTong.DoSut", ph.BeTongDoSut);
+            _reportDocket.SetParameterValue("BeTong.CuongDo", ph.BeTongCuongDo);
+            _reportDocket.SetParameterValue("BeTong.CotLieuMax", ph.BeTongCotLieuMax);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                return false;
-            }
+
+
+            // Tối đa 5 thành phần
+            // for (int i = 0; i < ph.DsThanhPhan.Count && i < 7; i++)
+            // {
+            //     _reportDocket.SetParameterValue($"TP.TP{i + 1}", ph.DsThanhPhan[i].CongThuc);
+            //     _reportDocket.SetParameterValue($"TP.KL{i + 1}", ph.DsThanhPhan[i].KL.ToString("F0"));
+            // }
+
+            _reportDocket.SetParameterValue($"NgayXuat", ph.TgRoiTram);
+
+            await _reportDocket.PrepareAsync();
+            using var ms = FastReportPrintUtils.GetReportAsPdfStreamAsync(_reportDocket);
+            PrintUtils.PrintPdfMemoryStream(ms, showDialog, solan);
+
+            return true;
         }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
+            return false;
+        }
+    }
 }

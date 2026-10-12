@@ -42,14 +42,18 @@ public class DbInPhieu
     [Column(Name = "lai_xe")]
     public string? LaiXe { get; set; }
 
-    [Column(Name = "mac_be_tong")]
-    public string? MacBeTong { get; set; }
+    [Column(Name = "bt_ten")]
+    public string? BeTongTen { get; set; }
+    [Column(Name = "bt_mac")]
+    public string? BeTongMac { get; set; }
 
-    [Column(Name = "do_sut")]
-    public string? DoSut { get; set; }
+    [Column(Name = "bt_dosut")]
+    public string? BeTongDoSut { get; set; }
+    [Column(Name = "bt_cuongdo")]
+    public string? BeTongCuongDo { get; set; }
 
-    [Column(Name = "cot_lieu_max")]
-    public string? CotLieuMax { get; set; }
+    [Column(Name = "bt_clmax")]
+    public string? BeTongCotLieuMax { get; set; }
 
     [Column(Name = "kep_chi")]
     public string? KepChi { get; set; }

@@ -7,15 +7,11 @@ namespace QuanLyTTBTv2.Services
 {
     public class PrintingService
     {
-        private readonly DbCache _c = DbCache.Instance;
+        #region Singleton
+        private static readonly Lazy<PrintingService> _instance = new(() => new PrintingService());
+        public static PrintingService Instance => _instance.Value;
 
-        // Tạo CultureInfo dựa trên "en-US" nhưng đổi dấu thập phân thành ','
-        private readonly CultureInfo _vnCulture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-        public ReportPrinting DocketPrint { get; private set; }
-        public ReportPrinting DetailDocketPrint { get; private set; }
-
-
-        public PrintingService()
+        private PrintingService()
         {
             _vnCulture.NumberFormat.NumberDecimalSeparator = ",";
             _vnCulture.NumberFormat.NumberGroupSeparator = "."; // nếu muốn ngăn cách hàng nghìn
@@ -24,7 +20,14 @@ namespace QuanLyTTBTv2.Services
             DetailDocketPrint = new ReportPrinting(_vnCulture);
 
         }
+        #endregion
 
+        private readonly DbCache _c = DbCache.Instance;
+
+        // Tạo CultureInfo dựa trên "en-US" nhưng đổi dấu thập phân thành ','
+        private readonly CultureInfo _vnCulture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+        public ReportPrinting DocketPrint { get; private set; }
+        public ReportPrinting DetailDocketPrint { get; private set; }
 
         public int InitPrinting()
         {

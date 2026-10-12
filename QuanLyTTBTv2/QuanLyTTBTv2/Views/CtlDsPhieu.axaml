@@ -167,6 +167,7 @@
 
         </Grid>
         
+		<!-- Phiếu in -->
         <DockPanel Grid.Column="4">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 6" IsVisible="False">
                 <Button x:Name="BtFromPhCan" Content="PC" Width="36" Height="36" Padding="0" Margin="0 0 6 0"
@@ -181,7 +182,8 @@
             </ScrollViewer>
             
             <StackPanel Margin="0 6 0 0">
-                <Button x:Name="BtInPhieu" Classes="Primary" Margin="0 0 0 6">
+                <Button x:Name="BtInPhieu" Classes="Primary" Margin="0 0 0 6"
+						Click="BtInPhieu_OnClick">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="../Assets/printer_24.png" Margin="0 0 6 0" Height="20"></Image>
                         <TextBlock Text="In phiếu" VerticalAlignment="Center"/>

@@ -14,6 +14,7 @@ using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using QuanLyTTBTv2.Models;
 using QuanLyTTBTv2.Models.Local;
+using QuanLyTTBTv2.Services;
 using QuanLyTTBTv2.ViewModels;
 using QuanLyTTBTv2.ViewModels.Server;
 
@@ -22,9 +23,12 @@ namespace QuanLyTTBTv2.Views;
 public partial class CtlDsPhieu : UserControl
 {
     private CtlDsPhieuVM? _vm;
+    private readonly DbCache _c = DbCache.Instance;
+    private PrintingService _printer = PrintingService.Instance;
+
     public bool IsActive { get; set; }
 
-    public event EventHandler<GrowlItem>? PopGrowl; 
+    public event EventHandler<GrowlItem>? PopGrowl;
     
     public CtlDsPhieu()
     {
@@ -246,6 +250,22 @@ public partial class CtlDsPhieu : UserControl
         if (ws == null) return;
 
         await ws.PhieuInSave();
+
+        PopGrowl?.Invoke(this, new GrowlItem()
+        {
+            Level = GrowlLevel.Information,
+            Content = "Phiếu in đã được lưu.",
+            IsTabStop = false,
+        });
+    }
+
+    private async void BtInPhieu_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var ws = _vm?.Workspace;
+        if (ws == null) return;
+
+        await ws.PhieuInSave();
+        await _printer.DocketPrint.Print(_c.PrintInfo, ws.CurPhieuIn);
 
         PopGrowl?.Invoke(this, new GrowlItem()
         {

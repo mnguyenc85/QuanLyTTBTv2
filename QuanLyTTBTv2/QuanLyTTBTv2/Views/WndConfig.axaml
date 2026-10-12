@@ -49,19 +49,19 @@
                     <TextBlock Text="Thông tin công ty" VerticalAlignment="Center" FontWeight="Bold" Margin="6 12 6 6"/>
                     <DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Tên: " VerticalAlignment="Center" Width="90"/>
-                        <TextBox x:Name="TxtTenCTy" Padding="6"/>
+                        <TextBox x:Name="TxtCTyTen" Padding="6"/>
                     </DockPanel>
                     <DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Địa chỉ: " VerticalAlignment="Center" Width="90"/>
-                        <TextBox x:Name="TxtDiaChiCTy" Padding="6"/>
+                        <TextBox x:Name="TxtCTyDiaChi" Padding="6"/>
                     </DockPanel>
                     <DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Sđt 1: " VerticalAlignment="Center" Width="90"/>
-                        <TextBox x:Name="TxtSdt1" Padding="6" Width="150" HorizontalAlignment="Left"/>
+                        <TextBox x:Name="TxtCTySdt1" Padding="6" Width="150" HorizontalAlignment="Left"/>
                     </DockPanel>
                     <DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Sđt 2: " VerticalAlignment="Center" Width="90"/>
-                        <TextBox x:Name="TxtSdt2" Padding="6" Width="150" HorizontalAlignment="Left"/>
+                        <TextBox x:Name="TxtCTySdt2" Padding="6" Width="150" HorizontalAlignment="Left"/>
                     </DockPanel>
 
                     <Separator/>

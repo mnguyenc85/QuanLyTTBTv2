@@ -28,10 +28,13 @@ public partial class PhieuInVM: ViewModelBase
     
     [ObservableProperty] private string? _bsx;
     [ObservableProperty] private string? _laiXe;
+
+    [ObservableProperty] private string? _beTongTen;
+    [ObservableProperty] private string? _beTongMac;
+    [ObservableProperty] private string? _beTongCuongDo;
+    [ObservableProperty] private string? _beTongDoSut;
+    [ObservableProperty] private string? _beTongCotLieuMax;
     
-    [ObservableProperty] private string? _macBeTong;
-    [ObservableProperty] private string? _doSut;
-    [ObservableProperty] private string? _cotLieuMax;
     [ObservableProperty] private string? _kepChi;
     
     [ObservableProperty] private double _ttTron;
@@ -83,9 +86,12 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = o.Bsx;
         LaiXe = o.LaiXe;
 
-        MacBeTong = o.MacBeTong;
-        DoSut = o.DoSut;
-        CotLieuMax = o.CotLieuMax;
+        BeTongTen = o.BeTongTen;
+        BeTongMac = o.BeTongMac;
+        BeTongDoSut = o.BeTongDoSut;
+        BeTongCuongDo = o.BeTongCuongDo;
+        BeTongCotLieuMax = o.BeTongCotLieuMax;
+
         KepChi = o.KepChi;
 
         TtTron = o.TtTron;
@@ -116,9 +122,12 @@ public partial class PhieuInVM: ViewModelBase
         o.Bsx = Bsx;
         o.LaiXe = LaiXe;
 
-        o.MacBeTong = MacBeTong;
-        o.DoSut = DoSut;
-        o.CotLieuMax = CotLieuMax;
+        o.BeTongTen = BeTongTen;
+        o.BeTongMac = BeTongMac;
+        o.BeTongDoSut = BeTongDoSut;
+        o.BeTongCuongDo = BeTongCuongDo;
+        o.BeTongCotLieuMax = BeTongCotLieuMax;
+
         o.KepChi = KepChi;
 
         o.TtTron = TtTron;
@@ -146,9 +155,12 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = "";
         LaiXe = "";
 
-        MacBeTong = "";
-        DoSut = "";
-        CotLieuMax = "";
+        BeTongTen = "";
+        BeTongMac = "";
+        BeTongCotLieuMax = "";
+        BeTongDoSut = "";
+        BeTongCuongDo = "";
+
         KepChi = "";
 
         TtTron = 0;
@@ -191,15 +203,19 @@ public partial class PhieuInVM: ViewModelBase
 
         if (ph.CongThuc != null)
         {
-            MacBeTong = ph.CongThuc.Mac;
-            DoSut = ph.CongThuc.Slump;
-            CotLieuMax = ph.CongThuc.KichThuocHat.ToString();
+            BeTongTen = ph.CongThuc.Ma;
+            BeTongMac = ph.CongThuc.Mac;
+            BeTongDoSut = ph.CongThuc.Slump;
+            BeTongCotLieuMax = ph.CongThuc.KichThuocHat.ToString();
+            //BeTongCuongDo = ?;
         }
         else
         {
-            MacBeTong = "";
-            DoSut = "";
-            CotLieuMax = "";
+            BeTongTen = "";
+            BeTongMac = "";
+            BeTongCotLieuMax = "";
+            BeTongDoSut = "";
+            BeTongCuongDo = "";
         }
 
         KepChi = "";
@@ -232,9 +248,12 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = o.Bsx;
         LaiXe = o.LaiXe;
 
-        MacBeTong = o.MacBeTong;
-        DoSut = o.DoSut;
-        CotLieuMax = o.CotLieuMax;
+        BeTongTen = o.BeTongTen;
+        BeTongMac = o.BeTongMac;
+        BeTongDoSut = o.BeTongDoSut;
+        BeTongCuongDo = o.BeTongCuongDo;
+        BeTongCotLieuMax = o.BeTongCotLieuMax;
+
         KepChi = o.KepChi;
 
         TtTron = o.TtTron;

@@ -47,6 +47,13 @@ public partial class WndConfig : Window
 
             CboPhieuIn.Text = s.GetValue("print.phieu.coban");
             CboPhieuInChiTiet.Text = s.GetValue("print.phieu.chitiet");
+
+            var ci = _c.PrintInfo.Company;
+            ci.Load(s);
+            TxtCTyTen.Text = ci.Ten;
+            TxtCTyDiaChi.Text = ci.DiaChi;
+            TxtCTySdt1.Text = ci.Sdt1;
+            TxtCTySdt2.Text = ci.Sdt2;
         }
         catch (Exception ex)
         {
@@ -65,6 +72,13 @@ public partial class WndConfig : Window
         
         s.Update("print.phieu.coban", CboPhieuIn.Text);
         s.Update("print.phieu.chitiet", CboPhieuInChiTiet.Text);
+
+        var ci = _c.PrintInfo.Company;
+        ci.Ten = TxtCTyTen.Text;
+        ci.DiaChi = TxtCTyDiaChi.Text;
+        ci.Sdt1 = TxtCTySdt1.Text;
+        ci.Sdt2 = TxtCTySdt2.Text;
+        ci.Save(s);
 
         (int noins, int noupdate) = await _db.Settings_SaveAsync(s);
         var box = MessageBoxManager

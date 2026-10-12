@@ -19,7 +19,7 @@ namespace QuanLyTTBTv2.Views
     {
         private readonly SqliteDbBridge _ldb = SqliteDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
-        private readonly PrintingService _printService = new();
+        private readonly PrintingService _printService = PrintingService.Instance;
 
         private readonly MainViewModel _vm = new();
         

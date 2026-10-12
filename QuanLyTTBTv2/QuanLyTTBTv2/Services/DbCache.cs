@@ -1,4 +1,5 @@
 ﻿using QuanLyTTBTv2.Models;
+using QuanLyTTBTv2.Models.Local;
 using System;
 using System.Globalization;
 using System.IO;
@@ -22,7 +23,9 @@ public class DbCache
     public string DocketPath { get; set; }
     public string ReportsPath { get; set; }
 
-    public DbSettings Settings { get; set; } = new DbSettings();
+    public DbSettings Settings { get; set; } = new();
+
+    public PrintInfo PrintInfo { get; private set; } = new();
     
     private DbCache()
     {
