@@ -13,7 +13,8 @@ public partial class HTDonHangVM: ViewModelBase
     [ObservableProperty] private string? _ma;
     
     [ObservableProperty] private string? _khachHang;
-    public string? DiaChiKH { get; set; }
+    public string? KHDiaChi { get; set; }
+    public string? KHSdt { get; set; }
     /// <summary>
     /// Chuỗi gộp dự án - công trình - hang mục
     /// </summary>
@@ -48,12 +49,14 @@ public partial class HTDonHangVM: ViewModelBase
         if (o.KhachHang != null)
         {
             KhachHang = o.KhachHang.Ten;
-            DiaChiKH = o.KhachHang.Diachi;
+            KHDiaChi = o.KhachHang.Diachi;
+            KHSdt = o.KhachHang.Sdt;
         }
         else
         {
             KhachHang = "";
-            DiaChiKH = "";
+            KHDiaChi = "";
+            KHSdt = "";
         }
 
         if (o.DuAn != null)
@@ -92,6 +95,7 @@ public partial class HTDonHangVM: ViewModelBase
             }
         }
 
-        return da;
+        if (!string.IsNullOrWhiteSpace(da)) return da;
+        return "";
     }
 }

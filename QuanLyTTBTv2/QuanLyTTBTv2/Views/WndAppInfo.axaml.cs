@@ -9,7 +9,7 @@ namespace QuanLyTTBTv2.Views;
 public partial class WndAppInfo : Window
 {
     private DbCache _cache = DbCache.Instance;
-    public PrintingService? PrintingService { get; set; }
+    public AppConfig? PrintingService { get; set; }
 
     public WndAppInfo()
     {

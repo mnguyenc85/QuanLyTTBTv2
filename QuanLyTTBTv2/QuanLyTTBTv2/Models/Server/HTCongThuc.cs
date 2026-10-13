@@ -9,7 +9,7 @@ public class HTCongThuc
     [Column(Name = "id", IsPrimary = true, IsIdentity = true)] public int Id { get; set; } 
     [Column(Name = "source_id")] public int SourceId { get; set; } 
     [Column(Name = "local_id")] public int LocalId { get; set; } 
-    [Column(Name = "ma")] public string? Ma { get; set; } 
+    [Column(Name = "ma")] public string? Ma { get; set; }
     [Column(Name = "mac")] public string? Mac { get; set; } 
     [Column(Name = "slump")] public string? Slump { get; set; } 
     [Column(Name = "wcratio")] public double? WcRatio { get; set; } 

@@ -23,9 +23,10 @@ public partial class CtlPnlInPhieuVM: ViewModelBase
             Id = -1,
             SoPhieu = "Test000",
             NgayTron = "01/01/0001",
-            TgRoiTram = "00:00 AM",
-            KhachHang = "Khách hàng",
-            DiaChiKH = "Địa chỉ KH",
+            NgayRoiTram = "31/12/2000",
+            GioRoiTram = "00:00 AM",
+            KHTen = "Khách hàng",
+            KHDiaChi = "Địa chỉ KH",
             CongTrinh = "Dự án - công trình - hạng mục"
         };
     }

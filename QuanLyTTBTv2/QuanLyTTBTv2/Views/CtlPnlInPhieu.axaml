@@ -58,7 +58,7 @@
                         <TableView.Columns>
                             <TableViewColumn Header="STT" Width="60" Binding="{Binding Stt}"/>
                             <TableViewColumn Header="Số phiếu" Binding="{Binding SoPhieu}"/>
-                            <TableViewColumn Header="Khách hàng" Binding="{Binding KhachHang}"/>
+                            <TableViewColumn Header="Khách hàng" Binding="{Binding KHTen}"/>
                             <TableViewColumn Header="Công trình"/>
                             <TableViewColumn Header="M³ trộn"/>
                             <TableViewColumn Header="M³ tích lũy"/>

@@ -28,6 +28,7 @@ namespace QuanLyTTBTv2.Models.Local
 
     public class PrintInfo()
     {
+        public string? TramTen { get; set; }
         public CompanyDto Company { get; set; } = new();
     }
 }

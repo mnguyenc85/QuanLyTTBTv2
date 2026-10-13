@@ -24,7 +24,7 @@ public partial class CtlDsPhieu : UserControl
 {
     private CtlDsPhieuVM? _vm;
     private readonly DbCache _c = DbCache.Instance;
-    private PrintingService _printer = PrintingService.Instance;
+    private AppConfig _printer = AppConfig.Instance;
 
     public bool IsActive { get; set; }
 

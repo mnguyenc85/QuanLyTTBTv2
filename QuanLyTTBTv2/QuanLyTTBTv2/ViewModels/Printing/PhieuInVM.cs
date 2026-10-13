@@ -14,22 +14,26 @@ public partial class PhieuInVM: ViewModelBase
     
     public long PhieuId { get; set; }
 
+    public string? DonMa { get; set; }
+
     [ObservableProperty] private string? _soPhieu;
     [ObservableProperty] private string? _soPhieuIn;
     
     [ObservableProperty] private string? _ngayTron;
-    [ObservableProperty] private string? _tgRoiTram;
+    [ObservableProperty] private string? _ngayRoiTram;
+    [ObservableProperty] private string? _gioRoiTram;
     
-    [ObservableProperty] private string? _khachHang;
-    [ObservableProperty] private string? _diaChiKH;
-    
+    [ObservableProperty] private string? _kHTen;
+    [ObservableProperty] private string? _kHDiaChi;
+    [ObservableProperty] private string? _kHSdt;
+
     [ObservableProperty] private string? _congTrinh;
     [ObservableProperty] private string? _diaDiem;
     
     [ObservableProperty] private string? _bsx;
     [ObservableProperty] private string? _laiXe;
-
-    [ObservableProperty] private string? _beTongTen;
+    
+    [ObservableProperty] private string? _beTongMa;
     [ObservableProperty] private string? _beTongMac;
     [ObservableProperty] private string? _beTongCuongDo;
     [ObservableProperty] private string? _beTongDoSut;
@@ -40,6 +44,9 @@ public partial class PhieuInVM: ViewModelBase
     [ObservableProperty] private double _ttTron;
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
+
+    public DateTime TGBD { get; set; }
+    public DateTime TGKT { get; set; }
 
     /// <summary>
     /// True khi các property thay đổi
@@ -71,14 +78,18 @@ public partial class PhieuInVM: ViewModelBase
         Id = o.Id;
         PhieuId = o.PhieuId;
 
-        SoPhieu = o.SoPhieu;
-        SoPhieuIn = o.SoPhieuIn;
+        DonMa = o.DonMa;
+
+        SoPhieu = o.PhieuMa;
+        SoPhieuIn = o.PhieuSttDon;
         
         NgayTron = o.NgayTron;
-        TgRoiTram = o.TgRoiTram;
+        NgayRoiTram = o.NgayRoiTram;
+        GioRoiTram = o.GioRoiTram;
 
-        KhachHang = o.KhachHang;
-        DiaChiKH = o.DiaChiKH;
+        KHTen = o.KHTen;
+        KHDiaChi = o.KHDiaChi;
+        KHSdt = o.KHSdt;
 
         CongTrinh = o.CongTrinh;
         DiaDiem = o.DiaDiem;
@@ -86,7 +97,7 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = o.Bsx;
         LaiXe = o.LaiXe;
 
-        BeTongTen = o.BeTongTen;
+        BeTongMa = o.BeTongMa;
         BeTongMac = o.BeTongMac;
         BeTongDoSut = o.BeTongDoSut;
         BeTongCuongDo = o.BeTongCuongDo;
@@ -98,6 +109,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
 
+        TGBD = o.TGBD;
+        TGKT = o.TGKT;
+
         TieuDe = "Sửa phiếu in";
         Changed = false;
     }
@@ -107,14 +121,18 @@ public partial class PhieuInVM: ViewModelBase
         o.Id = Id;
         o.PhieuId = PhieuId;
 
-        o.SoPhieu = SoPhieu;
-        o.SoPhieuIn = SoPhieuIn;
+        o.DonMa = DonMa;
+
+        o.PhieuMa = SoPhieu;
+        o.PhieuSttDon = SoPhieuIn;
         
         o.NgayTron = NgayTron;
-        o.TgRoiTram = TgRoiTram;
+        o.NgayRoiTram = NgayRoiTram;
+        o.GioRoiTram = GioRoiTram;
 
-        o.KhachHang = KhachHang;
-        o.DiaChiKH = DiaChiKH;
+        o.KHTen = KHTen;
+        o.KHDiaChi = KHDiaChi;
+        o.KHSdt = KHSdt;
 
         o.CongTrinh = CongTrinh;
         o.DiaDiem = DiaDiem;
@@ -122,7 +140,7 @@ public partial class PhieuInVM: ViewModelBase
         o.Bsx = Bsx;
         o.LaiXe = LaiXe;
 
-        o.BeTongTen = BeTongTen;
+        o.BeTongMa = BeTongMa;
         o.BeTongMac = BeTongMac;
         o.BeTongDoSut = BeTongDoSut;
         o.BeTongCuongDo = BeTongCuongDo;
@@ -133,6 +151,9 @@ public partial class PhieuInVM: ViewModelBase
         o.TtTron = TtTron;
         o.TtTichLuy = TtTichLuy;
         o.KlTron = KlTron;
+
+        o.TGBD = TGBD;
+        o.TGKT = TGKT;
     }
 
     public void Clear()
@@ -140,14 +161,16 @@ public partial class PhieuInVM: ViewModelBase
         Id = -1;
         PhieuId = -1;
 
+        DonMa = "";
+
         SoPhieu = "";
         SoPhieuIn = "";
         
         NgayTron = "";
-        TgRoiTram = "";
+        NgayRoiTram = "";
+        GioRoiTram = "";
 
-        KhachHang = "";
-        DiaChiKH = "";
+        KHTen = ""; KHDiaChi = ""; KHSdt = "";
 
         CongTrinh = "";
         DiaDiem = "";
@@ -155,7 +178,7 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = "";
         LaiXe = "";
 
-        BeTongTen = "";
+        BeTongMa = "";
         BeTongMac = "";
         BeTongCotLieuMax = "";
         BeTongDoSut = "";
@@ -176,24 +199,29 @@ public partial class PhieuInVM: ViewModelBase
         Id = -1;
         PhieuId = ph.Id;
 
+        DonMa = dh?.Ma;
+
         SoPhieu = ph.Sophieu;
         SoPhieuIn = ph.SttDon.ToString();
         
         NgayTron = ph.Tgkt.ToString("MM/dd/yyyy HH:mm:ss");
-        TgRoiTram = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        NgayRoiTram = DateTime.Now.ToString("dd/MM/yyyy");
+        GioRoiTram = DateTime.Now.ToString("HH:mm:ss");
 
         if (dh != null)
         {
-            KhachHang = dh.KhachHang;
-            DiaChiKH = dh.DiaChiKH;
+            KHTen = dh.KhachHang;
+            KHDiaChi = dh.KHDiaChi;
+            KHSdt = dh.KHSdt;
 
             CongTrinh = dh.DuAn;
             DiaDiem = dh.DADiaChi;
         }
         else
         {
-            KhachHang = "";
-            DiaChiKH = "";
+            KHTen = "";
+            KHDiaChi = "";
+            KHSdt = "";
             CongTrinh = "";
             DiaDiem = "";
         }
@@ -203,7 +231,7 @@ public partial class PhieuInVM: ViewModelBase
 
         if (ph.CongThuc != null)
         {
-            BeTongTen = ph.CongThuc.Ma;
+            BeTongMa = ph.CongThuc.Ma;
             BeTongMac = ph.CongThuc.Mac;
             BeTongDoSut = ph.CongThuc.Slump;
             BeTongCotLieuMax = ph.CongThuc.KichThuocHat.ToString();
@@ -211,7 +239,7 @@ public partial class PhieuInVM: ViewModelBase
         }
         else
         {
-            BeTongTen = "";
+            BeTongMa = "";
             BeTongMac = "";
             BeTongCotLieuMax = "";
             BeTongDoSut = "";
@@ -224,6 +252,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = ph.TtDon;
         KlTron = ph.Klht;
 
+        TGBD = ph.Tgbd;
+        TGKT = ph.Tgkt;
+
         TieuDe = "Phiếu in mới";
         Changed = false;
     }
@@ -233,14 +264,18 @@ public partial class PhieuInVM: ViewModelBase
         Id = o.Id;
         PhieuId = o.PhieuId;
 
+        DonMa = o.DonMa;
+
         SoPhieu = o.SoPhieu;
         SoPhieuIn = o.SoPhieuIn;
         
         NgayTron = o.NgayTron;
-        TgRoiTram = o.TgRoiTram;
+        NgayRoiTram = o.NgayRoiTram;
+        GioRoiTram = o.GioRoiTram;
 
-        KhachHang = o.KhachHang;
-        DiaChiKH = o.DiaChiKH;
+        KHTen = o.KHTen;
+        KHDiaChi = o.KHDiaChi;
+        KHSdt = o.KHSdt;
 
         CongTrinh = o.CongTrinh;
         DiaDiem = o.DiaDiem;
@@ -248,7 +283,7 @@ public partial class PhieuInVM: ViewModelBase
         Bsx = o.Bsx;
         LaiXe = o.LaiXe;
 
-        BeTongTen = o.BeTongTen;
+        BeTongMa = o.BeTongMa;
         BeTongMac = o.BeTongMac;
         BeTongDoSut = o.BeTongDoSut;
         BeTongCuongDo = o.BeTongCuongDo;
@@ -259,6 +294,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTron = o.TtTron;
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
+
+        TGBD = TGBD;
+        TGKT = TGKT;
 
         TieuDe = "Sửa phiếu in";
         Changed = false;

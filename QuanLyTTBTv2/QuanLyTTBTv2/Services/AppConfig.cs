@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Globalization;
 using QuanLyTTBTv2.Models;
+using QuanLyTTBTv2.ViewModels.Visual;
 
 namespace QuanLyTTBTv2.Services
 {
-    public class PrintingService
+    /// <summary>
+    /// Chứa thông tin dùng chung cho toàn bộ ứng dụng
+    /// </summary>
+    public class AppConfig
     {
         #region Singleton
-        private static readonly Lazy<PrintingService> _instance = new(() => new PrintingService());
-        public static PrintingService Instance => _instance.Value;
+        private static readonly Lazy<AppConfig> _instance = new(() => new AppConfig());
+        public static AppConfig Instance => _instance.Value;
 
-        private PrintingService()
+        private AppConfig()
         {
             _vnCulture.NumberFormat.NumberDecimalSeparator = ",";
             _vnCulture.NumberFormat.NumberGroupSeparator = "."; // nếu muốn ngăn cách hàng nghìn
@@ -28,6 +32,8 @@ namespace QuanLyTTBTv2.Services
         private readonly CultureInfo _vnCulture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
         public ReportPrinting DocketPrint { get; private set; }
         public ReportPrinting DetailDocketPrint { get; private set; }
+
+        public PhieuInConfigVM ViewPhieuInConfig { get; private set; } = new PhieuInConfigVM();
 
         public int InitPrinting()
         {

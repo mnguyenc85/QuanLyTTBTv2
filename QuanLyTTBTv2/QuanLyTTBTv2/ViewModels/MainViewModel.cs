@@ -77,7 +77,7 @@ namespace QuanLyTTBTv2.ViewModels
             _stopwatch.Restart();
             
             await Workspace.LoadSrvFactories();
-            
+
             _stopwatch.Stop();
             LastExecTime = _stopwatch.Elapsed.ToString(@"hh\:mm\:ss\.fff");
         }
