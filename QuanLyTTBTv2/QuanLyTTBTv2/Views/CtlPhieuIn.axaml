@@ -13,114 +13,108 @@
         <vm:PhieuInVM />
     </Design.DataContext>
 
-    <GroupBox Padding="3 6 3 3">
-        <GroupBox.Header>
-            <TextBlock Text="{Binding TieuDe}" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
-        </GroupBox.Header>
+    <StackPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Số phiếu cân:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0" FontWeight="DemiBold" FontStyle="Italic"/>
+            <TextBox HorizontalAlignment="Left" Width="120" Padding="6 5" IsReadOnly="True"
+                     Text="{Binding SoPhieu}"/>
+        </DockPanel>
+        <Separator Margin="3"/>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Số phiếu in:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Left" Width="120" Padding="6 5"
+                     Text="{Binding SoPhieuIn}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Ngày trộn:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding NgayTron}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Ngày xuất trạm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding NgayRoiTram}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Giờ xuất trạm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding GioRoiTram}"/>
+        </DockPanel>
+        
+        <Separator Margin="3"/>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Khách hàng:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     TextWrapping="Wrap" AcceptsReturn="True"
+                     Text="{Binding KHTen}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Công trình:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding CongTrinh}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Địa điểm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding DiaDiem}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Biển số xe:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding Bsx}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Lái xe:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding LaiXe}"/>
+        </DockPanel>
+        
+        <Separator Margin="3"/>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Loại bê tông:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding BeTongMa}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Mác bê tông:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding BeTongMac}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Độ sụt:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding BeTongDoSut}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Cốt liệu max:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding BeTongCotLieuMax}"/>
+        </DockPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Cường độ:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding BeTongCuongDo}"/>
+        </DockPanel>
 
-        <StackPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Số phiếu cân:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0" FontWeight="DemiBold" FontStyle="Italic"/>
-                <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6" IsReadOnly="True"
-                         Text="{Binding SoPhieu}"/>
-            </DockPanel>
-            <Separator Margin="3"/>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Số phiếu in:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Left" Width="120" Padding="8 6"
-                         Text="{Binding SoPhieuIn}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Ngày trộn:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding NgayTron}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Ngày xuất trạm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding NgayRoiTram}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Giờ xuất trạm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding GioRoiTram}"/>
-            </DockPanel>
-            
-            <Separator Margin="3"/>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Khách hàng:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         TextWrapping="Wrap" AcceptsReturn="True"
-                         Text="{Binding KHTen}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Công trình:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding CongTrinh}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Địa điểm:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding DiaDiem}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Biển số xe:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding Bsx}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Lái xe:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding LaiXe}"/>
-            </DockPanel>
-            
-            <Separator Margin="3"/>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Loại bê tông:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding BeTongMa}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Mác bê tông:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding BeTongMac}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Độ sụt:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding BeTongDoSut}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Cốt liệu max:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding BeTongCotLieuMax}"/>
-            </DockPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Cường độ:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding BeTongCuongDo}"/>
-            </DockPanel>
-
-            <Separator Margin="3"/>
-            <StackPanel Orientation="Horizontal" Margin="0 3">
-                <TextBlock Text="M3 trộn:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Left" Width="90" Padding="8 6"
-                         Text="{Binding TtTron}"/>
-                <TextBlock Text="m³" Width="108" TextAlignment="Left" VerticalAlignment="Center" Margin="6 0"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0 3">
-                <TextBlock Text="M3 tich lũy:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Left" Width="90" Padding="8 6"
-                         Text="{Binding TtTichLuy}"/>
-                <TextBlock Text="m³" Width="108" TextAlignment="Left" VerticalAlignment="Center" Margin="6 0"/>
-            </StackPanel>
-            <DockPanel Margin="0 3">
-                <TextBlock Text="Kẹp chì:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <TextBox HorizontalAlignment="Stretch" Padding="8 6"
-                         Text="{Binding KepChi}"/>
-            </DockPanel>
-
+        <Separator Margin="3"/>
+        <StackPanel Orientation="Horizontal" Margin="0 3">
+            <TextBlock Text="M3 trộn:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Left" Width="90" Padding="6 5"
+                     Text="{Binding TtTron}"/>
+            <TextBlock Text="m³" Width="108" TextAlignment="Left" VerticalAlignment="Center" Margin="6 0"/>
         </StackPanel>
-    </GroupBox>
+        <StackPanel Orientation="Horizontal" Margin="0 3">
+            <TextBlock Text="M3 tich lũy:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Left" Width="90" Padding="6 5"
+                     Text="{Binding TtTichLuy}"/>
+            <TextBlock Text="m³" Width="108" TextAlignment="Left" VerticalAlignment="Center" Margin="6 0"/>
+        </StackPanel>
+        <DockPanel Margin="0 3">
+            <TextBlock Text="Kẹp chì:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     Text="{Binding KepChi}"/>
+        </DockPanel>
+
+    </StackPanel>
     
 </UserControl>

@@ -7,6 +7,7 @@
              xmlns:c="clr-namespace:QuanLyTTBTv2.Controls"
              xmlns:vm="using:QuanLyTTBTv2.ViewModels"
              xmlns:vmc="using:QuanLyTTBTv2.Utilities.Converters"
+             xmlns:husk="https://github.com/d3ara1n/Huskui.Avalonia"
              x:DataType="vm:CtlDsPhieuVM"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
              x:Class="QuanLyTTBTv2.Views.CtlDsPhieu"
@@ -23,7 +24,7 @@
         <vmc:TableViewRowFontWeightConverter x:Key="RowFontWeightConverter"/>
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="274,3,*,3,300">
+    <Grid ColumnDefinitions="274,3,*,3,360">
         <GridSplitter Grid.Column="3" Background="Transparent"/>
         
         <Border Grid.Column="0" Background="{DynamicResource NMBg2}" CornerRadius="3" MinWidth="264">
@@ -107,8 +108,13 @@
             <TabControl Grid.Row="2" Padding="0" Margin="0 0 0 3">
                 <!-- Phiếu in -->
                 <TabItem Header="Phiếu in">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="6">
+                            <ToggleSwitch OnContent="Theo phiếu" OffContent="Theo đơn"/>
+                        </StackPanel>
+                        
                     <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
-                        <TableView x:Name="TvwPhieuIn" Classes="striped" 
+                        <TableView x:Name="TvwPhieuIn" 
                                    ItemsSource="{Binding Workspace?.DsPhieuIn}" SelectedItem="{Binding Workspace.SelectedPhieuIn}"
                                    SelectionChanged="TvwPhieuIn_OnSelectionChanged">
                             <TableView.Columns>
@@ -121,6 +127,7 @@
                                 <TableViewColumn Header="TG rời trạm" Binding="{Binding GioRoiTram}"/>
                             </TableView.Columns>
                         </TableView>
+                    </DockPanel>
                     </DockPanel>
                 </TabItem>
                 
@@ -176,14 +183,10 @@
                 <Button x:Name="BtFromPhIn" Content="PI" Width="36" Padding="0"
                         ToolTip.Tip="Lấy theo dữ liệu phiếu in"/>
             </StackPanel>
-            
-            <ScrollViewer VerticalScrollBarVisibility="Auto" DockPanel.Dock="Top">
-                <local:CtlPhieuIn DataContext="{Binding Workspace?.CurPhieuIn}"/>
-            </ScrollViewer>
-            
-            <StackPanel Margin="0 6 0 0">
+
+            <StackPanel Margin="0 6 0 0" DockPanel.Dock="Bottom">
                 <Button x:Name="BtInPhieu" Classes="Primary" Margin="0 0 0 6"
-						Click="BtInPhieu_OnClick">
+                        Click="BtInPhieu_OnClick">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="../Assets/printer_24.png" Margin="0 0 6 0" Height="20"></Image>
                         <TextBlock Text="In phiếu" VerticalAlignment="Center"/>
@@ -192,6 +195,24 @@
                 <Button x:Name="BtPhieuInSave" Content="Lưu" Margin="0 0 0 6"
                         Click="BtPhieuInSave_OnClick"/>
             </StackPanel>
+            
+                <husk:Card Padding="0" CornerRadius="3">
+                    <DockPanel>
+                        <Border CornerRadius="3 3 0 0" Background="{DynamicResource NMBg3}" DockPanel.Dock="Top">
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Content="O" Theme="{StaticResource GhostButtonTheme}"/>
+                                <TextBlock Text="{Binding Workspace?.CurPhieuIn.TieuDe}" Margin="6 0 0 0" 
+                                           VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
+                            </DockPanel>
+                        </Border>
+                        <husk:Divider DockPanel.Dock="Top"/>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="6 6 9 6" Background="{DynamicResource NMBg1}">
+                            <local:CtlPhieuIn DataContext="{Binding Workspace?.CurPhieuIn}"/>
+                        </ScrollViewer>
+                    </DockPanel>
+                </husk:Card>    
+            
         </DockPanel>
     </Grid>
     

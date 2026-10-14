@@ -331,8 +331,27 @@ public partial class WorkspaceVM: ViewModelBase
     {
         var o = CurPhieuIn.CreateDO();
         await _cache.LocalDB.PhieuIn_SaveAsync(o);
+        CurPhieuIn.Id = o.Id;
         CurPhieuIn.Changed = false;
+        
+        // Thêm vào bảng
+        DsPhieuIn_Add(o);
+        
         return true;
+    }
+
+    public void DsPhieuIn_Add(DbInPhieu p)
+    {
+        var p1 = DsPhieuIn.FirstOrDefault(x => x.Id == p.Id);
+        if (p1 == null)
+        {
+            var pvm = new PhieuInVM(p);
+            DsPhieuIn.Insert(0, pvm);
+        }
+        else
+        {
+            p1.FromDO(p);
+        }
     }
 
     public async Task DsPhieuIn_Load(DbInPhieuCond cond, bool byDonHang = false)
