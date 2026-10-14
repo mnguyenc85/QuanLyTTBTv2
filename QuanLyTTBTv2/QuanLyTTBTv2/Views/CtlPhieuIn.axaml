@@ -48,6 +48,12 @@
                      TextWrapping="Wrap" AcceptsReturn="True"
                      Text="{Binding KHTen}"/>
         </DockPanel>
+        <DockPanel x:Name="PnlKHDiaChi" Margin="0 3">
+            <TextBlock Text="Địa chỉ:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
+            <TextBox HorizontalAlignment="Stretch" Padding="6 5"
+                     TextWrapping="Wrap" AcceptsReturn="True"
+                     Text="{Binding KHDiaChi}"/>
+        </DockPanel>
         <DockPanel Margin="0 3">
             <TextBlock Text="Công trình:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
             <TextBox HorizontalAlignment="Stretch" Padding="6 5"
@@ -85,12 +91,12 @@
             <TextBox HorizontalAlignment="Stretch" Padding="6 5"
                      Text="{Binding BeTongDoSut}"/>
         </DockPanel>
-        <DockPanel Margin="0 3">
+        <DockPanel x:Name="PnlBTCLMax" Margin="0 3">
             <TextBlock Text="Cốt liệu max:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
             <TextBox HorizontalAlignment="Stretch" Padding="6 5"
                      Text="{Binding BeTongCotLieuMax}"/>
         </DockPanel>
-        <DockPanel Margin="0 3">
+        <DockPanel x:Name="PnlBTCuongDo" Margin="0 3">
             <TextBlock Text="Cường độ:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
             <TextBox HorizontalAlignment="Stretch" Padding="6 5"
                      Text="{Binding BeTongCuongDo}"/>
@@ -109,7 +115,7 @@
                      Text="{Binding TtTichLuy}"/>
             <TextBlock Text="m³" Width="108" TextAlignment="Left" VerticalAlignment="Center" Margin="6 0"/>
         </StackPanel>
-        <DockPanel Margin="0 3">
+        <DockPanel x:Name="PnlKepChi" Margin="0 3">
             <TextBlock Text="Kẹp chì:" Width="108" TextAlignment="Right" VerticalAlignment="Center" Margin="0 0 6 0"/>
             <TextBox HorizontalAlignment="Stretch" Padding="6 5"
                      Text="{Binding KepChi}"/>

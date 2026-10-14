@@ -7,18 +7,18 @@ using QuanLyTTBTv2.ViewModels;
 
 namespace QuanLyTTBTv2.Views;
 
-public partial class CtlPnlInPhieu : UserControl
+public partial class CtlTKPhieuIn : UserControl
 {
-    private CtlPnlInPhieuVM? _vm;
+    private CtlTKPhieuInVM? _vm;
     
-    public CtlPnlInPhieu()
+    public CtlTKPhieuIn()
     {
         InitializeComponent();
     }
     
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
-        _vm = DataContext as CtlPnlInPhieuVM;
+        _vm = DataContext as CtlTKPhieuInVM;
     }
     
     private void NMPaginator_OnPageClicked(object? sender, int e)
@@ -57,14 +57,10 @@ public partial class CtlPnlInPhieu : UserControl
 
     private void BtPrint_OnClick(object? sender, RoutedEventArgs e)
     {
-        // TODO: print
-        // Lưu phiếu đã in
-        _vm?.Workspace.PhieuInSave();
     }
 
     private void BtPIByDH_OnClick(object? sender, RoutedEventArgs e)
     {
-        _vm.DsPhieuIn_LoadByDH();
     }
 
     private void BtPIByPhieu_OnClick(object? sender, RoutedEventArgs e)

@@ -24,7 +24,7 @@ public partial class CtlDsPhieu : UserControl
 {
     private CtlDsPhieuVM? _vm;
     private readonly DbCache _c = DbCache.Instance;
-    private AppConfig _printer = AppConfig.Instance;
+    private readonly GlocalAppData _gCfg = GlocalAppData.Instance;
 
     public bool IsActive { get; set; }
 
@@ -47,6 +47,11 @@ public partial class CtlDsPhieu : UserControl
         _vm = DataContext as CtlDsPhieuVM;
     }
 
+    public void InitView()
+    {
+        PnlPhieuIn.SetFieldVisibilities(_gCfg.ViewPhieuInConfig);
+    }
+    
     #region Table: phiếu
     /// <summary>
     /// Kích đổi trang
@@ -82,7 +87,7 @@ public partial class CtlDsPhieu : UserControl
                 _vm?.SetTableIPP(v);
     }
 
-    private bool _isLoadPhieu = false;
+    private bool _isLoadPhieu;
     private async void TvwPhieu_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (_isLoadPhieu) return;
@@ -96,7 +101,7 @@ public partial class CtlDsPhieu : UserControl
             {
                 await _vm.Workspace.LoadChiTietPhieu();
 
-                await DsPhieuIn_LoadByCurPhieu();
+                await DsPhieuIn_Load();
 
                 await PhieuIn2PhieuCan();
             }
@@ -123,7 +128,7 @@ public partial class CtlDsPhieu : UserControl
         if (ws == null) return;
      
         BtFromPhCan.IsEnabled = false;
-        if (ws.CurPhieuIn != null && ws.CurPhieuIn.Changed)
+        if (ws.CurPhieuIn.Changed)
         {
             var box = MessageBoxManager.GetMessageBoxStandard("Lưu phiếu in", "Bạn có muốn lưu thông tin đã sửa?", ButtonEnum.YesNo);
             await box.ShowAsync();
@@ -167,7 +172,7 @@ public partial class CtlDsPhieu : UserControl
             {
                 Header = headers[i].GetHeader(),
                 Width = new GridLength(108),
-                CellTemplate = new FuncDataTemplate<HTMeVM>((item, _) =>
+                CellTemplate = new FuncDataTemplate<HTMeVM>((_, _) =>
                 {
                     var textBlock = new TextBlock
                     {
@@ -193,27 +198,24 @@ public partial class CtlDsPhieu : UserControl
     /// <summary>
     /// Load ds phiếu in từ phiếu cân được chọn
     /// </summary>
-    public async Task DsPhieuIn_LoadByCurPhieu()
+    public async Task DsPhieuIn_Load()
     {
         if (_vm == null) return;
         try
         {
-            var cond = new DbInPhieuCond();
-            cond.Offset = 0 * cond.Limit;
-            if (!cond.Changed) return;
-
-            await _vm.Workspace.DsPhieuIn_Load(cond);
-            if (cond.Changed)
-            {
-                // PhieuTotal = (cond.Total - 1) / cond.Limit + 1;
-                // PhieuPage = 1;
-                cond.Changed = false;
-            }
+            bool theoDon = TSwDsPhIByPhC.IsChecked == false;
+            System.Diagnostics.Debug.WriteLine($"Load phiếu in theo đơn? {theoDon}");
+            await _vm.Workspace.DsPhieuIn_Load(theoDon);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
+    }
+    
+    private async void TSwDsPhIByPhC_OnClick(object? sender, RoutedEventArgs e)
+    {
+        await DsPhieuIn_Load();
     }
 
     private async void TvwPhieuIn_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -265,7 +267,7 @@ public partial class CtlDsPhieu : UserControl
         if (ws == null) return;
 
         await ws.PhieuInSave();
-        await _printer.DocketPrint.Print(_c.PrintInfo, ws.CurPhieuIn);
+        await _gCfg.DocketPrint.Print(_c.PrintInfo, ws.CurPhieuIn);
 
         PopGrowl?.Invoke(this, new GrowlItem()
         {
@@ -275,4 +277,5 @@ public partial class CtlDsPhieu : UserControl
         });
     }
     #endregion
+
 }

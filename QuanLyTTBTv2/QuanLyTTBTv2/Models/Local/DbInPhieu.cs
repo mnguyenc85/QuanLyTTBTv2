@@ -66,6 +66,11 @@ public class DbInPhieu
     [Column(Name = "kl_tron")]
     public double KlTron { get; set; }
 
+    [Column(Name = "don_gia")]
+    public double DonGia { get; set; }
+    [Column(Name = "tong_tien")]
+    public double TongTien { get; set; }
+
     [Column(Name = "tgbd")]
     public DateTime TGBD { get; set; }
     [Column(Name = "tgkt")]

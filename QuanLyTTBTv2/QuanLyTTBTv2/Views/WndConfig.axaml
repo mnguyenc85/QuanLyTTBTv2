@@ -48,10 +48,14 @@
                 <StackPanel Background="{DynamicResource NMBg1}">
                     <TextBlock Text="Thông tin công ty" VerticalAlignment="Center" FontWeight="Bold" Margin="6 12 6 6"/>
                     <DockPanel Margin="12 0 6 6">
-                        <TextBlock Text="Tên: " VerticalAlignment="Center" Width="90"/>
-                        <TextBox x:Name="TxtCTyTen" Padding="6"/>
+                        <TextBlock Text="Tên 1: " VerticalAlignment="Center" Width="90"/>
+                        <TextBox x:Name="TxtCTyTen1" Padding="6"/>
                     </DockPanel>
-                    <DockPanel Margin="12 0 6 6">
+					<DockPanel Margin="12 0 6 6">
+						<TextBlock Text="Tên 2: " VerticalAlignment="Center" Width="90"/>
+						<TextBox x:Name="TxtCTyTen2" Padding="6"/>
+					</DockPanel>
+					<DockPanel Margin="12 0 6 6">
                         <TextBlock Text="Địa chỉ: " VerticalAlignment="Center" Width="90"/>
                         <TextBox x:Name="TxtCTyDiaChi" Padding="6"/>
                     </DockPanel>

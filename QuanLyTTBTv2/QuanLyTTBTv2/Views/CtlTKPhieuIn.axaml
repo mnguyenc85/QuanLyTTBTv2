@@ -6,14 +6,14 @@
              xmlns:local="clr-namespace:QuanLyTTBTv2.Views"
              xmlns:vm="using:QuanLyTTBTv2.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="640"
-             x:Class="QuanLyTTBTv2.Views.CtlPnlInPhieu"
-             x:DataType="vm:CtlPnlInPhieuVM"
+             x:Class="QuanLyTTBTv2.Views.CtlTKPhieuIn"
+             x:DataType="vm:CtlTKPhieuInVM"
              Loaded="Control_OnLoaded">
     
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:CtlPnlInPhieuVM />
+        <vm:CtlTKPhieuInVM />
     </Design.DataContext>
     
     <Grid>

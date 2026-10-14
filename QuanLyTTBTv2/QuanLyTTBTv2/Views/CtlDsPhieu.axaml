@@ -95,7 +95,7 @@
                         <TableViewColumn Header="Mác" Binding="{Binding CongThuc?.Mac}"/>
                         <TableViewColumn Header="M³ trộn" Binding="{Binding Ttht}" Width="75"/>
                         <TableViewColumn Header="Kl (kg)" Binding="{Binding Klht}" Width="75"/>
-                        <TableViewColumn Header="M³ đơn" Binding="{Binding TtDon}" Width="75"/>
+                        <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtDon}" Width="102"/>
                         <TableViewColumn Header="Bắt đầu" Binding="{Binding Tgbd}"/>
                         <TableViewColumn Header="Kết thúc" Binding="{Binding Tgkt}"/>
                     </TableView.Columns>
@@ -110,7 +110,8 @@
                 <TabItem Header="Phiếu in">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="6">
-                            <ToggleSwitch OnContent="Theo phiếu" OffContent="Theo đơn"/>
+                            <ToggleSwitch x:Name="TSwDsPhIByPhC" OnContent="Theo phiếu" OffContent="Theo đơn"
+                                          Click="TSwDsPhIByPhC_OnClick"/>
                         </StackPanel>
                         
                     <DockPanel Background="{DynamicResource NMBg0}" Margin="6 6 6 3" >
@@ -122,8 +123,8 @@
                                 <TableViewColumn Header="Số phiếu" Binding="{Binding SoPhieu}"/>
                                 <TableViewColumn Header="Khách hàng" Binding="{Binding KHTen}"/>
                                 <TableViewColumn Header="Công trình" Binding="{Binding CongTrinh}"/>
-                                <TableViewColumn Header="M³ trộn" Binding="{Binding TtTron}"/>
-                                <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtTichLuy}"/>
+                                <TableViewColumn Header="M³ trộn" Binding="{Binding TtTron}" Width="75"/>
+                                <TableViewColumn Header="M³ tích lũy" Binding="{Binding TtTichLuy}" Width="102"/>
                                 <TableViewColumn Header="TG rời trạm" Binding="{Binding GioRoiTram}"/>
                             </TableView.Columns>
                         </TableView>
@@ -200,7 +201,9 @@
                     <DockPanel>
                         <Border CornerRadius="3 3 0 0" Background="{DynamicResource NMBg3}" DockPanel.Dock="Top">
                             <DockPanel>
-                                <Button DockPanel.Dock="Right" Content="O" Theme="{StaticResource GhostButtonTheme}"/>
+                                <Button DockPanel.Dock="Right" Theme="{StaticResource GhostButtonTheme}">
+                                    <Image Source="../Assets/gear.png" Height="16" Opacity="0.5"/>
+                                </Button>
                                 <TextBlock Text="{Binding Workspace?.CurPhieuIn.TieuDe}" Margin="6 0 0 0" 
                                            VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource SystemAccentColor}"/>
                             </DockPanel>
@@ -208,7 +211,7 @@
                         <husk:Divider DockPanel.Dock="Top"/>
 
                         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="6 6 9 6" Background="{DynamicResource NMBg1}">
-                            <local:CtlPhieuIn DataContext="{Binding Workspace?.CurPhieuIn}"/>
+                            <local:CtlPhieuIn x:Name="PnlPhieuIn" DataContext="{Binding Workspace?.CurPhieuIn}"/>
                         </ScrollViewer>
                     </DockPanel>
                 </husk:Card>    

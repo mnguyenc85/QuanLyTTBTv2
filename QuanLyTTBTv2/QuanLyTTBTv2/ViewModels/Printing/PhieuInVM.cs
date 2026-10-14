@@ -9,8 +9,14 @@ namespace QuanLyTTBTv2.ViewModels.Printing;
 public partial class PhieuInVM: ViewModelBase
 {
     public int Stt { get; set; }
-    
-    public long Id { get; set; }
+
+    private long _id;
+    public long Id { 
+        get { return _id; } 
+        set { _id = value;
+            TieuDe = Id > 0 ? "Sửa phiếu in" : "Phiếu in mới";
+        }
+    }
     
     public long PhieuId { get; set; }
 
@@ -45,6 +51,9 @@ public partial class PhieuInVM: ViewModelBase
     [ObservableProperty] private double _ttTichLuy;
     [ObservableProperty] private double _klTron;
 
+    [ObservableProperty] private double _donGia;
+    [ObservableProperty] private double _tongTien;
+
     public DateTime TGBD { get; set; }
     public DateTime TGKT { get; set; }
 
@@ -69,6 +78,10 @@ public partial class PhieuInVM: ViewModelBase
         if (e.PropertyName != nameof(Changed) && e.PropertyName != nameof(TieuDe))
         {
             Changed = true;
+        }
+        if (e.PropertyName == nameof(TtTron) || (e.PropertyName == nameof(DonGia)))
+        {
+            TongTien = TtTron * DonGia;
         }
     }
     #endregion
@@ -109,10 +122,12 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
 
+        DonGia = o.DonGia;
+        TongTien = o.TongTien;
+
         TGBD = o.TGBD;
         TGKT = o.TGKT;
 
-        TieuDe = "Sửa phiếu in";
         Changed = false;
     }
 
@@ -152,6 +167,9 @@ public partial class PhieuInVM: ViewModelBase
         o.TtTichLuy = TtTichLuy;
         o.KlTron = KlTron;
 
+        o.TongTien = TongTien;
+        o.DonGia = DonGia;
+
         o.TGBD = TGBD;
         o.TGKT = TGKT;
     }
@@ -189,6 +207,9 @@ public partial class PhieuInVM: ViewModelBase
         TtTron = 0;
         TtTichLuy = 0;
         KlTron = 0;
+
+        DonGia = 0;
+        TongTien = 0;
 
         TieuDe = "(Không)";
         Changed = false;
@@ -252,10 +273,12 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = ph.TtDon;
         KlTron = ph.Klht;
 
+        DonGia = 0;
+        TongTien = 0;
+
         TGBD = ph.Tgbd;
         TGKT = ph.Tgkt;
 
-        TieuDe = "Phiếu in mới";
         Changed = false;
     }
 
@@ -295,10 +318,12 @@ public partial class PhieuInVM: ViewModelBase
         TtTichLuy = o.TtTichLuy;
         KlTron = o.KlTron;
 
+        DonGia = o.DonGia;
+        TongTien = o.TongTien;
+
         TGBD = TGBD;
         TGKT = TGKT;
 
-        TieuDe = "Sửa phiếu in";
         Changed = false;
     }
     

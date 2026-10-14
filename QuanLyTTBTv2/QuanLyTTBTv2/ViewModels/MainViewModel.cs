@@ -13,9 +13,9 @@ namespace QuanLyTTBTv2.ViewModels
         private readonly Stopwatch _stopwatch = new();
 
         public CtlDsDonHangVM CtlDonHangVM { get; }
-        public CtlDsPhieuVM CtlPhieuVM { get; }
+        public CtlDsPhieuVM CtlDsPhieuVM { get; }
         
-        public CtlPnlInPhieuVM CtlInPhieuVM { get; }
+        public CtlTKPhieuInVM CtlInVm { get; }
         
         /// <summary>
         /// Trạng thái kết nối Server
@@ -38,8 +38,8 @@ namespace QuanLyTTBTv2.ViewModels
         {
             Workspace = new WorkspaceVM(_srvComm.SrvDb);
             CtlDonHangVM = new CtlDsDonHangVM(this);
-            CtlPhieuVM = new CtlDsPhieuVM(this);
-            CtlInPhieuVM = new CtlPnlInPhieuVM(this);
+            CtlDsPhieuVM = new CtlDsPhieuVM(this);
+            CtlInVm = new CtlTKPhieuInVM(this);
         }
         
         public async Task CreateServerComm()

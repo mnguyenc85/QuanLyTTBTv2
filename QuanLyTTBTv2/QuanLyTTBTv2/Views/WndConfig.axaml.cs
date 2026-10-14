@@ -50,7 +50,8 @@ public partial class WndConfig : Window
 
             var ci = _c.PrintInfo.Company;
             ci.Load(s);
-            TxtCTyTen.Text = ci.Ten;
+            TxtCTyTen1.Text = ci.Ten1;
+            TxtCTyTen2.Text = ci.Ten2;
             TxtCTyDiaChi.Text = ci.DiaChi;
             TxtCTySdt1.Text = ci.Sdt1;
             TxtCTySdt2.Text = ci.Sdt2;
@@ -74,7 +75,8 @@ public partial class WndConfig : Window
         s.Update("print.phieu.chitiet", CboPhieuInChiTiet.Text);
 
         var ci = _c.PrintInfo.Company;
-        ci.Ten = TxtCTyTen.Text;
+        ci.Ten1 = TxtCTyTen1.Text;
+        ci.Ten2 = TxtCTyTen2.Text;
         ci.DiaChi = TxtCTyDiaChi.Text;
         ci.Sdt1 = TxtCTySdt1.Text;
         ci.Sdt2 = TxtCTySdt2.Text;

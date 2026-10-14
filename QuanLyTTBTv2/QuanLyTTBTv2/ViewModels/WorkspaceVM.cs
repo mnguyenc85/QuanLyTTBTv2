@@ -354,42 +354,51 @@ public partial class WorkspaceVM: ViewModelBase
         }
     }
 
-    public async Task DsPhieuIn_Load(DbInPhieuCond cond, bool byDonHang = false)
+    private readonly DbInPhieuCond _dkLoadDsPhieuIn = new DbInPhieuCond();
+    public async Task DsPhieuIn_Load(bool byDonHang = false)
     {
         var db = _cache.LocalDB;
-        // Load dữ liệu đơn hàng
-        ClearDsPhieuIn();
 
+        _dkLoadDsPhieuIn.Offset = 0 * _dkLoadDsPhieuIn.Limit;
         if (byDonHang)
         {
-            cond.PhieuIds.Clear();
-            foreach (var ph in DsPhieu)
+            long curDHId = SelectedDonHang?.Id ?? -1;
+            if (_dkLoadDsPhieuIn.DonHangId != curDHId)
             {
-                cond.PhieuIds.Add(ph.Id);
+                _dkLoadDsPhieuIn.DonHangId = curDHId;
+                _dkLoadDsPhieuIn.PhieuIds.Clear();
+                _dkLoadDsPhieuIn.PhieuId = 0;               // Phải đặt 0 để trigger load theo PhieuIds
+                foreach (var ph in DsPhieu)
+                {
+                    _dkLoadDsPhieuIn.PhieuIds.Add(ph.Id);
+                }
             }
-            cond.DonHangId = SelectedDonHang?.Id ?? -1;
         }
         else
         {
-            if (SelectedPhieu == null) return; 
-            cond.PhieuIds.Clear();
-            cond.PhieuId = SelectedPhieu.Id;
+            _dkLoadDsPhieuIn.DonHangId = -1;
+
+            _dkLoadDsPhieuIn.PhieuIds.Clear();
+            var pid = SelectedPhieu == null ? -1 : SelectedPhieu.Id;
+            _dkLoadDsPhieuIn.PhieuId = pid;
         }
+        if (!_dkLoadDsPhieuIn.Changed) return;
         
-        if (cond.Changed)
-        {
-            cond.Offset = 0;
-            long total = await db.PhieuIn_CountAsync(cond);
-            cond.Total = (int)total;
-        }
+        // Load dữ liệu đơn hàng
+        ClearDsPhieuIn();
+
+        long total = await db.PhieuIn_CountAsync(_dkLoadDsPhieuIn);
+        _dkLoadDsPhieuIn.Total = (int)total;
         
-        var lst = await _cache.LocalDB.PhieuIn_LoadAsync(cond);
+        var lst = await _cache.LocalDB.PhieuIn_LoadAsync(_dkLoadDsPhieuIn);
         if (lst == null) return;
-        int stt = cond.Offset;
+        int stt = _dkLoadDsPhieuIn.Offset;
         foreach (var ph in lst)
         {
             AddPhieuIn(ph, ++stt);
         }
+
+        _dkLoadDsPhieuIn.Changed = false;
     }
     
     /// <summary>

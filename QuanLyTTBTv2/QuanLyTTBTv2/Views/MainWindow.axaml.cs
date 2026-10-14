@@ -19,7 +19,7 @@ namespace QuanLyTTBTv2.Views
     {
         private readonly SqliteDbBridge _ldb = SqliteDbBridge.Instance;
         private readonly DbCache _dbCache = DbCache.Instance;
-        private readonly AppConfig _printService = AppConfig.Instance;
+        private readonly GlocalAppData _printService = GlocalAppData.Instance;
 
         private readonly MainViewModel _vm = new();
         
@@ -35,7 +35,7 @@ namespace QuanLyTTBTv2.Views
 
         private void Window_OnLoaded(object? sender, RoutedEventArgs e)
         {
-            CtlDsPh.PopGrowl += PopGrowl; 
+            CtlDsPhieu0.PopGrowl += PopGrowl; 
             Init();
         }
 
@@ -61,6 +61,9 @@ namespace QuanLyTTBTv2.Views
                 _vm.InitData();
 
                 _printService.InitPrinting();
+                
+                // Init view: kích thước, ẩn/hiện
+                CtlDsPhieu0.InitView();
             }
             catch (Exception ex)
             {
@@ -80,8 +83,9 @@ namespace QuanLyTTBTv2.Views
         {
             WndConfig wnd = new WndConfig();
             await wnd.ShowDialog(this);
+            _dbCache.LoadPrintInfo();
         }
-        
+
         private void MniToolsDHTk1_OnClick(object? sender, RoutedEventArgs e)
         {
             _vm.Workspace.DonHang_CalTK();
@@ -196,7 +200,7 @@ namespace QuanLyTTBTv2.Views
         {
             if (!IsLoaded) return;
 
-            CtlDsPh.IsActive = TabMain.SelectedIndex == 1;
+            CtlDsPhieu0.IsActive = TabMain.SelectedIndex == 1;
 
             if (TabMain.SelectedIndex != _lastTabIndex)
             {
@@ -205,7 +209,7 @@ namespace QuanLyTTBTv2.Views
                     case 1:
                         System.Diagnostics.Debug.WriteLine("Selected tab 1: Phiếu");
 
-                        long isDHChanged = _vm.CtlPhieuVM.CheckSelectedDonHangChanged();
+                        long isDHChanged = _vm.CtlDsPhieuVM.CheckSelectedDonHangChanged();
                         if (isDHChanged != 0)
                         {
                             _vm.Workspace.ClearCurDonHangData();
@@ -213,9 +217,11 @@ namespace QuanLyTTBTv2.Views
 
                             if (isDHChanged > 0)
                             {
-                                await _vm.CtlPhieuVM.AutoLoadChiTietDonHang();
-                                CtlDsPh.ReCreateTblMeColumns();
-                                await _vm.CtlPhieuVM.AutoLoadDsPhieu();
+                                await _vm.CtlDsPhieuVM.LoadChiTietDonHang();
+                                CtlDsPhieu0.ReCreateTblMeColumns();
+                                await _vm.CtlDsPhieuVM.LoadDsPhieu();
+
+                                await CtlDsPhieu0.DsPhieuIn_Load();
                             }
                         }
                         break;

@@ -148,12 +148,12 @@ public partial class CtlDsPhieuVM: ViewModelBase
         return CurDonHangId;
     }
             
-    public async Task AutoLoadChiTietDonHang()
+    public async Task LoadChiTietDonHang()
     {
         await Workspace.LoadCurDonHangData();
     }
     
-    public async Task AutoLoadDsPhieu()
+    public async Task LoadDsPhieu()
     {
         // Reset điều kiện
         LocPhieuTu = false;

@@ -70,10 +70,11 @@ public class ReportPrinting
         try
         {
             var ci = pinfo.Company;
-            _reportDocket.SetParameterValue("Title.CongTy.Ten", ci.Ten);
-            _reportDocket.SetParameterValue("Title.CongTy.DiaChi", ci.DiaChi);
-            _reportDocket.SetParameterValue("Title.CongTy.Sdt1", ci.Sdt1);
-            _reportDocket.SetParameterValue("Title.CongTy.Sdt2", ci.Sdt2);
+            _reportDocket.SetParameterValue("Title.CT.Ten1", ci.Ten1);
+            _reportDocket.SetParameterValue("Title.CT.Ten2", ci.Ten2);
+            _reportDocket.SetParameterValue("Title.CT.DiaChi", ci.DiaChi);
+            _reportDocket.SetParameterValue("Title.CT.Sdt1", ci.Sdt1);
+            _reportDocket.SetParameterValue("Title.CT.Sdt2", ci.Sdt2);
 
             _reportDocket.SetParameterValue("Tram.Ten", pinfo.TramTen);
 
@@ -101,8 +102,11 @@ public class ReportPrinting
             _reportDocket.SetParameterValue("BT.CP.CuongDo", ph.BeTongCuongDo);
             _reportDocket.SetParameterValue("BT.CP.CotLieuMax", ph.BeTongCotLieuMax);
 
+            _reportDocket.SetParameterValue("Phieu.M3", ph.TtTron);
+            _reportDocket.SetParameterValue("Phieu.M3TichLuy", ph.TtTichLuy);
+            _reportDocket.SetParameterValue("Phieu.DonGia", ph.DonGia);
+            _reportDocket.SetParameterValue("Phieu.TongTien", ph.TongTien);
 
-            
             // Tối đa 5 thành phần
             // for (int i = 0; i < ph.DsThanhPhan.Count && i < 7; i++)
             // {

@@ -9,13 +9,13 @@ namespace QuanLyTTBTv2.Services
     /// <summary>
     /// Chứa thông tin dùng chung cho toàn bộ ứng dụng
     /// </summary>
-    public class AppConfig
+    public class GlocalAppData
     {
         #region Singleton
-        private static readonly Lazy<AppConfig> _instance = new(() => new AppConfig());
-        public static AppConfig Instance => _instance.Value;
+        private static readonly Lazy<GlocalAppData> _instance = new(() => new GlocalAppData());
+        public static GlocalAppData Instance => _instance.Value;
 
-        private AppConfig()
+        private GlocalAppData()
         {
             _vnCulture.NumberFormat.NumberDecimalSeparator = ",";
             _vnCulture.NumberFormat.NumberGroupSeparator = "."; // nếu muốn ngăn cách hàng nghìn

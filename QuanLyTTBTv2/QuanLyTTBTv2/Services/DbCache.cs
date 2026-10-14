@@ -48,5 +48,14 @@ public class DbCache
         }
 
         _localdb.Initialize();
+        LoadPrintInfo();
+    }
+
+    /// <summary>
+    /// Đọc thông tin in từ settings
+    /// </summary>
+    public void LoadPrintInfo()
+    {
+        PrintInfo.Company.Load(Settings);
     }
 }

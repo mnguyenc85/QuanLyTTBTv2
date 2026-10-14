@@ -20,6 +20,7 @@ namespace QuanLyTTBTv2.ViewModels.Visual
 
         [ObservableProperty] private bool _showBTTen = true;
         [ObservableProperty] private bool _showBTMac = true;
+        [ObservableProperty] private bool _showBTCLMax = false;
         [ObservableProperty] private bool _showBTCuongDo = false;
         
         [ObservableProperty] private bool _showKepChi = false;
