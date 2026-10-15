@@ -44,7 +44,13 @@ public partial class CtlDsPhieu : UserControl
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine("CtlDsPhieu.OnLoaded");
         _vm = DataContext as CtlDsPhieuVM;
+
+        // Ép đổi tab để tránh tabitem không hiển thị
+        // TODO: cách chuẩn hơn
+        TabChiTietPhieu.SelectedIndex = 1;
+        TabChiTietPhieu.SelectedIndex = 0;
     }
 
     public void InitView()

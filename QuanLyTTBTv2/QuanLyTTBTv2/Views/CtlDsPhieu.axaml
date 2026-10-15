@@ -105,7 +105,7 @@
                 
             <GridSplitter Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"/>
             
-            <TabControl Grid.Row="2" Padding="0" Margin="0 0 0 3">
+            <TabControl x:Name="TabChiTietPhieu" Grid.Row="2" Padding="0" Margin="0 0 0 3">
                 <!-- Phiếu in -->
                 <TabItem Header="Phiếu in">
                     <DockPanel>
